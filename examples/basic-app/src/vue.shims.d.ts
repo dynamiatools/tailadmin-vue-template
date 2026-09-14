@@ -7,3 +7,8 @@ declare module '*.vue' {
   const component: DefineComponent<{}, {}, any>
   export default component
 }
+
+// jsvectormap ships no type declarations of its own (same gap upstream has); the package
+// carries this same ambient declaration for its own type-check, but it doesn't propagate to
+// consumers, so it needs repeating here too.
+declare module 'jsvectormap'

@@ -206,7 +206,6 @@
           </div>
         </div>
       </nav>
-      <SidebarWidget v-if="isExpanded || isHovered || isMobileOpen" />
     </div>
   </aside>
 </template>
@@ -229,7 +228,6 @@ import {
   UserCircleIcon,
 } from '../../icons'
 import BoxCubeIcon from '../../icons/BoxCubeIcon.vue'
-import SidebarWidget from './SidebarWidget.vue'
 
 const route = useRoute()
 

@@ -25,6 +25,10 @@ When pulling in new changes, be careful not to overwrite these:
   (not `^` ranges) because newer semver-compatible releases break the `@types/dropzone` typings
   and drop `jsvectormap`'s bundled shim compatibility. Keep them pinned unless you've verified
   `npm run type-check` passes with a newer version.
+- **`SidebarWidget.vue` (the "Purchase Plan" / TailAdmin Pro upsell box) was removed**, along
+  with its usage in `AppSidebar.vue`. This package is fully free/open-source, so there's nothing
+  to upsell. If a future upstream sync touches `AppSidebar.vue`, don't reintroduce the
+  `<SidebarWidget />` line.
 - `npm run lint` currently fails on ~13 pre-existing upstream issues (missing `lang="ts"` on a
   few `<script>` blocks, a handful of unused imports) — reproducible on a clean upstream clone
   too, so it's not something introduced here. `lint` is intentionally not part of the CI/publish

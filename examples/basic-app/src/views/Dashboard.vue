@@ -1,40 +1,37 @@
 <template>
   <AdminLayout>
-    <div class="grid grid-cols-1 gap-6 xl:grid-cols-2">
-      <div class="col-span-1">
-        <h1 class="mb-4 text-xl font-semibold text-gray-800 dark:text-white/90">
-          @dynamia-tools/tailadmin-vue example
-        </h1>
+    <div class="grid grid-cols-12 gap-4 md:gap-6">
+      <div class="col-span-12 space-y-6 xl:col-span-7">
         <EcommerceMetrics />
+        <MonthlyTarget />
+      </div>
+      <div class="col-span-12 xl:col-span-5">
+        <MonthlySale />
       </div>
 
-      <div class="col-span-1 flex flex-col gap-6">
-        <Alert
-          variant="success"
-          title="It works"
-          message="Layout, icons, composables and UI components are all rendering from the published package source."
-        />
-
-        <div class="flex flex-wrap items-center gap-3">
-          <Button size="sm" variant="primary">Primary</Button>
-          <Button size="sm" variant="outline">Outline</Button>
-          <Badge color="success">Active</Badge>
-          <Badge color="warning">Pending</Badge>
-        </div>
+      <div class="col-span-12">
+        <StatisticsChart />
       </div>
 
-      <div class="col-span-1 xl:col-span-2">
-        <BasicTableOne />
+      <div class="col-span-12 xl:col-span-5">
+        <CustomerDemographic />
+      </div>
+
+      <div class="col-span-12 xl:col-span-7">
+        <RecentOrders />
       </div>
     </div>
   </AdminLayout>
 </template>
 
 <script setup lang="ts">
+// Same composition as upstream's src/views/Ecommerce.vue — the reference
+// dashboard for the template.
 import AdminLayout from '@dynamia-tools/tailadmin-vue/components/layout/AdminLayout.vue'
 import EcommerceMetrics from '@dynamia-tools/tailadmin-vue/components/ecommerce/EcommerceMetrics.vue'
-import Alert from '@dynamia-tools/tailadmin-vue/components/ui/Alert.vue'
-import Button from '@dynamia-tools/tailadmin-vue/components/ui/Button.vue'
-import Badge from '@dynamia-tools/tailadmin-vue/components/ui/Badge.vue'
-import BasicTableOne from '@dynamia-tools/tailadmin-vue/components/tables/basic-tables/BasicTableOne.vue'
+import MonthlyTarget from '@dynamia-tools/tailadmin-vue/components/ecommerce/MonthlySale.vue'
+import MonthlySale from '@dynamia-tools/tailadmin-vue/components/ecommerce/MonthlyTarget.vue'
+import CustomerDemographic from '@dynamia-tools/tailadmin-vue/components/ecommerce/CustomerDemographic.vue'
+import StatisticsChart from '@dynamia-tools/tailadmin-vue/components/ecommerce/StatisticsChart.vue'
+import RecentOrders from '@dynamia-tools/tailadmin-vue/components/ecommerce/RecentOrders.vue'
 </script>

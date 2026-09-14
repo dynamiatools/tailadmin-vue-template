@@ -34,6 +34,7 @@
   "exports": {
     "./components/*": "./src/components/*",
     "./composables/*": "./src/composables/*",
+    "./icons": "./src/icons/index.ts",
     "./icons/*": "./src/icons/*",
     "./style.css": "./src/assets/main.css",
     "./package.json": "./package.json"
