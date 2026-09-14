@@ -103,5 +103,6 @@ MIT, same as the original project. Original components by [TailAdmin](https://ta
 
 ## Publishing (maintainers)
 
-Publishing to npm runs via GitHub Actions when a `vX.Y.Z` tag matching the `package.json`
-`version` is pushed. Requires the `NPM_TOKEN` secret configured on the repo.
+Publishing to npm runs via GitHub Actions when a **GitHub Release is published**, tagged
+`vX.Y.Z` matching the `package.json` `version` (a tag push alone doesn't trigger it — publishing
+a release does). Requires the `NPM_TOKEN` secret configured on the repo.
