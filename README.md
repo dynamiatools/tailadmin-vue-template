@@ -64,6 +64,24 @@ import { BoxCubeIcon } from '@dynamia-tools/tailadmin-vue/icons'
 
 Browse `src/components/` in this repo (or in `node_modules` once installed) to see everything
 available: `ui/`, `forms/`, `tables/`, `charts/`, `layout/`, `common/`, `profile/`, `ecommerce/`.
+See [`examples/basic-app`](./examples/basic-app) for a working Vite app wired up against this
+package — layout, icons, composables and a handful of components rendering end to end.
+
+### Static image assets
+
+A few core layout components (`AppSidebar`, `AppHeader`'s `UserMenu`/`NotificationMenu`)
+reference images by absolute path (`/images/logo/*.svg`, `/images/user/*`) instead of importing
+them as modules — same as upstream. This package ships that minimal set under `public/`; copy it
+into your own project's `public/` directory:
+
+```bash
+cp -r node_modules/@dynamia-tools/tailadmin-vue/public/images ./public/
+```
+
+Other components (`ProfileCard`, ecommerce widgets, product/country demo data, etc.) reference
+additional `/images/...` paths that are **not** bundled here — those are upstream's own demo
+placeholder content, not shipped to keep the package light. If you use one of those components
+as-is, provide matching files at those paths or adapt the component to your own image props/URLs.
 
 ## Versioning
 

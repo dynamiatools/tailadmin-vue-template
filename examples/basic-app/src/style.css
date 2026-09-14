@@ -1,0 +1,5 @@
+@import '@dynamia-tools/tailadmin-vue/style.css';
+
+/* Tailwind v4 doesn't scan node_modules by default — point it at the
+   package's source so classes used in its .vue templates are generated. */
+@source '../node_modules/@dynamia-tools/tailadmin-vue/src';
