@@ -1,6 +1,8 @@
-# @dynamia-tools/tailadmin-vue
+# TailAdmin Vue Components
 
 ![TailAdmin Vue banner](./banner.png)
+
+### `@dynamia-tools/tailadmin-vue`
 
 [![npm version](https://img.shields.io/npm/v/@dynamia-tools/tailadmin-vue?color=465fff)](https://www.npmjs.com/package/@dynamia-tools/tailadmin-vue)
 [![license](https://img.shields.io/badge/license-MIT-465fff)](./LICENSE)
