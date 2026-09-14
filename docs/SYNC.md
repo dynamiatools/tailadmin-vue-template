@@ -63,6 +63,6 @@ When pulling in new changes, be careful not to overwrite these:
    (`YY.MM.MICRO`, e.g. `26.9.0` → `26.9.1` for another release the same month, `26.10.0` for
    the first release in October; doesn't need to match TailAdmin's version) and note the
    relevant change in the PR.
-8. On merge to `main`, create a GitHub Release tagged `vX.Y.Z` (matching `package.json`
-   `version`) and publish it — that's what triggers the npm publish workflow, not the tag push
-   by itself.
+8. On merge to `main`, create a GitHub Release tagged with the `package.json` `version` (a
+   leading `v` is optional — the publish workflow strips it before comparing) and publish it —
+   that's what triggers the npm publish workflow, not the tag push by itself.

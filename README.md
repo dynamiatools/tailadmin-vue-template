@@ -126,9 +126,10 @@ MIT, same as the original project. Original components by [TailAdmin](https://ta
 
 ## Publishing (maintainers)
 
-Publishing to npm runs via GitHub Actions when a **GitHub Release is published**, tagged
-`vX.Y.Z` matching the `package.json` `version` (a tag push alone doesn't trigger it — publishing
-a release does). Requires the `NPM_TOKEN` secret configured on the repo.
+Publishing to npm runs via GitHub Actions when a **GitHub Release is published**, tagged with the
+`package.json` `version` — either `26.9.0` or `v26.9.0` both work, the workflow strips a leading
+`v` before comparing (a tag push alone doesn't trigger it — publishing a release does). Requires
+the `NPM_TOKEN` secret configured on the repo.
 
 ## Support this project
 

@@ -27,10 +27,11 @@ jobs:
 
       - name: Verify release tag matches package.json version
         run: |
-          PKG_VERSION="v$(node -p "require('./package.json').version")"
+          PKG_VERSION="$(node -p "require('./package.json').version")"
           TAG="${{ github.event.release.tag_name }}"
+          TAG="${TAG#v}"
           if [ "$PKG_VERSION" != "$TAG" ]; then
-            echo "Release tag $TAG does not match package.json version $PKG_VERSION"
+            echo "Release tag ${{ github.event.release.tag_name }} does not match package.json version $PKG_VERSION"
             exit 1
           fi
 
