@@ -78,7 +78,7 @@ this package — every page in the sidebar rendering end to end, plus a live bra
 ## Requirements in the consuming project
 
 - Vue `^3.5`
-- Vue Router `^4` (used by layout components: sidebar, header)
+- Vue Router `^4` or `^5` (used by layout components: sidebar, header)
 - Tailwind CSS `^4`, configured to scan `node_modules/@dynamia-tools/tailadmin-vue/src/**/*.vue`
 - Vite (or any bundler that resolves relative `.vue`/`.ts` imports via npm `exports`)
 

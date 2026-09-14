@@ -1,6 +1,6 @@
 {
   "name": "@dynamia-tools/tailadmin-vue",
-  "version": "26.9.1",
+  "version": "26.9.2",
   "description": "Reusable Vue 3 + Tailwind CSS 4 admin dashboard components, extracted from TailAdmin Vue for direct import across Dynamia projects.",
   "type": "module",
   "license": "MIT",
@@ -46,7 +46,7 @@
   },
   "peerDependencies": {
     "vue": "^3.5.0",
-    "vue-router": "^4.0.0",
+    "vue-router": "^4.0.0 || ^5.0.0",
     "tailwindcss": "^4.0.0",
     "@floating-ui/vue": "^1.1.0",
     "@fullcalendar/vue3": "^7.0.0",
@@ -96,7 +96,7 @@
     "jiti": "^2.7.0",
     "prettier": "^3.9.6",
     "typescript": "~5.7.3",
-    "vite": "^6.4.3",
+    "vite": "^8.3.0",
     "vue": "^3.5.26",
     "vue-tsc": "^2.2.12",
     "@fullcalendar/vue3": "^7.1.0",
