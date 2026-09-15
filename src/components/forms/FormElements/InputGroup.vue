@@ -3,7 +3,7 @@
     <!-- Email Input -->
     <div>
       <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-        Email
+        {{ emailLabel }}
       </label>
       <div class="relative">
         <span
@@ -27,7 +27,7 @@
         <input
           v-model="email"
           type="text"
-          placeholder="info@gmail.com"
+          :placeholder="emailPlaceholder"
           class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 ltr:pl-[62px] rtl:pr-[62px] text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
         />
       </div>
@@ -36,7 +36,7 @@
     <!-- Phone Input with Prepended Country Code -->
     <div>
       <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-        Phone
+        {{ phoneLabel }}
       </label>
       <div class="relative">
         <div class="absolute ltr:left-0 rtl:right-0">
@@ -72,7 +72,7 @@
         </div>
         <input
           v-model="phoneNumber"
-          placeholder="+1 (555) 000-0000"
+          :placeholder="phonePlaceholder"
           type="tel"
           class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent py-3 ltr:pl-[84px] ltr:pr-4 rtl:pr-[84px] rtl:pl-4 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
         />
@@ -82,7 +82,7 @@
     <!-- Phone Input with Appended Country Code -->
     <div>
       <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-        Phone
+        {{ phoneLabel }}
       </label>
       <div class="relative">
         <div class="absolute ltr:right-0 rtl:left-0">
@@ -118,7 +118,7 @@
         </div>
         <input
           v-model="phoneNumber2"
-          placeholder="+1 (555) 000-0000"
+          :placeholder="phonePlaceholder"
           type="tel"
           class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent py-3 ltr:pr-[84px] ltr:pl-4 rtl:pl-[84px] rtl:pr-4 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
         />
@@ -127,17 +127,19 @@
 
     <!-- URL Input -->
     <div>
-      <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"> URL </label>
+      <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+        {{ urlLabel }}
+      </label>
       <div class="relative">
         <span
           class="absolute top-1/2 ltr:left-0 rtl:right-0 inline-flex h-11 -translate-y-1/2 items-center justify-center ltr:border-r rtl:border-l border-gray-200 py-3 ltr:pl-3.5 ltr:pr-3 rtl:pr-3.5 rtl:pl-3 text-gray-500 dark:border-gray-800 dark:text-gray-400"
         >
-          http://
+          {{ urlPrefix }}
         </span>
         <input
           v-model="url"
           type="url"
-          placeholder="www.tailadmin.com"
+          :placeholder="urlPlaceholder"
           class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 ltr:pl-[90px] rtl:pr-[90px] text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
         />
       </div>
@@ -146,7 +148,7 @@
     <!-- Website Input with Copy Button -->
     <div>
       <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-        Website
+        {{ websiteLabel }}
       </label>
       <div class="relative">
         <button
@@ -180,8 +182,49 @@
   </div>
 </template>
 
+<script lang="ts">
+export const defaultInputGroupCountryCodes: Record<string, string> = {
+  US: '+1',
+  GB: '+44',
+  CA: '+1',
+  AU: '+61',
+}
+</script>
+
 <script setup lang="ts">
 import { ref } from 'vue'
+
+const {
+  emailLabel = 'Email',
+  emailPlaceholder = 'info@gmail.com',
+  phoneLabel = 'Phone',
+  phonePlaceholder = '+1 (555) 000-0000',
+  urlLabel = 'URL',
+  urlPlaceholder = 'www.tailadmin.com',
+  urlPrefix = 'http://',
+  websiteLabel = 'Website',
+  websiteValue = 'www.tailadmin.com',
+  copyLabel = 'Copy',
+  copiedLabel = 'Copied!',
+  countryCodes = defaultInputGroupCountryCodes,
+} = defineProps<{
+  emailLabel?: string
+  emailPlaceholder?: string
+  phoneLabel?: string
+  phonePlaceholder?: string
+  urlLabel?: string
+  urlPlaceholder?: string
+  urlPrefix?: string
+  websiteLabel?: string
+  websiteValue?: string
+  copyLabel?: string
+  copiedLabel?: string
+  countryCodes?: Record<string, string>
+}>()
+
+const emit = defineEmits<{
+  copy: [value: string]
+}>()
 
 const email = ref('')
 const selectedCountry = ref('US')
@@ -189,29 +232,23 @@ const selectedCountry2 = ref('US')
 const phoneNumber = ref('')
 const phoneNumber2 = ref('')
 const url = ref('')
-const website = ref('www.tailadmin.com')
-const copyText = ref('Copy')
-
-const countryCodes = {
-  US: '+1',
-  GB: '+44',
-  CA: '+1',
-  AU: '+61',
-}
+const website = ref(websiteValue)
+const copyText = ref(copyLabel)
 
 const updatePhoneNumber = () => {
-  phoneNumber.value = countryCodes[selectedCountry.value as keyof typeof countryCodes]
+  phoneNumber.value = countryCodes[selectedCountry.value]
 }
 
 const updatePhoneNumber2 = () => {
-  phoneNumber2.value = countryCodes[selectedCountry2.value as keyof typeof countryCodes]
+  phoneNumber2.value = countryCodes[selectedCountry2.value]
 }
 
 const copyWebsite = () => {
   navigator.clipboard.writeText(website.value)
-  copyText.value = 'Copied!'
+  emit('copy', website.value)
+  copyText.value = copiedLabel
   setTimeout(() => {
-    copyText.value = 'Copy'
+    copyText.value = copyLabel
   }, 2000)
 }
 </script>

@@ -4,11 +4,12 @@
   >
     <div class="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">Recent Orders</h3>
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">{{ title }}</h3>
       </div>
 
       <div class="flex items-center gap-3">
         <button
+          @click="emit('filter')"
           class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
         >
           <svg
@@ -51,6 +52,7 @@
         </button>
 
         <button
+          @click="emit('see-all')"
           class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
         >
           See all
@@ -125,10 +127,17 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue'
+<script lang="ts">
+export interface RecentOrderProduct {
+  name: string
+  variants: number
+  image: string
+  category: string
+  price: string
+  status: 'Delivered' | 'Pending' | 'Canceled'
+}
 
-const products = ref([
+export const defaultRecentOrderProducts: RecentOrderProduct[] = [
   {
     name: 'Macbook pro 13"',
     variants: 2,
@@ -169,5 +178,17 @@ const products = ref([
     price: '$240.00',
     status: 'Delivered',
   },
-])
+]
+</script>
+
+<script setup lang="ts">
+const { title = 'Recent Orders', products = defaultRecentOrderProducts } = defineProps<{
+  title?: string
+  products?: RecentOrderProduct[]
+}>()
+
+const emit = defineEmits<{
+  filter: []
+  'see-all': []
+}>()
 </script>

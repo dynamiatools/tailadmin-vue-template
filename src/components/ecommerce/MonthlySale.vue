@@ -3,7 +3,7 @@
     class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-5 pt-5 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 sm:pt-6"
   >
     <div class="flex items-center justify-between">
-      <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">Monthly Sales</h3>
+      <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">{{ title }}</h3>
 
       <div class="relative h-fit">
         <DropdownMenu :menu-items="menuItems">
@@ -36,23 +36,50 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
 import DropdownMenu from '../common/DropdownMenu.vue'
-const menuItems = [
-  { label: 'View More', onClick: () => console.log('View More clicked') },
-  { label: 'Delete', onClick: () => console.log('Delete clicked') },
-]
-
 import VueApexCharts from 'vue3-apexcharts'
 
-const series = ref([
-  {
-    name: 'Sales',
-    data: [168, 385, 201, 298, 187, 195, 291, 110, 215, 390, 280, 112],
+const props = defineProps({
+  title: { type: String, default: 'Monthly Sales' },
+  series: {
+    type: Array,
+    default: () => [
+      {
+        name: 'Sales',
+        data: [168, 385, 201, 298, 187, 195, 291, 110, 215, 390, 280, 112],
+      },
+    ],
   },
-])
+  categories: {
+    type: Array,
+    default: () => [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ],
+  },
+})
 
-const chartOptions = ref({
+const emit = defineEmits(['view-more', 'delete'])
+
+const menuItems = [
+  { label: 'View More', onClick: () => emit('view-more') },
+  { label: 'Delete', onClick: () => emit('delete') },
+]
+
+const series = computed(() => props.series)
+
+const chartOptions = computed(() => ({
   colors: ['#465fff'],
   chart: {
     fontFamily: 'Outfit, sans-serif',
@@ -78,20 +105,7 @@ const chartOptions = ref({
     colors: ['transparent'],
   },
   xaxis: {
-    categories: [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ],
+    categories: props.categories,
     axisBorder: {
       show: false,
     },
@@ -131,7 +145,7 @@ const chartOptions = ref({
       },
     },
   },
-})
+}))
 
 onMounted(() => {
   // Any additional setup can be done here if needed

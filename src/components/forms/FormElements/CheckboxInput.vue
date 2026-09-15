@@ -36,7 +36,7 @@
               </span>
             </div>
           </div>
-          Default
+          {{ defaultLabel }}
         </label>
       </div>
 
@@ -75,7 +75,7 @@
               </span>
             </div>
           </div>
-          Checked
+          {{ checkedLabel }}
         </label>
       </div>
 
@@ -89,19 +89,19 @@
             <input
               type="checkbox"
               id="checkboxLabelThree"
-              v-model="checkboxThree"
+              :checked="disabledChecked"
               class="sr-only peer"
               disabled
             />
             <div
               :class="
-                checkboxThree
+                disabledChecked
                   ? 'bg-transparent border-gray-200 dark:border-gray-800'
                   : 'border-brand-500 bg-brand-500'
               "
               class="ltr:mr-3 rtl:ml-3 flex h-5 w-5 items-center justify-center rounded-md border-[1.25px]"
             >
-              <span :class="checkboxThree ? '' : 'opacity-0'">
+              <span :class="disabledChecked ? '' : 'opacity-0'">
                 <svg
                   class="stroke-gray-200 dark:stroke-gray-800"
                   width="14"
@@ -121,7 +121,7 @@
               </span>
             </div>
           </div>
-          Disabled
+          {{ disabledLabel }}
         </label>
       </div>
     </div>
@@ -129,9 +129,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+const {
+  defaultLabel = 'Default',
+  checkedLabel = 'Checked',
+  disabledLabel = 'Disabled',
+  disabledChecked = true,
+} = defineProps<{
+  defaultLabel?: string
+  checkedLabel?: string
+  disabledLabel?: string
+  disabledChecked?: boolean
+}>()
 
-const checkboxOne = ref(false)
-const checkboxTwo = ref(true)
-const checkboxThree = ref(true)
+const checkboxOne = defineModel<boolean>('default', { default: false })
+const checkboxTwo = defineModel<boolean>('checked', { default: true })
 </script>

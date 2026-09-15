@@ -20,7 +20,7 @@
               class="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow-theme-sm duration-300 ease-linear"
             ></div>
           </div>
-          Default
+          {{ defaultLabel }}
         </label>
       </div>
 
@@ -42,7 +42,7 @@
               class="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow-theme-sm duration-300 ease-linear"
             ></div>
           </div>
-          Checked
+          {{ checkedLabel }}
         </label>
       </div>
 
@@ -56,21 +56,23 @@
               type="checkbox"
               id="toggle3"
               class="sr-only"
-              v-model="switcherToggle3"
+              :checked="set1DisabledChecked"
               disabled
             />
             <div
               class="block h-6 w-11 rounded-full"
               :class="
-                switcherToggle3 ? 'bg-brand-500 dark:bg-brand-500' : 'bg-gray-100 dark:bg-gray-800'
+                set1DisabledChecked
+                  ? 'bg-brand-500 dark:bg-brand-500'
+                  : 'bg-gray-100 dark:bg-gray-800'
               "
             ></div>
             <div
-              :class="switcherToggle3 ? 'translate-x-full' : 'translate-x-0'"
+              :class="set1DisabledChecked ? 'translate-x-full' : 'translate-x-0'"
               class="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-gray-50 shadow-theme-sm duration-300 ease-linear"
             ></div>
           </div>
-          Disabled
+          {{ disabledLabel }}
         </label>
       </div>
     </div>
@@ -95,7 +97,7 @@
               class="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow-theme-sm duration-300 ease-linear"
             ></div>
           </div>
-          Default
+          {{ defaultLabel }}
         </label>
       </div>
 
@@ -117,7 +119,7 @@
               class="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow-theme-sm duration-300 ease-linear"
             ></div>
           </div>
-          Checked
+          {{ checkedLabel }}
         </label>
       </div>
 
@@ -131,21 +133,23 @@
               type="checkbox"
               id="toggle33"
               class="sr-only"
-              v-model="switcherToggle33"
+              :checked="set2DisabledChecked"
               disabled
             />
             <div
               class="block h-6 w-11 rounded-full"
               :class="
-                switcherToggle33 ? 'bg-gray-700 dark:bg-white/10' : 'bg-gray-100 dark:bg-gray-800'
+                set2DisabledChecked
+                  ? 'bg-gray-700 dark:bg-white/10'
+                  : 'bg-gray-100 dark:bg-gray-800'
               "
             ></div>
             <div
-              :class="switcherToggle33 ? 'translate-x-full' : 'translate-x-0'"
+              :class="set2DisabledChecked ? 'translate-x-full' : 'translate-x-0'"
               class="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-gray-50 shadow-theme-sm duration-300 ease-linear"
             ></div>
           </div>
-          Disabled
+          {{ disabledLabel }}
         </label>
       </div>
     </div>
@@ -153,12 +157,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+const {
+  defaultLabel = 'Default',
+  checkedLabel = 'Checked',
+  disabledLabel = 'Disabled',
+  set1DisabledChecked = false,
+  set2DisabledChecked = false,
+} = defineProps<{
+  defaultLabel?: string
+  checkedLabel?: string
+  disabledLabel?: string
+  set1DisabledChecked?: boolean
+  set2DisabledChecked?: boolean
+}>()
 
-const switcherToggle1 = ref(false)
-const switcherToggle2 = ref(true)
-const switcherToggle3 = ref(false)
-const switcherToggle11 = ref(false)
-const switcherToggle22 = ref(true)
-const switcherToggle33 = ref(false)
+const switcherToggle1 = defineModel<boolean>('set1Default', { default: false })
+const switcherToggle2 = defineModel<boolean>('set1Checked', { default: true })
+const switcherToggle11 = defineModel<boolean>('set2Default', { default: false })
+const switcherToggle22 = defineModel<boolean>('set2Checked', { default: true })
 </script>

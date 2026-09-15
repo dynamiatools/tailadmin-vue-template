@@ -30,16 +30,16 @@
         </div>
 
         <h4 class="mb-3 font-semibold text-gray-800 text-theme-xl dark:text-white/90">
-          Drag & Drop File Here
+          {{ title }}
         </h4>
         <span
           class="mx-auto mb-5 block w-full max-w-[290px] text-sm text-gray-700 dark:text-gray-400"
         >
-          Drag and drop your PNG, JPG, WebP, SVG images here or browse
+          {{ description }}
         </span>
 
         <span class="font-medium underline cursor-pointer text-theme-sm text-brand-500">
-          Browse File
+          {{ browseLabel }}
         </span>
       </div>
     </form>
@@ -60,7 +60,21 @@ const props = defineProps({
     type: Number,
     default: 5,
   },
+  title: {
+    type: String,
+    default: 'Drag & Drop File Here',
+  },
+  description: {
+    type: String,
+    default: 'Drag and drop your PNG, JPG, WebP, SVG images here or browse',
+  },
+  browseLabel: {
+    type: String,
+    default: 'Browse File',
+  },
 })
+
+const emit = defineEmits(['file-added', 'file-error', 'file-uploaded', 'file-removed'])
 
 const dropzoneForm = ref(null)
 const dropzoneId = `dropzone-${Math.random().toString(36).substr(2, 9)}`
@@ -125,15 +139,18 @@ onMounted(() => {
       }
 
       this.on('addedfile', (file: any) => {
-        console.log('A file has been added', file)
+        emit('file-added', file)
         setupRemoveHandlers(file)
       })
       this.on('error', (file: any, error: any) => {
-        console.error('An error occurred during upload', file, error)
+        emit('file-error', file, error)
         setupRemoveHandlers(file)
       })
       this.on('success', (file: any, response: any) => {
-        console.log('File successfully uploaded', file, response)
+        emit('file-uploaded', file, response)
+      })
+      this.on('removedfile', (file: any) => {
+        emit('file-removed', file)
       })
     },
   })

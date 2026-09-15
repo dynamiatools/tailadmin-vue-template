@@ -10,13 +10,13 @@
           <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-7 2xl:gap-x-32">
             <div>
               <p class="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">Country</p>
-              <p class="text-sm font-medium text-gray-800 dark:text-white/90">United States</p>
+              <p class="text-sm font-medium text-gray-800 dark:text-white/90">{{ address.country }}</p>
             </div>
 
             <div>
               <p class="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">City/State</p>
               <p class="text-sm font-medium text-gray-800 dark:text-white/90">
-                Phoenix, United States
+                {{ address.cityState }}
               </p>
             </div>
 
@@ -24,12 +24,12 @@
               <p class="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
                 Postal Code
               </p>
-              <p class="text-sm font-medium text-gray-800 dark:text-white/90">ERT 2489</p>
+              <p class="text-sm font-medium text-gray-800 dark:text-white/90">{{ address.postalCode }}</p>
             </div>
 
             <div>
               <p class="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">TAX ID</p>
-              <p class="text-sm font-medium text-gray-800 dark:text-white/90">AS4568384</p>
+              <p class="text-sm font-medium text-gray-800 dark:text-white/90">{{ address.taxId }}</p>
             </div>
           </div>
         </div>
@@ -86,10 +86,10 @@
           </button>
           <div class="px-2 ltr:pr-14 rtl:pl-14">
             <h4 class="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
-              Edit Address
+              {{ editModalTitle }}
             </h4>
             <p class="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
-              Update your details to keep your profile up-to-date.
+              {{ editModalDescription }}
             </p>
           </div>
           <form class="flex flex-col">
@@ -101,7 +101,7 @@
                   </label>
                   <input
                     type="text"
-                    value="United States"
+                    v-model="form.country"
                     class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                   />
                 </div>
@@ -112,7 +112,7 @@
                   </label>
                   <input
                     type="text"
-                    value="Poenix, Arizona, United States"
+                    v-model="form.cityState"
                     class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                   />
                 </div>
@@ -123,7 +123,7 @@
                   </label>
                   <input
                     type="text"
-                    value="ERT 2489"
+                    v-model="form.postalCode"
                     class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                   />
                 </div>
@@ -134,7 +134,7 @@
                   </label>
                   <input
                     type="text"
-                    value="AS4568384"
+                    v-model="form.taxId"
                     class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                   />
                 </div>
@@ -163,14 +163,54 @@
   </div>
 </template>
 
+<script lang="ts">
+export interface ProfileAddress {
+  country: string
+  cityState: string
+  postalCode: string
+  taxId: string
+}
+
+export const defaultProfileAddress: ProfileAddress = {
+  country: 'United States',
+  cityState: 'Phoenix, United States',
+  postalCode: 'ERT 2489',
+  taxId: 'AS4568384',
+}
+</script>
+
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import Modal from './Modal.vue'
+
+const {
+  address = defaultProfileAddress,
+  editModalTitle = 'Edit Address',
+  editModalDescription = 'Update your details to keep your profile up-to-date.',
+} = defineProps<{
+  address?: ProfileAddress
+  editModalTitle?: string
+  editModalDescription?: string
+}>()
+
+const emit = defineEmits<{
+  save: [address: ProfileAddress]
+}>()
 
 const isProfileAddressModal = ref(false)
 
+const form = reactive<ProfileAddress>({ ...address })
+
+watch(
+  () => address,
+  (next) => {
+    Object.assign(form, next)
+  },
+  { deep: true },
+)
+
 const saveProfile = () => {
-  console.log('Profile saved')
+  emit('save', { ...form })
   isProfileAddressModal.value = false
 }
 </script>
