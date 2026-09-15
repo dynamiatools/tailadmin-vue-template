@@ -75,6 +75,13 @@ available: `ui/`, `forms/`, `tables/`, `charts/`, `layout/`, `common/`, `profile
 See [`examples/basic-app`](./examples/basic-app) for a full working Vite app wired up against
 this package — every page in the sidebar rendering end to end, plus a live brand-color picker.
 
+For the layout components specifically — `AdminLayout`, `AppSidebar`, `AppHeader`,
+`NotificationMenu`, `UserMenu` — including how to plug in your own menu, header widgets, and
+user/notifications data via their props and slots, see
+[docs/USER_GUIDE.md](./docs/USER_GUIDE.md). [`examples/custom-app`](./examples/custom-app) is a
+single page putting every one of those slots/props to use at once, with a recolored sidebar and
+header.
+
 ## Requirements in the consuming project
 
 - Vue `^3.5`

@@ -1,0 +1,26 @@
+{
+  "name": "tailadmin-vue-custom-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "type-check": "vue-tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@dynamia-tools/tailadmin-vue": "file:../..",
+    "vue": "^3.5.26",
+    "vue-router": "^5.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "@vitejs/plugin-vue": "^6.0.9",
+    "@vue/tsconfig": "^0.7.0",
+    "tailwindcss": "^4.1.18",
+    "typescript": "~5.7.3",
+    "vite": "^8.3.0",
+    "vue-tsc": "^2.2.12"
+  }
+}

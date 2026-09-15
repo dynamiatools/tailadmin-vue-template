@@ -59,7 +59,11 @@
       </div>
 
       <ul class="flex flex-col h-auto overflow-y-auto custom-scrollbar">
-        <li v-for="notification in notifications" :key="notification.id" @click="handleItemClick">
+        <li
+          v-for="notification in notifications"
+          :key="notification.id"
+          @click="handleItemClick(notification, $event)"
+        >
           <a
             class="flex gap-3 rounded-lg border-b border-gray-100 p-3 px-4.5 py-3 hover:bg-gray-100 dark:border-gray-800 dark:hover:bg-white/5"
             href="#"
@@ -105,15 +109,19 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
-import { RouterLink } from 'vue-router'
+<script lang="ts">
+export interface NotificationItem {
+  id: number
+  userName: string
+  userImage: string
+  action: string
+  project: string
+  type: string
+  time: string
+  status: 'online' | 'offline'
+}
 
-const dropdownOpen = ref(false)
-const notifying = ref(true)
-const dropdownRef = ref<HTMLElement | null>(null)
-
-const notifications = ref([
+export const defaultNotifications: NotificationItem[] = [
   {
     id: 1,
     userName: 'Terry Franci',
@@ -194,7 +202,25 @@ const notifications = ref([
     time: '5 min ago',
     status: 'online',
   },
-])
+]
+</script>
+
+<script setup lang="ts">
+import { onMounted, onUnmounted, ref } from 'vue'
+import { RouterLink } from 'vue-router'
+
+const emit = defineEmits<{
+  'item-click': [notification: NotificationItem]
+  'view-all': []
+}>()
+
+const { notifications = defaultNotifications } = defineProps<{
+  notifications?: NotificationItem[]
+}>()
+
+const dropdownOpen = ref(false)
+const notifying = ref(true)
+const dropdownRef = ref<HTMLElement | null>(null)
 
 const toggleDropdown = () => {
   dropdownOpen.value = !dropdownOpen.value
@@ -211,15 +237,15 @@ const handleClickOutside = (event: MouseEvent) => {
   }
 }
 
-const handleItemClick = (event: Event) => {
+const handleItemClick = (notification: NotificationItem, event: Event) => {
   event.preventDefault()
-  console.log('Notification item clicked')
+  emit('item-click', notification)
   closeDropdown()
 }
 
 const handleViewAllClick = (event: Event) => {
   event.preventDefault()
-  console.log('View All Notifications clicked')
+  emit('view-all')
   closeDropdown()
 }
 

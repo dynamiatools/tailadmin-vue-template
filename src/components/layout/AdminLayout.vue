@@ -1,12 +1,12 @@
 <template>
   <div class="min-h-screen xl:flex">
-    <app-sidebar />
+    <slot name="sidebar"><app-sidebar /></slot>
     <Backdrop />
     <div
       class="flex-1 transition-all duration-300 ease-in-out"
       :class="[isExpanded || isHovered ? 'xl:ms-[290px]' : 'xl:ms-[90px]']"
     >
-      <app-header />
+      <slot name="header"><app-header /></slot>
       <div class="mx-auto max-w-(--breakpoint-2xl) p-4 pb-20 md:p-6 md:pb-6">
         <slot></slot>
       </div>

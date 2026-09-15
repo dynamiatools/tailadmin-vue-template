@@ -13,38 +13,40 @@
     @mouseenter="!isExpanded && (isHovered = true)"
     @mouseleave="isHovered = false"
   >
-    <div
-      :class="[
-        'pt-8 pb-7 flex',
-        !isExpanded && !isHovered ? 'xl:justify-center' : 'justify-start',
-      ]"
-    >
-      <router-link to="/">
-        <img
-          v-if="isExpanded || isHovered || isMobileOpen"
-          class="dark:hidden"
-          src="/images/logo/logo.svg"
-          alt="Logo"
-          width="150"
-          height="40"
-        />
-        <img
-          v-if="isExpanded || isHovered || isMobileOpen"
-          class="hidden dark:block"
-          src="/images/logo/logo-dark.svg"
-          alt="Logo"
-          width="150"
-          height="40"
-        />
-        <img
-          v-else
-          src="/images/logo/logo-icon.svg"
-          alt="Logo"
-          width="32"
-          height="32"
-        />
-      </router-link>
-    </div>
+    <slot name="sidebar-header">
+      <div
+        :class="[
+          'pt-8 pb-7 flex',
+          !isExpanded && !isHovered ? 'xl:justify-center' : 'justify-start',
+        ]"
+      >
+        <router-link to="/">
+          <img
+            v-if="isExpanded || isHovered || isMobileOpen"
+            class="dark:hidden"
+            src="/images/logo/logo.svg"
+            alt="Logo"
+            width="150"
+            height="40"
+          />
+          <img
+            v-if="isExpanded || isHovered || isMobileOpen"
+            class="hidden dark:block"
+            src="/images/logo/logo-dark.svg"
+            alt="Logo"
+            width="150"
+            height="40"
+          />
+          <img
+            v-else
+            src="/images/logo/logo-icon.svg"
+            alt="Logo"
+            width="32"
+            height="32"
+          />
+        </router-link>
+      </div>
+    </slot>
     <div
       class="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar"
     >
@@ -71,10 +73,9 @@
                   @click="toggleSubmenu(groupIndex, index)"
                   :class="[
                     'menu-item group w-full',
-                    {
-                      'menu-item-active': isSubmenuOpen(groupIndex, index),
-                      'menu-item-inactive': !isSubmenuOpen(groupIndex, index),
-                    },
+                    isSubmenuOpen(groupIndex, index)
+                      ? activeItemClass
+                      : inactiveItemClass,
                     !isExpanded && !isHovered
                       ? 'xl:justify-center'
                       : 'xl:justify-start',
@@ -112,10 +113,7 @@
                   :to="item.path"
                   :class="[
                     'menu-item group',
-                    {
-                      'menu-item-active': isActive(item.path),
-                      'menu-item-inactive': !isActive(item.path),
-                    },
+                    isActive(item.path) ? activeItemClass : inactiveItemClass,
                   ]"
                 >
                   <span
@@ -206,20 +204,36 @@
           </div>
         </div>
       </nav>
+      <slot name="sidebar-footer" />
     </div>
   </aside>
 </template>
 
-<script setup lang="ts">
-import { watch } from 'vue'
-import { useRoute } from 'vue-router'
+<script lang="ts">
+export interface SubItem {
+  name: string
+  path: string
+  pro?: boolean
+  new?: boolean
+}
 
-import { useSidebar } from '../../composables/useSidebar'
+export interface MenuItem {
+  icon?: any
+  name: string
+  path?: string
+  subItems?: SubItem[]
+  new?: boolean
+  pro?: boolean
+}
+
+export interface MenuGroup {
+  title: string
+  items: MenuItem[]
+}
+
 import {
   CalenderIcon,
-  ChevronDownIcon,
   GridIcon,
-  HorizontalDots,
   ListIcon,
   PageIcon,
   PieChartIcon,
@@ -229,32 +243,7 @@ import {
 } from '../../icons'
 import BoxCubeIcon from '../../icons/BoxCubeIcon.vue'
 
-const route = useRoute()
-
-const { isExpanded, isMobileOpen, isHovered, openSubmenu } = useSidebar()
-
-interface SubItem {
-  name: string
-  path: string
-  pro?: boolean
-  new?: boolean
-}
-
-interface MenuItem {
-  icon?: any
-  name: string
-  path?: string
-  subItems?: SubItem[]
-  new?: boolean
-  pro?: boolean
-}
-
-interface MenuGroup {
-  title: string
-  items: MenuItem[]
-}
-
-const menuGroups: MenuGroup[] = [
+export const defaultMenuGroups: MenuGroup[] = [
   {
     title: 'Menu',
     items: [
@@ -330,6 +319,28 @@ const menuGroups: MenuGroup[] = [
     ],
   },
 ]
+</script>
+
+<script setup lang="ts">
+import { watch } from 'vue'
+import { useRoute } from 'vue-router'
+
+import { useSidebar } from '../../composables/useSidebar'
+import { ChevronDownIcon, HorizontalDots } from '../../icons'
+
+const route = useRoute()
+
+const { isExpanded, isMobileOpen, isHovered, openSubmenu } = useSidebar()
+
+const {
+  menuGroups = defaultMenuGroups,
+  activeItemClass = 'menu-item-active',
+  inactiveItemClass = 'menu-item-inactive',
+} = defineProps<{
+  menuGroups?: MenuGroup[]
+  activeItemClass?: string
+  inactiveItemClass?: string
+}>()
 
 const isActive = (path?: string) => (path ? route.path === path : false)
 

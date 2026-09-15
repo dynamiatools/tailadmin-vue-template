@@ -67,7 +67,7 @@
             />
           </svg>
         </button>
-        <SearchBar />
+        <slot name="search"><SearchBar /></slot>
       </div>
 
       <div
@@ -76,9 +76,10 @@
       >
         <div class="flex items-center gap-2 2xsm:gap-3">
           <ThemeToggler />
-          <NotificationMenu />
+          <slot name="notifications"><NotificationMenu /></slot>
+          <slot name="actions" />
         </div>
-        <UserMenu />
+        <slot name="user-menu"><UserMenu /></slot>
       </div>
     </div>
   </header>

@@ -35,6 +35,54 @@ When pulling in new changes, be careful not to overwrite these:
   gate; only `type-check` is. Feel free to clean these up incrementally, but don't let them block
   a sync.
 
+## Layout extension points (slots, props, emits) not present in upstream
+
+The four layout components below expose extra slots/props/emits so consumers can swap out
+pieces (their own sidebar, header, notifications, user menu) without forking the component.
+Every addition defaults to upstream's original hardcoded markup/behavior, so this is additive
+and backward compatible — don't let an upstream sync overwrite these without re-applying them.
+
+- **`AdminLayout.vue`**: `#sidebar` and `#header` slots, defaulting to `<app-sidebar />` /
+  `<app-header />`. The responsive margin (`xl:ms-[290px]`/`xl:ms-[90px]`, driven by
+  `useSidebar()`) still applies regardless of what's slotted in, so a custom sidebar gets that
+  behavior for free as long as it also drives `useSidebar()`'s `isExpanded`/`isHovered` state.
+- **`AppSidebar.vue`**:
+  - `menuGroups?: MenuGroup[]` prop (default: the original hardcoded demo data, now named
+    `defaultMenuGroups` and exported). `MenuGroup`/`MenuItem`/`SubItem` are exported interfaces
+    (declared in a plain `<script lang="ts">` block ahead of `<script setup>` — see note below).
+  - `#sidebar-header` slot replacing the logo block, `#sidebar-footer` slot after `<nav>`
+    (no default — empty by default, same as upstream had nothing there).
+  - `activeItemClass?: string` / `inactiveItemClass?: string` props (default:
+    `'menu-item-active'` / `'menu-item-inactive'`, upstream's original classes) applied to both
+    the submenu toggle button and the direct-link menu item, for consumers who want a different
+    active-state treatment (e.g. a left rail) without overriding CSS classes.
+- **`AppHeader.vue`**: `#search`, `#notifications`, `#actions`, `#user-menu` slots. The first
+  three default to `<SearchBar />` / `<NotificationMenu />` / nothing; `#user-menu` defaults to
+  `<UserMenu />`. Hiding a default component is just passing an empty slot
+  (`<template #search></template>`) — there are no separate `show-*` boolean props, to keep a
+  single API for both hiding and replacing.
+- **`NotificationMenu.vue`**: `notifications?: NotificationItem[]` prop (default: the original
+  hardcoded "Terry Franci" demo data, now `defaultNotifications`, exported alongside the
+  `NotificationItem` interface). `@item-click` (payload: the clicked `NotificationItem`) and
+  `@view-all` emits replace the original `console.log(...)` handlers.
+- **`UserMenu.vue`**: `name?`, `email?`, `avatarUrl?` props (defaults: the original hardcoded
+  "Musharof Chowdhury" / `randomuser@pimjo.com` / `/images/user/owner.png`).
+  `showLanguageSwitcher?: boolean` prop (default `true`) toggles the language submenu item.
+  `@sign-out` emit replaces the original `console.log('Signing out...')` + `router-link
+  to="/signin"` — the component no longer navigates on its own; the consumer decides what
+  happens after sign-out.
+
+**Why a plain `<script lang="ts">` block for exported types/data ahead of `<script setup>`**:
+`defineProps()`'s default-value factory (or a destructure default) cannot reference a variable
+declared inside the same `<script setup>` block — the Vue SFC compiler hoists the props
+definition out of `setup()` and errors (`vue-tsc` doesn't catch this, only the Vite/Rollup
+build does). Declaring the exported interfaces and the default data array/object in a preceding
+plain `<script lang="ts">` block avoids that: both blocks compile into the same module scope, so
+`<script setup>` can reference them directly, with no import needed within the same file. If you
+add another prop with a non-primitive default (an array, object, or factory pulling in icons/
+other data), follow this same two-block pattern rather than declaring the default inline in
+`<script setup>`.
+
 ## Procedure to pull upstream changes
 
 1. Add the remote once (if not already present):
