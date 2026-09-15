@@ -204,13 +204,18 @@ icon color classes (`menu-item-icon-active`/`-inactive`), which stay as upstream
 the theme CSS. If you need those to change too, override the corresponding CSS classes globally
 rather than through a prop.
 
-## 5. `AppHeader` — search, notifications, actions, user menu
+## 5. `AppHeader` — logo, search, notifications, actions, user menu
 
-Four slots, each optional. Providing a slot **replaces** that piece; passing an **empty**
+Five slots, each optional. Providing a slot **replaces** that piece; passing an **empty**
 template hides it — there's no separate boolean prop to toggle visibility, one API does both:
 
 ```vue
 <AppHeader>
+  <!-- replace the mobile-only brand mark (hidden at xl and above) -->
+  <template #logo>
+    <MyMobileLogo />
+  </template>
+
   <!-- replace the search bar -->
   <template #search>
     <MyCommandPalette />
@@ -233,8 +238,8 @@ template hides it — there's no separate boolean prop to toggle visibility, one
 ```
 
 Note the difference between `#actions` (additive — renders *alongside* `ThemeToggler` and
-`NotificationMenu`, no default content) and `#search` / `#notifications` / `#user-menu`
-(replacing — each has a default component you override).
+`NotificationMenu`, no default content) and `#logo` / `#search` / `#notifications` /
+`#user-menu` (replacing — each has a default component you override).
 
 ## 6. `NotificationMenu` — real notifications instead of demo data
 
@@ -396,9 +401,9 @@ Vite/Rolldown):** overriding `#sidebar-header` doesn't remove the need for
 `public/images/logo/*.svg` to exist. A component's default slot content is compiled into its
 render function regardless of whether a consumer overrides that slot — Vue compiles both branches
 once, then picks one at runtime. So `AppSidebar`'s literal `<img src="/images/logo/logo.svg">` in
-its default `#sidebar-header` content, and `AppHeader`'s always-rendered (not slotted) mobile
-`HeaderLogo`, both still produce a static asset reference that a strict bundler will fail to
-resolve at build time if the file is missing — even though it's never actually displayed. This
+its default `#sidebar-header` content, and `AppHeader`'s default `#logo` content
+(`HeaderLogo`), both still produce a static asset reference that a strict bundler will fail to
+resolve at build time if the file is missing — even if you override that slot. This
 does **not** apply to props like `avatar-url`: a JS string default (`avatarUrl = '/images/...'`)
 is never asset-url-transformed, only literal `src="..."` attributes in a template are. See
 [`examples/custom-app`](../examples/custom-app) for a working example that overrides

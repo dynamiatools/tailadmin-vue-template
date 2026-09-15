@@ -47,7 +47,7 @@
             />
           </svg>
         </button>
-        <HeaderLogo />
+        <slot name="logo"><HeaderLogo /></slot>
         <button
           @click="toggleApplicationMenu"
           class="flex items-center justify-center w-10 h-10 text-gray-700 rounded-lg z-99999 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 xl:hidden cursor-pointer"

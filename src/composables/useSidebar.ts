@@ -36,6 +36,11 @@ interface SidebarContextType {
   toggleSubmenu: (item: string) => void
 }
 
+// package.json's "./composables/*" exports pattern must end in ".ts" (unlike "./icons",
+// which points at a literal file). Without it, a consumer's `vue-tsc` fails to resolve
+// `@dynamia-tools/tailadmin-vue/composables/useSidebar` ("Cannot find module ... or its
+// corresponding type declarations") even though Vite/esbuild-style bundlers resolve it fine
+// at runtime — don't drop the extension on a future edit to that map.
 const SidebarSymbol = Symbol()
 
 export function useSidebarProvider() {

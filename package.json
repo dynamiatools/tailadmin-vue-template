@@ -33,7 +33,7 @@
   ],
   "exports": {
     "./components/*": "./src/components/*",
-    "./composables/*": "./src/composables/*",
+    "./composables/*": "./src/composables/*.ts",
     "./icons": "./src/icons/index.ts",
     "./icons/*": "./src/icons/*",
     "./style.css": "./src/assets/main.css",
