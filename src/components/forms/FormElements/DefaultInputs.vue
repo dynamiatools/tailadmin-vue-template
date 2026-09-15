@@ -3,7 +3,7 @@
     <!-- Text Input -->
     <div>
       <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-        Input
+        {{ inputLabel }}
       </label>
       <input
         type="text"
@@ -15,12 +15,12 @@
     <!-- Input with Placeholder -->
     <div>
       <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-        Input with Placeholder
+        {{ inputWithPlaceholderLabel }}
       </label>
       <input
         type="text"
         v-model="formData.inputWithPlaceholder"
-        placeholder="info@gmail.com"
+        :placeholder="inputWithPlaceholderPlaceholder"
         class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
       />
     </div>
@@ -28,7 +28,7 @@
     <!-- Select Input -->
     <div>
       <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-        Select Input
+        {{ selectLabel }}
       </label>
       <div class="relative z-20 bg-transparent">
         <select
@@ -36,10 +36,10 @@
           class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 ltr:pr-11 rtl:pl-11 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
           :class="{ 'text-gray-800 dark:text-white/90': formData.selectInput }"
         >
-          <option value="" disabled selected>Select Option</option>
-          <option value="marketing">Marketing</option>
-          <option value="template">Template</option>
-          <option value="development">Development</option>
+          <option value="" disabled selected>{{ selectPlaceholder }}</option>
+          <option v-for="option in selectOptions" :key="option.value" :value="option.value">
+            {{ option.label }}
+          </option>
         </select>
         <span
           class="absolute z-30 text-gray-500 -translate-y-1/2 pointer-events-none ltr:right-4 rtl:left-4 top-1/2 dark:text-gray-400"
@@ -67,13 +67,13 @@
     <!-- Password Input -->
     <div>
       <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-        Password Input
+        {{ passwordLabel }}
       </label>
       <div class="relative">
         <input
           :type="showPassword ? 'text' : 'password'"
           v-model="formData.password"
-          placeholder="Enter your password"
+          :placeholder="passwordPlaceholder"
           class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 ltr:pl-4 ltr:pr-11 rtl:pr-4 rtl:pl-11 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
         />
         <span
@@ -117,14 +117,14 @@
     <!-- Date Picker Input -->
     <div>
       <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-        Date Picker Input
+        {{ dateLabel }}
       </label>
       <div class="relative">
         <flat-pickr
           v-model="date"
           :config="flatpickrConfig"
           class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 ltr:pl-4 ltr:pr-11 rtl:pr-4 rtl:pl-11 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
-          placeholder="Select date"
+          :placeholder="datePlaceholder"
         />
         <span
           class="absolute text-gray-500 -translate-y-1/2 pointer-events-none ltr:right-3 rtl:left-3 top-1/2 dark:text-gray-400"
@@ -151,14 +151,14 @@
     <!-- Time Select Input -->
     <div>
       <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-        Time Select Input
+        {{ timeLabel }}
       </label>
       <div class="relative">
         <flat-pickr
           v-model="time"
           :config="flatpickrTimeConfig"
           class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 ltr:pl-4 ltr:pr-11 rtl:pr-4 rtl:pl-11 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
-          placeholder="Select time"
+          :placeholder="timePlaceholder"
         />
         <span class="absolute text-gray-500 -translate-y-1/2 pointer-events-none ltr:right-3 rtl:left-3 top-1/2 dark:text-gray-400">
           <svg
@@ -183,13 +183,13 @@
     <!-- Input with Payment -->
     <div>
       <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-        Input with Payment
+        {{ paymentLabel }}
       </label>
       <div class="relative">
         <input
           type="text"
           v-model="formData.cardNumber"
-          placeholder="Card number"
+          :placeholder="paymentPlaceholder"
           class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 ltr:pl-[62px] rtl:pr-[62px] text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
         />
         <span
@@ -215,9 +215,54 @@
   </div>
 </template>
 
+<script lang="ts">
+export interface DefaultInputsSelectOption {
+  value: string
+  label: string
+}
+
+export const defaultInputsSelectOptions: DefaultInputsSelectOption[] = [
+  { value: 'marketing', label: 'Marketing' },
+  { value: 'template', label: 'Template' },
+  { value: 'development', label: 'Development' },
+]
+</script>
+
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import flatPickr from 'vue-flatpickr-component'
+
+const {
+  inputLabel = 'Input',
+  inputWithPlaceholderLabel = 'Input with Placeholder',
+  inputWithPlaceholderPlaceholder = 'info@gmail.com',
+  selectLabel = 'Select Input',
+  selectPlaceholder = 'Select Option',
+  selectOptions = defaultInputsSelectOptions,
+  passwordLabel = 'Password Input',
+  passwordPlaceholder = 'Enter your password',
+  dateLabel = 'Date Picker Input',
+  datePlaceholder = 'Select date',
+  timeLabel = 'Time Select Input',
+  timePlaceholder = 'Select time',
+  paymentLabel = 'Input with Payment',
+  paymentPlaceholder = 'Card number',
+} = defineProps<{
+  inputLabel?: string
+  inputWithPlaceholderLabel?: string
+  inputWithPlaceholderPlaceholder?: string
+  selectLabel?: string
+  selectPlaceholder?: string
+  selectOptions?: DefaultInputsSelectOption[]
+  passwordLabel?: string
+  passwordPlaceholder?: string
+  dateLabel?: string
+  datePlaceholder?: string
+  timeLabel?: string
+  timePlaceholder?: string
+  paymentLabel?: string
+  paymentPlaceholder?: string
+}>()
 
 const showPassword = ref(false)
 

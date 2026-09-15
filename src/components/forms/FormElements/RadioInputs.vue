@@ -21,7 +21,7 @@
             ></span>
           </div>
         </div>
-        Default
+        {{ defaultLabel }}
       </label>
     </div>
 
@@ -46,7 +46,7 @@
             ></span>
           </div>
         </div>
-        Secondary
+        {{ secondaryLabel }}
       </label>
     </div>
 
@@ -60,12 +60,12 @@
             type="checkbox"
             id="radioLabelThree"
             class="peer sr-only"
-            v-model="checkboxToggleThree"
+            :checked="disabledSecondaryChecked"
             disabled
           />
           <div
             :class="
-              checkboxToggleThree
+              disabledSecondaryChecked
                 ? 'bg-transparent border-gray-300 dark:border-gray-700'
                 : 'border-brand-500 bg-brand-500'
             "
@@ -73,20 +73,29 @@
           >
             <span
               class="h-2 w-2 rounded-full"
-              :class="checkboxToggleThree ? 'bg-white' : 'bg-white dark:bg-[#171f2e]'"
+              :class="disabledSecondaryChecked ? 'bg-white' : 'bg-white dark:bg-[#171f2e]'"
             ></span>
           </div>
         </div>
-        Disabled Secondary
+        {{ disabledSecondaryLabel }}
       </label>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+const {
+  defaultLabel = 'Default',
+  secondaryLabel = 'Secondary',
+  disabledSecondaryLabel = 'Disabled Secondary',
+  disabledSecondaryChecked = false,
+} = defineProps<{
+  defaultLabel?: string
+  secondaryLabel?: string
+  disabledSecondaryLabel?: string
+  disabledSecondaryChecked?: boolean
+}>()
 
-const checkboxToggleOne = ref(false)
-const checkboxToggleTwo = ref(true)
-const checkboxToggleThree = ref(false)
+const checkboxToggleOne = defineModel<boolean>('default', { default: false })
+const checkboxToggleTwo = defineModel<boolean>('secondary', { default: true })
 </script>

@@ -3,7 +3,7 @@
     <!-- Error State Input -->
     <div>
       <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-        Email
+        {{ label }}
       </label>
       <div class="relative">
         <input
@@ -28,13 +28,13 @@
           </svg>
         </span>
       </div>
-      <p class="mt-1.5 text-theme-xs text-error-500">This is an error message.</p>
+      <p class="mt-1.5 text-theme-xs text-error-500">{{ errorMessage }}</p>
     </div>
 
     <!-- Success State Input -->
     <div>
       <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-        Email
+        {{ label }}
       </label>
       <div class="relative">
         <input
@@ -59,17 +59,17 @@
           </svg>
         </span>
       </div>
-      <p class="mt-1.5 text-theme-xs text-success-500">This is a success message.</p>
+      <p class="mt-1.5 text-theme-xs text-success-500">{{ successMessage }}</p>
     </div>
 
     <!-- Disabled State Input -->
     <div>
       <label class="mb-1.5 block text-sm font-medium text-gray-300 dark:text-white/15">
-        Email
+        {{ label }}
       </label>
       <input
         type="text"
-        placeholder="info@gmail.com"
+        :placeholder="disabledPlaceholder"
         disabled
         class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:shadow-focus-ring focus:outline-hidden disabled:border-gray-100 disabled:placeholder:text-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-gray-400 dark:focus:border-brand-300 dark:disabled:border-gray-800 dark:disabled:placeholder:text-white/15"
       />
@@ -80,6 +80,22 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const errorEmail = ref('demoemail')
-const successEmail = ref('demoemail@gmail.com')
+const {
+  label = 'Email',
+  errorMessage = 'This is an error message.',
+  successMessage = 'This is a success message.',
+  disabledPlaceholder = 'info@gmail.com',
+  errorValue = 'demoemail',
+  successValue = 'demoemail@gmail.com',
+} = defineProps<{
+  label?: string
+  errorMessage?: string
+  successMessage?: string
+  disabledPlaceholder?: string
+  errorValue?: string
+  successValue?: string
+}>()
+
+const errorEmail = ref(errorValue)
+const successEmail = ref(successValue)
 </script>

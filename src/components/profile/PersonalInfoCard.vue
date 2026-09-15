@@ -10,12 +10,12 @@
           <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-7 2xl:gap-x-32">
             <div>
               <p class="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">First Name</p>
-              <p class="text-sm font-medium text-gray-800 dark:text-white/90">Musharof</p>
+              <p class="text-sm font-medium text-gray-800 dark:text-white/90">{{ info.firstName }}</p>
             </div>
 
             <div>
               <p class="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">Last Name</p>
-              <p class="text-sm font-medium text-gray-800 dark:text-white/90">Chowdhury</p>
+              <p class="text-sm font-medium text-gray-800 dark:text-white/90">{{ info.lastName }}</p>
             </div>
 
             <div>
@@ -23,18 +23,18 @@
                 Email address
               </p>
               <p class="text-sm font-medium text-gray-800 dark:text-white/90">
-                randomuser@pimjo.com
+                {{ info.email }}
               </p>
             </div>
 
             <div>
               <p class="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">Phone</p>
-              <p class="text-sm font-medium text-gray-800 dark:text-white/90">+09 363 398 46</p>
+              <p class="text-sm font-medium text-gray-800 dark:text-white/90">{{ info.phone }}</p>
             </div>
 
             <div>
               <p class="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">Bio</p>
-              <p class="text-sm font-medium text-gray-800 dark:text-white/90">Team Manager</p>
+              <p class="text-sm font-medium text-gray-800 dark:text-white/90">{{ info.bio }}</p>
             </div>
           </div>
         </div>
@@ -87,10 +87,10 @@
           </button>
           <div class="px-2 ltr:pr-14 rtl:pl-14">
             <h4 class="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
-              Edit Personal Information
+              {{ editModalTitle }}
             </h4>
             <p class="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
-              Update your details to keep your profile up-to-date.
+              {{ editModalDescription }}
             </p>
           </div>
           <form class="flex flex-col">
@@ -109,7 +109,7 @@
                     </label>
                     <input
                       type="text"
-                      value="https://www.facebook.com/PimjoHQ"
+                      v-model="form.social.facebook"
                       class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                     />
                   </div>
@@ -122,7 +122,7 @@
                     </label>
                     <input
                       type="text"
-                      value="https://x.com/PimjoHQ"
+                      v-model="form.social.x"
                       class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                     />
                   </div>
@@ -135,7 +135,7 @@
                     </label>
                     <input
                       type="text"
-                      value="https://www.linkedin.com/company/pimjo/posts/?feedView=all"
+                      v-model="form.social.linkedin"
                       class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                     />
                   </div>
@@ -148,7 +148,7 @@
                     </label>
                     <input
                       type="text"
-                      value="https://instagram.com/emirhan55"
+                      v-model="form.social.instagram"
                       class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                     />
                   </div>
@@ -168,7 +168,7 @@
                     </label>
                     <input
                       type="text"
-                      value="Musharof"
+                      v-model="form.firstName"
                       class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                     />
                   </div>
@@ -181,7 +181,7 @@
                     </label>
                     <input
                       type="text"
-                      value="Chowdhury"
+                      v-model="form.lastName"
                       class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                     />
                   </div>
@@ -194,7 +194,7 @@
                     </label>
                     <input
                       type="text"
-                      value="emirhanboruch55@gmail.com"
+                      v-model="form.email"
                       class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                     />
                   </div>
@@ -207,7 +207,7 @@
                     </label>
                     <input
                       type="text"
-                      value="+09 363 398 46"
+                      v-model="form.phone"
                       class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                     />
                   </div>
@@ -220,7 +220,7 @@
                     </label>
                     <input
                       type="text"
-                      value="Team Manager"
+                      v-model="form.bio"
                       class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                     />
                   </div>
@@ -250,14 +250,70 @@
   </div>
 </template>
 
+<script lang="ts">
+export interface PersonalInfoSocialLinks {
+  facebook: string
+  x: string
+  linkedin: string
+  instagram: string
+}
+
+export interface PersonalInfo {
+  firstName: string
+  lastName: string
+  email: string
+  phone: string
+  bio: string
+  social: PersonalInfoSocialLinks
+}
+
+export const defaultPersonalInfo: PersonalInfo = {
+  firstName: 'Musharof',
+  lastName: 'Chowdhury',
+  email: 'emirhanboruch55@gmail.com',
+  phone: '+09 363 398 46',
+  bio: 'Team Manager',
+  social: {
+    facebook: 'https://www.facebook.com/PimjoHQ',
+    x: 'https://x.com/PimjoHQ',
+    linkedin: 'https://www.linkedin.com/company/pimjo/posts/?feedView=all',
+    instagram: 'https://instagram.com/emirhan55',
+  },
+}
+</script>
+
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import Modal from './Modal.vue'
+
+const {
+  info = defaultPersonalInfo,
+  editModalTitle = 'Edit Personal Information',
+  editModalDescription = 'Update your details to keep your profile up-to-date.',
+} = defineProps<{
+  info?: PersonalInfo
+  editModalTitle?: string
+  editModalDescription?: string
+}>()
+
+const emit = defineEmits<{
+  save: [info: PersonalInfo]
+}>()
 
 const isProfileInfoModal = ref(false)
 
+const form = reactive<PersonalInfo>({ ...info, social: { ...info.social } })
+
+watch(
+  () => info,
+  (next) => {
+    Object.assign(form, next, { social: { ...next.social } })
+  },
+  { deep: true },
+)
+
 const saveProfile = () => {
-  console.log('Profile saved')
+  emit('save', { ...form, social: { ...form.social } })
   isProfileInfoModal.value = false
 }
 </script>

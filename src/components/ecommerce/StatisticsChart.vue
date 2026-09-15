@@ -4,9 +4,9 @@
   >
     <div class="flex flex-col gap-5 mb-6 sm:flex-row sm:justify-between">
       <div class="w-full">
-        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">Statistics</h3>
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">{{ title }}</h3>
         <p class="mt-1 text-gray-500 text-theme-sm dark:text-gray-400">
-          Target you’ve set for each month
+          {{ description }}
         </p>
       </div>
 
@@ -16,11 +16,11 @@
             class="flex max-h-10 items-center gap-0.5 rounded-lg bg-gray-100 p-0.5 dark:bg-gray-900"
           >
             <button
-              v-for="option in options"
+              v-for="option in periodOptions"
               :key="option.value"
-              @click="selected = option.value"
+              @click="selectedPeriod = option.value"
               :class="[
-                selected === option.value
+                selectedPeriod === option.value
                   ? 'shadow-theme-xs text-gray-900 dark:text-white bg-white dark:bg-gray-800'
                   : 'text-gray-500 dark:text-gray-400',
                 'w-full rounded-md px-3 py-2 text-theme-sm font-medium hover:text-gray-900 dark:hover:text-white whitespace-nowrap',
@@ -34,10 +34,10 @@
 
         <div class="relative inline-flex items-center">
           <flat-pickr
-            v-model="date"
+            v-model="dateRange"
             :config="flatpickrConfig"
             class="h-10 w-full min-w-[165px] rounded-lg border border-gray-200 bg-white py-2.5 ps-11 pe-4 text-theme-sm font-medium text-gray-700 shadow-theme-xs focus:outline-hidden focus:ring-0 focus-visible:outline-hidden dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
-            placeholder="Select date"
+            :placeholder="datePlaceholder"
             data-class="flatpickr-right"
           />
           <div class="absolute inset-y-0 start-4 flex items-center pointer-events-none">
@@ -69,17 +69,68 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed } from 'vue'
 import flatPickr from 'vue-flatpickr-component'
+import VueApexCharts from 'vue3-apexcharts'
+import type { ApexOptions } from 'apexcharts'
 
-const options = [
-  { value: 'optionOne', label: 'Monthly' },
-  { value: 'optionTwo', label: 'Quarterly' },
-  { value: 'optionThree', label: 'Annually' },
-]
+interface PeriodOption {
+  value: string
+  label: string
+}
 
-const selected = ref('optionOne')
-const date = ref('')
+interface StatisticsSeries {
+  name: string
+  data: number[]
+}
+
+const props = withDefaults(
+  defineProps<{
+    title?: string
+    description?: string
+    periodOptions?: PeriodOption[]
+    datePlaceholder?: string
+    series?: StatisticsSeries[]
+    categories?: string[]
+  }>(),
+  {
+    title: 'Statistics',
+    description: 'Target you’ve set for each month',
+    periodOptions: () => [
+      { value: 'optionOne', label: 'Monthly' },
+      { value: 'optionTwo', label: 'Quarterly' },
+      { value: 'optionThree', label: 'Annually' },
+    ],
+    datePlaceholder: 'Select date',
+    series: () => [
+      {
+        name: 'Sales',
+        data: [180, 190, 170, 160, 175, 165, 170, 205, 230, 210, 240, 235],
+      },
+      {
+        name: 'Revenue',
+        data: [40, 30, 50, 40, 55, 40, 70, 100, 110, 120, 150, 140],
+      },
+    ],
+    categories: () => [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ],
+  },
+)
+
+const selectedPeriod = defineModel<string>('selectedPeriod', { default: 'optionOne' })
+const dateRange = defineModel<string>('dateRange', { default: '' })
 
 const flatpickrConfig = {
   mode: 'range' as const,
@@ -102,21 +153,10 @@ const flatpickrConfig = {
     }
   },
 }
-import VueApexCharts from 'vue3-apexcharts'
-import type { ApexOptions } from 'apexcharts'
 
-const series = ref([
-  {
-    name: 'Sales',
-    data: [180, 190, 170, 160, 175, 165, 170, 205, 230, 210, 240, 235],
-  },
-  {
-    name: 'Revenue',
-    data: [40, 30, 50, 40, 55, 40, 70, 100, 110, 120, 150, 140],
-  },
-])
+const series = computed(() => props.series)
 
-const chartOptions = ref<ApexOptions>({
+const chartOptions = computed<ApexOptions>(() => ({
   legend: {
     show: false,
     position: 'top',
@@ -166,20 +206,7 @@ const chartOptions = ref<ApexOptions>({
   },
   xaxis: {
     type: 'category',
-    categories: [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ],
+    categories: props.categories,
     axisBorder: {
       show: false,
     },
@@ -197,7 +224,7 @@ const chartOptions = ref<ApexOptions>({
       },
     },
   },
-})
+}))
 </script>
 
 <style scoped>
