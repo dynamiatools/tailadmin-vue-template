@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      class="dark:bg-dark-900 flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-gray-300 p-8 text-center transition dark:border-gray-700"
+      class="dark:bg-gray-900 flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-gray-300 p-8 text-center transition dark:border-gray-700"
       :class="isDragging ? 'border-brand-400 bg-brand-50 dark:bg-brand-500/5' : ''"
       @dragover.prevent="isDragging = true"
       @dragleave.prevent="isDragging = false"

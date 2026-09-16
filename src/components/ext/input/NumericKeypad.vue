@@ -1,7 +1,7 @@
 <template>
   <div class="w-full max-w-xs select-none">
     <div
-      class="dark:bg-dark-900 mb-3 h-12 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-right text-lg text-gray-800 dark:border-gray-700 dark:text-white/90"
+      class="dark:bg-gray-900 mb-3 h-12 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-right text-lg text-gray-800 dark:border-gray-700 dark:text-white/90"
     >
       {{ modelValue || placeholder }}
     </div>
@@ -11,7 +11,7 @@
         :key="key"
         type="button"
         :disabled="disabled"
-        class="dark:bg-dark-900 flex h-12 items-center justify-center rounded-lg border border-gray-300 bg-transparent text-lg font-medium text-gray-800 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-white/90 dark:hover:bg-white/[0.03]"
+        class="dark:bg-gray-900 flex h-12 items-center justify-center rounded-lg border border-gray-300 bg-transparent text-lg font-medium text-gray-800 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-white/90 dark:hover:bg-white/[0.03]"
         @click="pressKey(key)"
       >
         {{ key }}
@@ -19,7 +19,7 @@
       <button
         type="button"
         :disabled="disabled || !allowDecimal"
-        class="dark:bg-dark-900 flex h-12 items-center justify-center rounded-lg border border-gray-300 bg-transparent text-lg font-medium text-gray-800 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-white/90 dark:hover:bg-white/[0.03]"
+        class="dark:bg-gray-900 flex h-12 items-center justify-center rounded-lg border border-gray-300 bg-transparent text-lg font-medium text-gray-800 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-white/90 dark:hover:bg-white/[0.03]"
         @click="pressKey('.')"
       >
         .
@@ -27,7 +27,7 @@
       <button
         type="button"
         :disabled="disabled"
-        class="dark:bg-dark-900 flex h-12 items-center justify-center rounded-lg border border-gray-300 bg-transparent text-lg font-medium text-gray-800 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-white/90 dark:hover:bg-white/[0.03]"
+        class="dark:bg-gray-900 flex h-12 items-center justify-center rounded-lg border border-gray-300 bg-transparent text-lg font-medium text-gray-800 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-white/90 dark:hover:bg-white/[0.03]"
         @click="pressKey('0')"
       >
         0
@@ -35,7 +35,7 @@
       <button
         type="button"
         :disabled="disabled || modelValue.length === 0"
-        class="dark:bg-dark-900 flex h-12 items-center justify-center rounded-lg border border-gray-300 bg-transparent text-sm font-medium text-gray-800 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-white/90 dark:hover:bg-white/[0.03]"
+        class="dark:bg-gray-900 flex h-12 items-center justify-center rounded-lg border border-gray-300 bg-transparent text-sm font-medium text-gray-800 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-white/90 dark:hover:bg-white/[0.03]"
         aria-label="Backspace"
         @click="backspace"
       >

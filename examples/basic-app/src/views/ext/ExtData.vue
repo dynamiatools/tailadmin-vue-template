@@ -100,26 +100,65 @@ const gridRows = ref([
   { sku: 'SKU-002', price: 29.99, stock: 7 },
 ])
 
-const treeColumns: TreeTableColumn[] = [{ key: 'name', label: 'Category' }]
+const treeColumns: TreeTableColumn[] = [
+  { key: 'name', label: 'Category' },
+  { key: 'type', label: 'Type' },
+  { key: 'count', label: 'Items' },
+]
 const treeNodes = ref<TreeNode[]>([
-  { id: 'electronics', name: 'Electronics', hasChildren: true },
   {
-    id: 'clothing',
-    name: 'Clothing',
+    id: 'electronics',
+    name: 'Electronics',
+    type: 'Department',
+    count: 120,
     children: [
-      { id: 'clothing-men', name: 'Men' },
-      { id: 'clothing-women', name: 'Women' },
+      {
+        id: 'phones',
+        name: 'Phones',
+        type: 'Category',
+        count: 45,
+        children: [
+          { id: 'phones-iphone', name: 'iPhone 15', type: 'Product', count: 12 },
+          { id: 'phones-galaxy', name: 'Galaxy S24', type: 'Product', count: 18 },
+        ],
+      },
+      {
+        id: 'laptops',
+        name: 'Laptops',
+        type: 'Category',
+        count: 75,
+        children: [{ id: 'laptops-macbook', name: 'MacBook Pro', type: 'Product', count: 20 }],
+      },
     ],
   },
+  { id: 'clothing', name: 'Clothing', type: 'Department', count: 80, hasChildren: true },
+  { id: 'home-garden', name: 'Home & Garden', type: 'Department', count: 60, hasChildren: true },
 ])
+// Simulates a remote fetch keyed by node id — every level (including
+// children loaded lazily) can itself declare hasChildren and be expanded
+// further, since loadChildren is shared through TreeTable's provide/inject.
 function loadChildren(node: TreeNode): Promise<TreeNode[]> {
+  const childrenByParent: Record<string, TreeNode[]> = {
+    clothing: [
+      { id: 'clothing-men', name: 'Men', type: 'Category', count: 34, hasChildren: true },
+      { id: 'clothing-women', name: 'Women', type: 'Category', count: 46, hasChildren: true },
+    ],
+    'clothing-men': [
+      { id: 'clothing-men-shirts', name: 'Shirts', type: 'Product', count: 20 },
+      { id: 'clothing-men-jeans', name: 'Jeans', type: 'Product', count: 14 },
+    ],
+    'clothing-women': [
+      { id: 'clothing-women-dresses', name: 'Dresses', type: 'Product', count: 25 },
+      { id: 'clothing-women-shoes', name: 'Shoes', type: 'Product', count: 21 },
+    ],
+    'home-garden': [
+      { id: 'furniture', name: 'Furniture', type: 'Category', count: 28 },
+      { id: 'decor', name: 'Decor', type: 'Category', count: 32 },
+    ],
+  }
+
   return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([
-        { id: `${node.id}-1`, name: 'Phones' },
-        { id: `${node.id}-2`, name: 'Laptops' },
-      ])
-    }, 500)
+    setTimeout(() => resolve(childrenByParent[String(node.id)] ?? []), 500)
   })
 }
 

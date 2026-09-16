@@ -1,12 +1,12 @@
 <template>
   <div class="w-full max-w-md">
     <div
-      class="dark:bg-dark-900 relative aspect-video w-full overflow-hidden rounded-lg border border-gray-300 bg-gray-100 dark:border-gray-700"
+      class="dark:bg-gray-900 relative aspect-video w-full overflow-hidden rounded-lg border border-gray-300 bg-gray-100 dark:border-gray-700"
     >
       <video ref="videoRef" class="h-full w-full object-cover" autoplay playsinline muted></video>
       <div
         v-if="!active && !error"
-        class="absolute inset-0 flex items-center justify-center text-sm text-gray-400"
+        class="absolute inset-0 flex items-center justify-center text-sm text-gray-400 dark:text-gray-500"
       >
         Camera is off
       </div>
@@ -19,7 +19,7 @@
       <select
         v-if="devices.length > 1"
         v-model="selectedDeviceId"
-        class="dark:bg-dark-900 h-9 rounded-lg border border-gray-300 bg-transparent px-2 text-sm text-gray-800 dark:border-gray-700 dark:text-white/90"
+        class="dark:bg-gray-900 h-9 rounded-lg border border-gray-300 bg-transparent px-2 text-sm text-gray-800 dark:border-gray-700 dark:text-white/90"
         @change="active && restart()"
       >
         <option v-for="device in devices" :key="device.deviceId" :value="device.deviceId">
