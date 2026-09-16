@@ -109,6 +109,12 @@ const router = createRouter({
       meta: { title: 'Ext / Display' },
     },
     {
+      path: '/ext/layouts',
+      name: 'Ext Layouts',
+      component: () => import('../views/ext/ExtLayouts.vue'),
+      meta: { title: 'Ext / Layouts' },
+    },
+    {
       path: '/ext/navigation',
       name: 'Ext Navigation',
       component: () => import('../views/ext/ExtNavigation.vue'),
