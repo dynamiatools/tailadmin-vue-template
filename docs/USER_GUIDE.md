@@ -1,12 +1,12 @@
-# User guide — layouts, slots & props
+# User guide — layouts, slots & props, and the extended component library
 
 Practical guide for consumers of `@dynamia-tools/tailadmin-vue`: how the layout system fits
-together, and how to customize it (your own sidebar content, header actions, user menu, etc.)
-without forking any component. Written for humans, but equally usable as reference by an
-AI assistant wiring this package into a project.
+together and how to customize it (§1–10), and how to use the 38 additional `components/ext/*`
+components — data tables, inputs, media capture, navigation, scheduling, commerce (§11) — without
+forking any component. Written for humans, but equally usable as reference by an AI assistant
+wiring this package into a project.
 
-If you just need install/import basics, see the [README](../README.md) first. This guide only
-covers the layout system in depth.
+If you just need install/import basics, see the [README](../README.md) first.
 
 Want a working example instead of reading? [`examples/custom-app`](../examples/custom-app) is a
 single page that uses every slot and prop covered below at once — clone it, `npm install && npm
@@ -408,6 +408,214 @@ does **not** apply to props like `avatar-url`: a JS string default (`avatarUrl =
 is never asset-url-transformed, only literal `src="..."` attributes in a template are. See
 [`examples/custom-app`](../examples/custom-app) for a working example that overrides
 `#sidebar-header` but still ships the three logo files for exactly this reason.
+
+## 11. Extended component library (`components/ext`)
+
+Everything above (§1–10) is about the base TailAdmin layout. This section covers a separate,
+larger set of components — **38 of them**, under `src/components/ext/<category>/` — added on top
+of the base template for building real features (data grids, checkout flows, OTP forms, camera
+capture, maps…) rather than just a demo dashboard.
+
+### 11.1 Ground rules
+
+These hold for every component in `components/ext`, not just the ones shown below:
+
+- **Domain-agnostic.** `EntitySelector`, not `CustomerSelector`; `SelectionGrid`, not
+  `SeatPicker`. They take generic data (`items`, `columns`, `nodes`) and describe *what they do*,
+  never *where they're used* — the same `ItemGrid` works for products, resources, or services.
+- **Props for configuration, slots for structural overrides.** A cell renderer, a custom item
+  template, a loading/error state — those are slots. Everything else (`multiple`, `disabled`,
+  `min`, `max`, currency, locale…) is a prop.
+- **`v-model` where it makes sense**, following normal Vue conventions — plain `v-model` for a
+  single value (`MoneyInput`, `ColorPicker`, `PinInput`), `v-model:selected` where the component
+  also exposes other events (`ItemGrid`), `defineModel` where the whole bound object is mutated
+  in place (`Kanban`'s `v-model` over its `columns` array).
+- **Named TypeScript exports live alongside the component.** Every column/item/entry shape used
+  by a prop (`DataTableColumn`, `TreeNode`, `KanbanColumn`, `ItemGridEntry`, `MapMarker`…) is
+  exported from the same `.vue` file as a named `interface` — import it with the component:
+
+  ```ts
+  import DataTable from '@dynamia-tools/tailadmin-vue/components/ext/data/DataTable.vue'
+  import type { DataTableColumn } from '@dynamia-tools/tailadmin-vue/components/ext/data/DataTable.vue'
+  ```
+- **Dark mode and accessibility are not optional** — every component works in both themes and
+  uses semantic roles/`aria-*` where applicable (listboxes, radiogroups, live regions).
+- **No unnecessary dependencies.** Most of `components/ext` is zero-dependency (native
+  `<canvas>`, `<audio>`, Fullscreen API, `IntersectionObserver`-free lazy loading, hand-rolled
+  dropdowns). A handful of components reach for an existing **optional** peer dependency instead
+  of reinventing something a mature library already does well — see §11.4.
+
+### 11.2 Catalog
+
+Import path: `@dynamia-tools/tailadmin-vue/components/ext/<category>/<Component>.vue`.
+
+**Data** — `src/components/ext/data/`
+
+| Component | What it does |
+| --- | --- |
+| `DataTable` | Sortable, selectable table with pagination, built on the existing `Table`/`TableRow`/`TableCell` system. |
+| `DataGrid` | Click-to-edit inline grid, same underlying table system. |
+| `TreeTable` | Unlimited-depth hierarchical table with per-node lazy loading, selection, custom cell slots. |
+| `EntitySelector` | Dropdown selector with inline search, over a local `items` array. Generic over the item shape. |
+| `EntityAutocomplete` | Debounced remote search selector — you provide a `search(query)` async function. |
+| `ItemSelector` | Visual grid selector for simple values or complex objects (label/value/image keys). |
+
+**Input** — `src/components/ext/input/`
+
+| Component | What it does |
+| --- | --- |
+| `MoneyInput` | Currency-aware numeric input with locale formatting and min/max clamping. |
+| `QuantityInput` | Stepper with increment/decrement buttons, step, min/max, optional decimals. |
+| `PinInput` | Segmented PIN/OTP input — auto-advance, backspace navigation, full-code paste. |
+| `NumericKeypad` | Touch-friendly visual numeric keypad, composes a string value. |
+| `ScannerInput` | Text input tuned for barcode/identifier scanners (fast-keystroke detection, Enter-to-scan). |
+| `PaymentInput` | One or more payment entries (method + amount) against a total; composes `MoneyInput`. |
+| `Rating` | Star rating, interactive or read-only. |
+| `ColorPicker` | Native color input + hex field + preset swatches. |
+
+**Media** — `src/components/ext/media/`
+
+| Component | What it does |
+| --- | --- |
+| `Webcam` | Camera preview, capture-to-PNG, device selection, permission/error handling. |
+| `ImageCropper` | Pan/zoom/rotate an image in a fixed viewport, export the crop as a PNG data URL. |
+| `SignaturePad` | Canvas signature capture (pointer events), undo per stroke, export as PNG. |
+| `DropFileUploader` | Drag-and-drop + browse uploader with previews, validation, progress, retry — backend-agnostic. |
+| `SoundPlayer` | `<audio>`-backed playback, visible controls or an invisible/headless mode for UI sound effects. |
+
+**Display** — `src/components/ext/display/`
+
+| Component | What it does |
+| --- | --- |
+| `Summary` | Labeled metric block with an optional icon and up/down trend badge. |
+| `Status` | Semantic status pill (label + color + dot or icon). |
+| `Timeline` | Chronological event list with a connecting line and per-item color. |
+| `PdfViewer` | PDF preview via the browser's native renderer — page nav, zoom, fullscreen, download. |
+| `QrCode` | Generates and renders a QR code from configurable content (needs `qrcode`, see §11.4). |
+| `Map` | Interactive map — markers, popups, click-to-select — via Leaflet + OpenStreetMap tiles, no API key (needs `leaflet`, see §11.4). |
+
+**Navigation** — `src/components/ext/navigation/`
+
+| Component | What it does |
+| --- | --- |
+| `CommandPalette` | Cmd+K-style search/command overlay — local or remote filtering, categories, keyboard nav. |
+| `Fab` | Floating action button, single action or an expandable action menu. |
+| `Kanban` | Drag-and-drop board across configurable columns (needs `vuedraggable`, see §11.4). |
+| `Menu` | Generic, router-agnostic menu list — vertical or horizontal, nested/collapsible items. |
+
+**Scheduling** — `src/components/ext/scheduling/`
+
+| Component | What it does |
+| --- | --- |
+| `Calendar` | Thin wrapper around `@fullcalendar/vue3` — month/week/day views, selectable ranges. |
+| `DateRangePicker` | Range picker built on `vue-flatpickr-component`, with optional quick-select presets. |
+| `TimeSlotPicker` | Grid of selectable time slots with a per-slot unavailable state. |
+
+**Commerce** — `src/components/ext/commerce/`
+
+| Component | What it does |
+| --- | --- |
+| `Cart` | Selected items with quantity editing (composes `QuantityInput`), subtotals, and a running total. |
+| `ItemCard` | Single product/resource card — image, badge (composes `Status`), price, actions slot. |
+| `ItemGrid` | Responsive grid of `ItemCard`s with loading/empty states and selection. |
+| `SelectionGrid` | Grid selection with a first-class unavailable/disabled cell state — good for seat/table maps. |
+| `PrintPreview` | Previews a URL or raw HTML, then triggers the browser's native print dialog. |
+
+**Utilities** — `src/components/ext/utilities/`
+
+| Component | What it does |
+| --- | --- |
+| `LazyLoader` | Generic async data wrapper — loading/error/retry/reload via scoped slots, optional param-keyed reload and in-memory cache. |
+
+### 11.3 Worked examples
+
+**A selectable, sortable `DataTable` with a custom cell:**
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import DataTable from '@dynamia-tools/tailadmin-vue/components/ext/data/DataTable.vue'
+import type { DataTableColumn } from '@dynamia-tools/tailadmin-vue/components/ext/data/DataTable.vue'
+
+const columns: DataTableColumn[] = [
+  { key: 'name', label: 'Name', sortable: true },
+  { key: 'status', label: 'Status' },
+]
+const rows = ref([{ id: 1, name: 'Ada Lovelace', status: 'active' }])
+const selected = ref<Record<string, unknown>[]>([])
+</script>
+
+<template>
+  <DataTable
+    :columns="columns"
+    :rows="rows"
+    selectable
+    :selected="selected"
+    @update:selected="(newSelected) => (selected = newSelected)"
+  >
+    <template #cell-status="{ value }">
+      <span class="text-success-600">{{ value }}</span>
+    </template>
+  </DataTable>
+</template>
+```
+
+Every cell gets a `cell-<columnKey>` scoped slot (`{ row, value }`); a `loading`, `empty`, and
+`actions` slot are also available. Sorting is controlled, not automatic — listen for
+`@sort-change="{ key, direction }"` and re-sort/re-fetch `rows` yourself (mirrors how
+`EntityAutocomplete`'s `search` prop stays backend-agnostic instead of assuming an in-memory
+array).
+
+**`PinInput` for an OTP form:**
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import PinInput from '@dynamia-tools/tailadmin-vue/components/ext/input/PinInput.vue'
+
+const code = ref('')
+async function onComplete(value: string) {
+  await verifyOtp(value)
+}
+</script>
+
+<template>
+  <PinInput v-model="code" :length="6" @complete="onComplete" />
+</template>
+```
+
+**Cross-component composition** — several `ext` components are built on top of others rather
+than duplicating behavior: `Cart` composes `QuantityInput` for its per-item stepper, `ItemCard`
+composes `Status` for its badge, `PaymentInput` composes `MoneyInput` per entry. `Menu` doesn't
+invent new styling either — it reuses the same `menu-item`/`menu-item-active`/`menu-item-icon-*`
+CSS utilities `AppSidebar` already defines in `main.css`, so a standalone `Menu` (e.g. inside a
+settings panel) looks consistent with the sidebar without any extra theming.
+
+### 11.4 Optional peer dependencies
+
+A few `ext` components reach for an existing optional peer dependency instead of a bespoke
+implementation — install only the ones you actually use, same as the base template's optional
+deps (see the [README](../README.md#requirements-in-the-consuming-project)):
+
+| Component | Needs |
+| --- | --- |
+| `Calendar` | `@fullcalendar/vue3` + `fullcalendar` |
+| `DateRangePicker` | `flatpickr` + `vue-flatpickr-component` |
+| `Kanban` | `vuedraggable` |
+| `Map` | `leaflet` (+ `@types/leaflet` in dev, for TypeScript) |
+| `QrCode` | `qrcode` (+ `@types/qrcode` in dev) |
+
+Everything else in `components/ext` has no additional dependency beyond `vue` itself.
+
+### 11.5 Live demos
+
+Every component in this section has a working, interactive demo in
+[`examples/basic-app/src/views/ext/`](../examples/basic-app/src/views/ext) — one page per
+category (`ExtData.vue`, `ExtInput.vue`, `ExtMedia.vue`, `ExtDisplay.vue`, `ExtNavigation.vue`,
+`ExtScheduling.vue`, `ExtCommerce.vue`, `ExtUtilities.vue`), reachable from the "Ext Components"
+sidebar group when running that example app (`cd examples/basic-app && npm install && npm run
+dev`). Reading a demo page alongside the component's own source is the fastest way to see a full
+prop/slot/event surface in use.
 
 ## Maintainers: keeping this in sync with upstream
 
