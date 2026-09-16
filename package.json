@@ -1,6 +1,6 @@
 {
   "name": "@dynamia-tools/tailadmin-vue",
-  "version": "26.9.4",
+  "version": "26.9.5",
   "description": "Reusable Vue 3 + Tailwind CSS 4 admin dashboard components, extracted from TailAdmin Vue for direct import across Dynamia projects.",
   "type": "module",
   "license": "MIT",
