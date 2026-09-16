@@ -30,7 +30,7 @@
         inputmode="decimal"
         :disabled="disabled"
         :readonly="readonly"
-        class="dark:bg-dark-900 w-full border-x border-gray-300 bg-transparent px-2 py-2.5 text-center text-sm text-gray-800 focus:outline-hidden dark:border-gray-700 dark:text-white/90"
+        class="dark:bg-gray-900 w-full border-x border-gray-300 bg-transparent px-2 py-2.5 text-center text-sm text-gray-800 focus:outline-hidden dark:border-gray-700 dark:text-white/90"
         :value="modelValue"
         @input="onInput"
         @blur="onBlur"

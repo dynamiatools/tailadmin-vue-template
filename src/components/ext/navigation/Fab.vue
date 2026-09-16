@@ -9,7 +9,7 @@
         </span>
         <button
           type="button"
-          class="dark:bg-dark-900 flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-theme-lg dark:border-gray-700 dark:text-gray-300"
+          class="dark:bg-gray-900 flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-theme-lg dark:border-gray-700 dark:text-gray-300"
           :aria-label="action.label"
           @click="runAction(action)"
         >

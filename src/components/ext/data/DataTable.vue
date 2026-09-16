@@ -22,7 +22,7 @@
           >
             <span class="inline-flex items-center gap-1">
               {{ column.label }}
-              <span v-if="column.sortable && sortKey === column.key" class="text-gray-400">
+              <span v-if="column.sortable && sortKey === column.key" class="text-gray-400 dark:text-gray-500">
                 {{ sortDirection === 'asc' ? '↑' : '↓' }}
               </span>
             </span>
@@ -41,7 +41,7 @@
             <slot name="empty">No records found.</slot>
           </td>
         </TableRow>
-        <TableRow v-for="(row, rowIndex) in rows" v-else :key="rowKey(row, rowIndex)">
+        <TableRow v-for="(row, rowIndex) in rows" v-else :key="getRowKey(row, rowIndex)">
           <TableCell v-if="selectable" class="w-11">
             <input
               type="checkbox"
@@ -50,9 +50,11 @@
             />
           </TableCell>
           <TableCell v-for="column in columns" :key="column.key">
-            <slot :name="`cell-${column.key}`" :row="row" :value="row[column.key]">
-              {{ row[column.key] }}
-            </slot>
+            <span class="text-sm text-gray-700 dark:text-gray-300">
+              <slot :name="`cell-${column.key}`" :row="row" :value="row[column.key]">
+                {{ row[column.key] }}
+              </slot>
+            </span>
           </TableCell>
           <TableCell v-if="$slots.actions">
             <slot name="actions" :row="row" />
@@ -143,13 +145,13 @@ const totalPages = computed(() =>
   props.pagination ? Math.max(1, Math.ceil(props.pagination.total / props.pagination.pageSize)) : 1,
 )
 
-function rowKey(row: Record<string, unknown>, index: number): string | number {
+function getRowKey(row: Record<string, unknown>, index: number): string | number {
   if (typeof props.rowKey === 'function') return props.rowKey(row, index)
   return (row[props.rowKey] as string | number) ?? index
 }
 
 function isSelected(row: Record<string, unknown>): boolean {
-  return props.selected.some((selectedRow, i) => rowKey(selectedRow, i) === rowKey(row, i))
+  return props.selected.some((selectedRow, i) => getRowKey(selectedRow, i) === getRowKey(row, i))
 }
 
 const allSelected = computed(() => props.rows.length > 0 && props.rows.every((row) => isSelected(row)))
@@ -157,7 +159,7 @@ const someSelected = computed(() => !allSelected.value && props.rows.some((row) 
 
 function toggleSelect(row: Record<string, unknown>) {
   const next = isSelected(row)
-    ? props.selected.filter((selectedRow, i) => rowKey(selectedRow, i) !== rowKey(row, i))
+    ? props.selected.filter((selectedRow, i) => getRowKey(selectedRow, i) !== getRowKey(row, i))
     : [...props.selected, row]
   emit('update:selected', next)
 }

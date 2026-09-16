@@ -17,9 +17,11 @@
           </button>
           <span v-else class="inline-block h-5 w-5 shrink-0" />
         </template>
-        <slot :name="`cell-${column.key}`" :node="node" :value="node[column.key]">
-          {{ node[column.key] }}
-        </slot>
+        <span class="text-sm text-gray-700 dark:text-gray-300">
+          <slot :name="`cell-${column.key}`" :node="node" :value="node[column.key]">
+            {{ node[column.key] }}
+          </slot>
+        </span>
       </div>
     </TableCell>
   </TableRow>

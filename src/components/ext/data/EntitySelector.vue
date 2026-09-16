@@ -3,7 +3,7 @@
     <button
       type="button"
       :disabled="disabled"
-      class="dark:bg-dark-900 flex h-11 w-full items-center justify-between rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-left text-sm text-gray-800 shadow-theme-xs disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-white/90"
+      class="dark:bg-gray-900 flex h-11 w-full items-center justify-between rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-left text-sm text-gray-800 shadow-theme-xs disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-white/90"
       @click="open = !open"
     >
       <span :class="selectedLabels ? '' : 'text-gray-400 dark:text-white/30'">
@@ -14,7 +14,7 @@
 
     <div
       v-if="open"
-      class="dark:bg-dark-900 absolute z-30 mt-1.5 w-full rounded-lg border border-gray-200 bg-white shadow-theme-lg dark:border-gray-700"
+      class="dark:bg-gray-900 absolute z-30 mt-1.5 w-full rounded-lg border border-gray-200 bg-white shadow-theme-lg dark:border-gray-700"
     >
       <div v-if="searchable" class="border-b border-gray-100 p-2 dark:border-gray-800">
         <input

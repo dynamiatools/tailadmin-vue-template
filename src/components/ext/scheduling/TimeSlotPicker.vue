@@ -11,7 +11,7 @@
       role="radio"
       :aria-checked="modelValue === slot.value"
       :disabled="disabled || slot.available === false"
-      class="dark:bg-dark-900 rounded-lg border px-3 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-40"
+      class="dark:bg-gray-900 rounded-lg border px-3 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-40"
       :class="
         modelValue === slot.value
           ? 'border-brand-500 bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-400'

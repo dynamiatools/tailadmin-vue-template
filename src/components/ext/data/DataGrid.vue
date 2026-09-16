@@ -17,7 +17,7 @@
               v-if="column.editable && isEditing(rowIndex, column.key)"
               ref="editingInputRef"
               :type="column.type === 'number' ? 'number' : 'text'"
-              class="dark:bg-dark-900 -my-1.5 h-9 w-full rounded-md border border-brand-300 bg-transparent px-2 text-sm text-gray-800 focus:outline-hidden dark:border-brand-800 dark:text-white/90"
+              class="dark:bg-gray-900 -my-1.5 h-9 w-full rounded-md border border-brand-300 bg-transparent px-2 text-sm text-gray-800 focus:outline-hidden dark:border-brand-800 dark:text-white/90"
               :value="row[column.key]"
               @blur="commitEdit(rowIndex, column.key, $event)"
               @keydown.enter="commitEdit(rowIndex, column.key, $event)"
@@ -25,6 +25,7 @@
             />
             <div
               v-else
+              class="text-sm text-gray-700 dark:text-gray-300"
               :class="column.editable ? 'cursor-text rounded-md px-1 -mx-1 hover:bg-gray-50 dark:hover:bg-white/[0.03]' : ''"
               @click="column.editable && startEdit(rowIndex, column.key)"
             >

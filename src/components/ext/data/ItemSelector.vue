@@ -12,7 +12,7 @@
       role="option"
       :aria-selected="isSelected(item)"
       :disabled="disabled"
-      class="dark:bg-dark-900 flex flex-col items-center gap-2 rounded-lg border p-3 text-center transition disabled:cursor-not-allowed disabled:opacity-50"
+      class="dark:bg-gray-900 flex flex-col items-center gap-2 rounded-lg border p-3 text-center transition disabled:cursor-not-allowed disabled:opacity-50"
       :class="
         isSelected(item)
           ? 'border-brand-500 ring-brand-500/20 bg-brand-50 ring-2 dark:bg-brand-500/10'

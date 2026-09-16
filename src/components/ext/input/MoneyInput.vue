@@ -19,7 +19,7 @@
         :placeholder="placeholder"
         :aria-invalid="invalid || undefined"
         :class="[
-          'dark:bg-dark-900 h-11 w-full rounded-lg border bg-transparent py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:outline-hidden focus:ring-3 dark:text-white/90 dark:placeholder:text-white/30',
+          'dark:bg-gray-900 h-11 w-full rounded-lg border bg-transparent py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:outline-hidden focus:ring-3 dark:text-white/90 dark:placeholder:text-white/30',
           currencySymbol ? 'ltr:pl-10 rtl:pr-10 ltr:pr-4 rtl:pl-4' : 'px-4',
           invalid
             ? 'border-error-500 focus:border-error-300 focus:ring-error-500/10 dark:border-error-500'

@@ -8,7 +8,7 @@
       <div class="flex items-center justify-between px-3 py-2.5">
         <slot name="column-header" :column="column">
           <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ column.title }}</span>
-          <span class="text-xs text-gray-400">{{ column.items.length }}</span>
+          <span class="text-xs text-gray-400 dark:text-gray-500">{{ column.items.length }}</span>
         </slot>
       </div>
 
@@ -22,7 +22,7 @@
       >
         <template #item="{ element }: { element: KanbanItem }">
           <div
-            class="dark:bg-dark-900 cursor-grab rounded-lg border border-gray-200 bg-white p-3 text-sm shadow-theme-xs active:cursor-grabbing dark:border-gray-700"
+            class="dark:bg-gray-900 cursor-grab rounded-lg border border-gray-200 bg-white p-3 text-sm text-gray-700 shadow-theme-xs active:cursor-grabbing dark:border-gray-700 dark:text-gray-300"
           >
             <slot name="item" :item="element" :column="column">
               {{ element.title ?? element.id }}

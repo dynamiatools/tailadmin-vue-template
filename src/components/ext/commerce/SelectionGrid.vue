@@ -5,7 +5,7 @@
       :key="item.id"
       type="button"
       :disabled="item.status === 'unavailable'"
-      class="dark:bg-dark-900 flex aspect-square flex-col items-center justify-center gap-1 rounded-lg border p-2 text-center text-xs font-medium transition disabled:cursor-not-allowed"
+      class="dark:bg-gray-900 flex aspect-square flex-col items-center justify-center gap-1 rounded-lg border p-2 text-center text-xs font-medium transition disabled:cursor-not-allowed"
       :class="cellClasses(item)"
       @click="select(item)"
     >
