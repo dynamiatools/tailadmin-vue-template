@@ -16,6 +16,7 @@ const extGroup: MenuGroup = {
         { name: 'Data', path: '/ext/data', pro: false },
         { name: 'Media', path: '/ext/media', pro: false },
         { name: 'Display', path: '/ext/display', pro: false },
+        { name: 'Layouts', path: '/ext/layouts', pro: false },
         { name: 'Navigation', path: '/ext/navigation', pro: false },
         { name: 'Scheduling', path: '/ext/scheduling', pro: false },
         { name: 'Commerce', path: '/ext/commerce', pro: false },

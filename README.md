@@ -121,7 +121,8 @@ Optional dependencies depending on which components you use (declared as optiona
 `ext/scheduling/DateRangePicker`), `swiper` (carousels), `vuedraggable` (drag & drop — also used
 by `ext/navigation/Kanban`), `dropzone` (upload), `simplebar-vue` (scrollbars), `floating-vue` +
 `@floating-ui/vue` (tooltips/popovers), `lucide-vue-next` (icons), `qrcode` (QR code generation —
-`ext/display/QrCode`), `temporal-polyfill`.
+`ext/display/QrCode`), `marked` + `dompurify` (Markdown rendering — `ext/layouts/MarkdownViewer`),
+`temporal-polyfill`.
 
 ### Static image assets
 

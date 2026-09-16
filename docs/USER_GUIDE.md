@@ -527,6 +527,32 @@ Import path: `@dynamia-tools/tailadmin-vue/components/ext/<category>/<Component>
 | --- | --- |
 | `LazyLoader` | Generic async data wrapper — loading/error/retry/reload via scoped slots, optional param-keyed reload and in-memory cache. |
 
+**Layouts** — `src/components/ext/layouts/`
+
+Page shells and marketing sections for building standard public websites and applications on
+top of the base admin template. Sections are domain-agnostic building blocks (props for data,
+slots for structural override); shells compose them or provide their own structural regions.
+
+| Component | What it does |
+| --- | --- |
+| `Hero` | Marketing hero section — eyebrow, title, subtitle, optional image, `actions` slot. |
+| `CTA` | Call-to-action banner, solid or outline variant. |
+| `Navbar` | Sticky marketing navbar with responsive mobile menu; `logo`/`actions` slots. |
+| `Footer` | Multi-column marketing footer with `brand`/`social`/`newsletter`/`copyright` slots. |
+| `FeatureGrid` | Responsive 2/3/4-column grid of icon + title + description feature cards. |
+| `PricingTable` | Plan comparison cards with a highlighted tier and `@select` event. |
+| `Testimonial` | Customer quote cards. |
+| `FAQAccordion` | Collapsible question/answer list. |
+| `Landing` | Ordering shell composing the sections above via named slots (`navbar`, `hero`, `features`, `testimonials`, `pricing`, `faq`, `cta`, `footer`, default). |
+| `MobileAppLayout` | Header + scrollable content + bottom tab bar shell for mobile-style views. |
+| `BorderLayout` | Header/left/center/right/footer regions; stacks on narrow viewports, row layout at `lg`. |
+| `DocsLayout` | Sidebar nav (composes `Menu`) + prose column + table of contents, for documentation pages. |
+| `AuthSplit` | Split-screen auth shell — brand panel (`brand` slot or `image`) + centered form column (default slot). |
+| `Tabs` | Tab list with keyboard navigation (arrow keys); `top`/`bottom`/`left`/`right` position. |
+| `LoginDialog` | Modal sign-in form (`v-model`, `@submit`) with `social`/`footer` slots. |
+| `EmptyState` | Placeholder for empty/no-data states — icon slot, title/description, optional action. |
+| `MarkdownViewer` | Renders Markdown to sanitized HTML (needs `marked` + `dompurify`, see §11.4). |
+
 ### 11.3 Worked examples
 
 **A selectable, sortable `DataTable` with a custom cell:**
@@ -604,6 +630,7 @@ deps (see the [README](../README.md#requirements-in-the-consuming-project)):
 | `Kanban` | `vuedraggable` |
 | `Map` | `leaflet` (+ `@types/leaflet` in dev, for TypeScript) |
 | `QrCode` | `qrcode` (+ `@types/qrcode` in dev) |
+| `MarkdownViewer` | `marked` + `dompurify` (both ship their own types) |
 
 Everything else in `components/ext` has no additional dependency beyond `vue` itself.
 
@@ -611,11 +638,11 @@ Everything else in `components/ext` has no additional dependency beyond `vue` it
 
 Every component in this section has a working, interactive demo in
 [`examples/basic-app/src/views/ext/`](../examples/basic-app/src/views/ext) — one page per
-category (`ExtData.vue`, `ExtInput.vue`, `ExtMedia.vue`, `ExtDisplay.vue`, `ExtNavigation.vue`,
-`ExtScheduling.vue`, `ExtCommerce.vue`, `ExtUtilities.vue`), reachable from the "Ext Components"
-sidebar group when running that example app (`cd examples/basic-app && npm install && npm run
-dev`). Reading a demo page alongside the component's own source is the fastest way to see a full
-prop/slot/event surface in use.
+category (`ExtData.vue`, `ExtInput.vue`, `ExtMedia.vue`, `ExtDisplay.vue`, `ExtLayouts.vue`,
+`ExtNavigation.vue`, `ExtScheduling.vue`, `ExtCommerce.vue`, `ExtUtilities.vue`), reachable from
+the "Ext Components" sidebar group when running that example app (`cd examples/basic-app && npm
+install && npm run dev`). Reading a demo page alongside the component's own source is the
+fastest way to see a full prop/slot/event surface in use.
 
 ## Maintainers: keeping this in sync with upstream
 
