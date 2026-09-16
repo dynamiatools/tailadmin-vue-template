@@ -28,6 +28,10 @@ every Dynamia project (or yours) pulls from one source of truth and stays in syn
 
 - 🧩 **60+ components** — layout (sidebar, header, responsive shell), forms, tables, charts,
   ecommerce widgets, profile cards, and more.
+- 🧱 **38 additional `components/ext/*` building blocks** — data tables, form inputs (money,
+  OTP/PIN, rating, color…), media capture, navigation, scheduling, and commerce components for
+  building real admin/SaaS/ERP/POS features on top of the base template. See
+  [below](#extended-component-library-componentsext).
 - 📦 **Import exactly what you use** — no bundle, no barrel-file bloat. Pull in one `.vue` file
   and its transitive imports, nothing else.
 - 🎨 **Themeable at runtime** — Tailwind v4 compiles colors to CSS custom properties, so
@@ -71,16 +75,36 @@ import { BoxCubeIcon } from '@dynamia-tools/tailadmin-vue/icons'
 ```
 
 Browse `src/components/` in this repo (or in `node_modules` once installed) to see everything
-available: `ui/`, `forms/`, `tables/`, `charts/`, `layout/`, `common/`, `profile/`, `ecommerce/`.
+available: `ui/`, `forms/`, `tables/`, `charts/`, `layout/`, `common/`, `profile/`, `ecommerce/`,
+plus the extended library under `ext/` (see [below](#extended-component-library-componentsext)).
 See [`examples/basic-app`](./examples/basic-app) for a full working Vite app wired up against
 this package — every page in the sidebar rendering end to end, plus a live brand-color picker.
 
-For the layout components specifically — `AdminLayout`, `AppSidebar`, `AppHeader`,
-`NotificationMenu`, `UserMenu` — including how to plug in your own menu, header widgets, and
-user/notifications data via their props and slots, see
-[docs/USER_GUIDE.md](./docs/USER_GUIDE.md). [`examples/custom-app`](./examples/custom-app) is a
-single page putting every one of those slots/props to use at once, with a recolored sidebar and
-header.
+For the details — layout components (`AdminLayout`, `AppSidebar`, `AppHeader`,
+`NotificationMenu`, `UserMenu`, including how to plug in your own menu, header widgets, and
+user/notifications data via their props and slots) and the extended `components/ext` library —
+see [docs/USER_GUIDE.md](./docs/USER_GUIDE.md). [`examples/custom-app`](./examples/custom-app) is
+a single page putting every layout slot/prop to use at once, with a recolored sidebar and header.
+
+## Extended component library (`components/ext`)
+
+Beyond the base template, this package ships **38 additional, domain-agnostic components**
+under `src/components/ext/<category>/`, for building real administrative/SaaS/ERP/POS/ecommerce
+features rather than just a demo dashboard: `DataTable`, `TreeTable`, `MoneyInput`, `PinInput`,
+`Rating`, `Webcam`, `SignaturePad`, `Calendar`, `Cart`, `ItemGrid`, `Kanban`, `Map`, and more —
+see the full catalog and usage patterns in
+[docs/USER_GUIDE.md § Extended component library](./docs/USER_GUIDE.md#11-extended-component-library-componentsext).
+
+Every one of them also has a live, interactive demo in
+[`examples/basic-app/src/views/ext/`](./examples/basic-app/src/views/ext) — the fastest way to
+see one in action before reading its source.
+
+```vue
+<script setup lang="ts">
+import DataTable from '@dynamia-tools/tailadmin-vue/components/ext/data/DataTable.vue'
+import Rating from '@dynamia-tools/tailadmin-vue/components/ext/input/Rating.vue'
+</script>
+```
 
 ## Requirements in the consuming project
 
@@ -91,11 +115,13 @@ header.
 
 Optional dependencies depending on which components you use (declared as optional
 `peerDependencies` — install only what you need): `apexcharts` + `vue3-apexcharts` (charts),
-`fullcalendar` + `@fullcalendar/vue3` (calendar), `leaflet` (maps), `jsvectormap` +
-`vuevectormap` (vector maps), `flatpickr` + `vue-flatpickr-component` (date picker), `swiper`
-(carousels), `vuedraggable` (drag & drop), `dropzone` (upload), `simplebar-vue` (scrollbars),
-`floating-vue` + `@floating-ui/vue` (tooltips/popovers), `lucide-vue-next` (icons),
-`temporal-polyfill`.
+`fullcalendar` + `@fullcalendar/vue3` (calendar, also used by `ext/scheduling/Calendar`),
+`leaflet` (maps — `CustomerDemographic` and `ext/display/Map`), `jsvectormap` + `vuevectormap`
+(vector maps), `flatpickr` + `vue-flatpickr-component` (date picker, also used by
+`ext/scheduling/DateRangePicker`), `swiper` (carousels), `vuedraggable` (drag & drop — also used
+by `ext/navigation/Kanban`), `dropzone` (upload), `simplebar-vue` (scrollbars), `floating-vue` +
+`@floating-ui/vue` (tooltips/popovers), `lucide-vue-next` (icons), `qrcode` (QR code generation —
+`ext/display/QrCode`), `temporal-polyfill`.
 
 ### Static image assets
 
