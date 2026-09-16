@@ -34,6 +34,11 @@
     <ComponentCard title="ColorPicker" desc="Native color input with hex field and presets.">
       <ColorPicker v-model="color" label="Accent color" :presets="colorPresets" />
     </ComponentCard>
+
+    <ComponentCard title="PinInput" desc="Segmented PIN/OTP input with auto-advance and paste support.">
+      <PinInput v-model="pin" :length="6" @complete="(value) => (pinCompleted = value)" />
+      <p class="text-sm text-gray-500 dark:text-gray-400">Completed: {{ pinCompleted || '—' }}</p>
+    </ComponentCard>
   </ExtLayout>
 </template>
 
@@ -48,6 +53,7 @@ import PaymentInput from '@dynamia-tools/tailadmin-vue/components/ext/input/Paym
 import type { PaymentEntry } from '@dynamia-tools/tailadmin-vue/components/ext/input/PaymentInput.vue'
 import Rating from '@dynamia-tools/tailadmin-vue/components/ext/input/Rating.vue'
 import ColorPicker from '@dynamia-tools/tailadmin-vue/components/ext/input/ColorPicker.vue'
+import PinInput from '@dynamia-tools/tailadmin-vue/components/ext/input/PinInput.vue'
 import ExtLayout from './ExtLayout.vue'
 
 const money = ref<number | null>(49.9)
@@ -59,6 +65,8 @@ const lastScan = ref('')
 const rating = ref(3)
 const color = ref('#465fff')
 const colorPresets = ['#465fff', '#12b76a', '#f04438', '#f79009', '#0ea5e9']
+const pin = ref('')
+const pinCompleted = ref('')
 
 const paymentMethods = [
   { label: 'Cash', value: 'cash' },

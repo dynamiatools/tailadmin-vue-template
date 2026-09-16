@@ -29,6 +29,13 @@
     <ComponentCard title="QrCode" desc="Generates a QR code from configurable content.">
       <QrCode value="https://github.com/dynamiatools/tailadmin-vue-template" :size="160" />
     </ComponentCard>
+
+    <ComponentCard title="Map" desc="Interactive OpenStreetMap map via Leaflet — no API key required.">
+      <Map :center="mapCenter" :zoom="12" :markers="mapMarkers" selectable height="320px" @map-click="onMapClick" />
+      <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+        Last clicked: {{ lastMapClick ?? '—' }}
+      </p>
+    </ComponentCard>
   </ExtLayout>
 </template>
 
@@ -40,7 +47,10 @@ import Timeline from '@dynamia-tools/tailadmin-vue/components/ext/display/Timeli
 import type { TimelineItem } from '@dynamia-tools/tailadmin-vue/components/ext/display/Timeline.vue'
 import PdfViewer from '@dynamia-tools/tailadmin-vue/components/ext/display/PdfViewer.vue'
 import QrCode from '@dynamia-tools/tailadmin-vue/components/ext/display/QrCode.vue'
+import Map from '@dynamia-tools/tailadmin-vue/components/ext/display/Map.vue'
+import type { MapMarker } from '@dynamia-tools/tailadmin-vue/components/ext/display/Map.vue'
 import { UserGroupIcon, BoxIcon, InfoCircleIcon } from '@dynamia-tools/tailadmin-vue/icons'
+import { ref } from 'vue'
 import ExtLayout from './ExtLayout.vue'
 
 const timelineItems: TimelineItem[] = [
@@ -48,4 +58,14 @@ const timelineItems: TimelineItem[] = [
   { id: 2, title: 'Payment confirmed', timestamp: '09:05', color: 'success' },
   { id: 3, title: 'Shipment delayed', description: 'Carrier reported a delay.', timestamp: '14:20', color: 'warning' },
 ]
+
+const mapCenter: [number, number] = [40.4168, -3.7038]
+const mapMarkers: MapMarker[] = [
+  { lat: 40.4168, lng: -3.7038, popup: 'Madrid HQ' },
+  { lat: 40.42, lng: -3.71, popup: 'Warehouse' },
+]
+const lastMapClick = ref<string | null>(null)
+function onMapClick(location: { lat: number; lng: number }) {
+  lastMapClick.value = `${location.lat.toFixed(4)}, ${location.lng.toFixed(4)}`
+}
 </script>
