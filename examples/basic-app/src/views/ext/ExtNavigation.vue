@@ -29,6 +29,19 @@
       <Kanban v-model="board" @item-move="onItemMove" />
       <p class="text-sm text-gray-500 dark:text-gray-400">Last move: {{ lastMove ?? '—' }}</p>
     </ComponentCard>
+
+    <ComponentCard title="Menu" desc="Generic menu list, vertical or horizontal, with nested items.">
+      <div class="space-y-6">
+        <div>
+          <p class="mb-2 text-xs font-medium text-gray-400 uppercase dark:text-gray-500">Vertical</p>
+          <Menu :items="menuItems" orientation="vertical" :active-id="activeMenuId" @select="onMenuSelect" />
+        </div>
+        <div>
+          <p class="mb-2 text-xs font-medium text-gray-400 uppercase dark:text-gray-500">Horizontal</p>
+          <Menu :items="menuItems" orientation="horizontal" :active-id="activeMenuId" @select="onMenuSelect" />
+        </div>
+      </div>
+    </ComponentCard>
   </ExtLayout>
 </template>
 
@@ -41,7 +54,9 @@ import Fab from '@dynamia-tools/tailadmin-vue/components/ext/navigation/Fab.vue'
 import type { FabAction } from '@dynamia-tools/tailadmin-vue/components/ext/navigation/Fab.vue'
 import Kanban from '@dynamia-tools/tailadmin-vue/components/ext/navigation/Kanban.vue'
 import type { KanbanColumn, KanbanItem } from '@dynamia-tools/tailadmin-vue/components/ext/navigation/Kanban.vue'
-import { PlusIcon, TaskIcon, DocsIcon, SettingsIcon } from '@dynamia-tools/tailadmin-vue/icons'
+import Menu from '@dynamia-tools/tailadmin-vue/components/ext/navigation/Menu.vue'
+import type { MenuItem } from '@dynamia-tools/tailadmin-vue/components/ext/navigation/Menu.vue'
+import { PlusIcon, TaskIcon, DocsIcon, SettingsIcon, GridIcon, UserCircleIcon } from '@dynamia-tools/tailadmin-vue/icons'
 import ExtLayout from './ExtLayout.vue'
 
 const paletteOpen = ref(false)
@@ -66,5 +81,23 @@ const board = ref<KanbanColumn[]>([
 const lastMove = ref<string | null>(null)
 function onItemMove({ item, column }: { item: KanbanItem; column: KanbanColumn }) {
   lastMove.value = `${item.title} → ${column.title}`
+}
+
+const activeMenuId = ref<string | number | null>('dashboard')
+const menuItems: MenuItem[] = [
+  { id: 'dashboard', label: 'Dashboard', icon: GridIcon },
+  {
+    id: 'account',
+    label: 'Account',
+    icon: UserCircleIcon,
+    children: [
+      { id: 'profile', label: 'Profile' },
+      { id: 'settings', label: 'Settings' },
+    ],
+  },
+  { id: 'docs', label: 'Documentation', icon: DocsIcon },
+]
+function onMenuSelect(item: MenuItem) {
+  activeMenuId.value = item.id
 }
 </script>

@@ -24,6 +24,20 @@
     <ComponentCard title="DropFileUploader" desc="Drag & drop or browse files (no backend — files stay pending).">
       <DropFileUploader :auto-upload="false" :accepted-types="['image/*']" />
     </ComponentCard>
+
+    <ComponentCard title="SoundPlayer" desc="Visible playback controls, or an invisible/headless mode for UI sounds.">
+      <SoundPlayer src="/files/sample-tone.wav" />
+      <div class="mt-4 flex items-center gap-3">
+        <button
+          type="button"
+          class="rounded-lg border border-gray-300 px-3 py-1.5 text-sm text-gray-700 dark:border-gray-700 dark:text-gray-400"
+          @click="invisiblePlayerRef?.play()"
+        >
+          Play invisible sound effect
+        </button>
+        <SoundPlayer ref="invisiblePlayerRef" src="/files/sample-tone.wav" :visible="false" />
+      </div>
+    </ComponentCard>
   </ExtLayout>
 </template>
 
@@ -34,6 +48,7 @@ import Webcam from '@dynamia-tools/tailadmin-vue/components/ext/media/Webcam.vue
 import ImageCropper from '@dynamia-tools/tailadmin-vue/components/ext/media/ImageCropper.vue'
 import SignaturePad from '@dynamia-tools/tailadmin-vue/components/ext/media/SignaturePad.vue'
 import DropFileUploader from '@dynamia-tools/tailadmin-vue/components/ext/media/DropFileUploader.vue'
+import SoundPlayer from '@dynamia-tools/tailadmin-vue/components/ext/media/SoundPlayer.vue'
 import ExtLayout from './ExtLayout.vue'
 
 const capturedPhoto = ref('')
@@ -45,4 +60,6 @@ function exportCrop() {
 }
 
 const signature = ref('')
+
+const invisiblePlayerRef = ref<InstanceType<typeof SoundPlayer> | null>(null)
 </script>
