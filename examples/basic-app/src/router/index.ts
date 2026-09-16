@@ -85,6 +85,54 @@ const router = createRouter({
       meta: { title: 'Videos' },
     },
     {
+      path: '/ext/input',
+      name: 'Ext Input',
+      component: () => import('../views/ext/ExtInput.vue'),
+      meta: { title: 'Ext / Input' },
+    },
+    {
+      path: '/ext/data',
+      name: 'Ext Data',
+      component: () => import('../views/ext/ExtData.vue'),
+      meta: { title: 'Ext / Data' },
+    },
+    {
+      path: '/ext/media',
+      name: 'Ext Media',
+      component: () => import('../views/ext/ExtMedia.vue'),
+      meta: { title: 'Ext / Media' },
+    },
+    {
+      path: '/ext/display',
+      name: 'Ext Display',
+      component: () => import('../views/ext/ExtDisplay.vue'),
+      meta: { title: 'Ext / Display' },
+    },
+    {
+      path: '/ext/navigation',
+      name: 'Ext Navigation',
+      component: () => import('../views/ext/ExtNavigation.vue'),
+      meta: { title: 'Ext / Navigation' },
+    },
+    {
+      path: '/ext/scheduling',
+      name: 'Ext Scheduling',
+      component: () => import('../views/ext/ExtScheduling.vue'),
+      meta: { title: 'Ext / Scheduling' },
+    },
+    {
+      path: '/ext/commerce',
+      name: 'Ext Commerce',
+      component: () => import('../views/ext/ExtCommerce.vue'),
+      meta: { title: 'Ext / Commerce' },
+    },
+    {
+      path: '/ext/utilities',
+      name: 'Ext Utilities',
+      component: () => import('../views/ext/ExtUtilities.vue'),
+      meta: { title: 'Ext / Utilities' },
+    },
+    {
       // Upstream's own "Blank Page" nav item — intentionally minimal, not a
       // stand-in for an unimplemented page. See views/BlankPage.vue.
       path: '/blank',
