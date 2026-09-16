@@ -15,6 +15,8 @@
 
 <script setup lang="ts">
 import AdminLayout from '@dynamia-tools/tailadmin-vue/components/layout/AdminLayout.vue'
+import AppSidebar from '@dynamia-tools/tailadmin-vue/components/layout/AppSidebar.vue'
+import { extMenuGroups } from '../router/extMenuGroups'
 import PageBreadcrumb from '@dynamia-tools/tailadmin-vue/components/common/PageBreadcrumb.vue'
 import { ref } from 'vue'
 import ProfileCard from '@dynamia-tools/tailadmin-vue/components/profile/ProfileCard.vue'

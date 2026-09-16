@@ -1,5 +1,8 @@
 <template>
   <AdminLayout>
+    <template #sidebar>
+      <AppSidebar :menu-groups="extMenuGroups" />
+    </template>
     <PageBreadcrumb page-title="Form Elements" />
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
       <div class="space-y-6">
@@ -43,6 +46,8 @@
 <script setup lang="ts">
 // Same composition as upstream's src/views/Forms/FormElements.vue.
 import AdminLayout from '@dynamia-tools/tailadmin-vue/components/layout/AdminLayout.vue'
+import AppSidebar from '@dynamia-tools/tailadmin-vue/components/layout/AppSidebar.vue'
+import { extMenuGroups } from '../router/extMenuGroups'
 import PageBreadcrumb from '@dynamia-tools/tailadmin-vue/components/common/PageBreadcrumb.vue'
 import ComponentCard from '@dynamia-tools/tailadmin-vue/components/common/ComponentCard.vue'
 import DefaultInputs from '@dynamia-tools/tailadmin-vue/components/forms/FormElements/DefaultInputs.vue'
