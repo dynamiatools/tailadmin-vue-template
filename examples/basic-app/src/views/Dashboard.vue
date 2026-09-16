@@ -1,5 +1,8 @@
 <template>
   <AdminLayout>
+    <template #sidebar>
+      <AppSidebar :menu-groups="extMenuGroups" />
+    </template>
     <div class="grid grid-cols-12 gap-4 md:gap-6">
       <div class="col-span-12 space-y-6 xl:col-span-7">
         <EcommerceMetrics />
@@ -28,6 +31,8 @@
 // Same composition as upstream's src/views/Ecommerce.vue — the reference
 // dashboard for the template.
 import AdminLayout from '@dynamia-tools/tailadmin-vue/components/layout/AdminLayout.vue'
+import AppSidebar from '@dynamia-tools/tailadmin-vue/components/layout/AppSidebar.vue'
+import { extMenuGroups } from '../router/extMenuGroups'
 import EcommerceMetrics from '@dynamia-tools/tailadmin-vue/components/ecommerce/EcommerceMetrics.vue'
 import MonthlyTarget from '@dynamia-tools/tailadmin-vue/components/ecommerce/MonthlySale.vue'
 import MonthlySale from '@dynamia-tools/tailadmin-vue/components/ecommerce/MonthlyTarget.vue'

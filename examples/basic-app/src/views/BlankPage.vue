@@ -1,5 +1,8 @@
 <template>
   <AdminLayout>
+    <template #sidebar>
+      <AppSidebar :menu-groups="extMenuGroups" />
+    </template>
     <PageBreadcrumb :pageTitle="currentPageTitle" />
     <div
       class="min-h-screen rounded-2xl border border-gray-200 bg-white px-5 py-7 dark:border-gray-800 dark:bg-white/[0.03] xl:px-10 xl:py-12"
@@ -23,6 +26,8 @@
 <script setup>
 import { ref } from "vue";
 import AdminLayout from "@dynamia-tools/tailadmin-vue/components/layout/AdminLayout.vue";
+import AppSidebar from "@dynamia-tools/tailadmin-vue/components/layout/AppSidebar.vue";
+import { extMenuGroups } from "../router/extMenuGroups";
 import PageBreadcrumb from "@dynamia-tools/tailadmin-vue/components/common/PageBreadcrumb.vue";
 
 const currentPageTitle = ref("Blank Page");

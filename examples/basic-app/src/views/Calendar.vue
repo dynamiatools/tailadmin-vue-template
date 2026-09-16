@@ -1,5 +1,8 @@
 <template>
   <AdminLayout>
+    <template #sidebar>
+      <AppSidebar :menu-groups="extMenuGroups" />
+    </template>
     <PageBreadcrumb :pageTitle="currentPageTitle" />
     <div
       ref="calendarContainerRef"
@@ -190,6 +193,8 @@
 <script setup lang="ts">
 import PageBreadcrumb from '@dynamia-tools/tailadmin-vue/components/common/PageBreadcrumb.vue'
 import AdminLayout from '@dynamia-tools/tailadmin-vue/components/layout/AdminLayout.vue'
+import AppSidebar from '@dynamia-tools/tailadmin-vue/components/layout/AppSidebar.vue'
+import { extMenuGroups } from '../router/extMenuGroups'
 import Modal from '@dynamia-tools/tailadmin-vue/components/profile/Modal.vue'
 import { onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 
