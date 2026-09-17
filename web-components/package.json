@@ -1,0 +1,114 @@
+{
+  "name": "@dynamia-tools/tailadmin-vue-wc",
+  "version": "0.1.0",
+  "description": "Standalone Web Components (Custom Elements) built from @dynamia-tools/tailadmin-vue components, for use outside Vue.",
+  "type": "module",
+  "license": "MIT",
+  "contributors": [
+    "Dynamia Tools <mario@dynamiasoluciones.com>"
+  ],
+  "homepage": "https://github.com/dynamiatools/tailadmin-vue-template",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dynamiatools/tailadmin-vue-template.git",
+    "directory": "web-components"
+  },
+  "keywords": [
+    "web-components",
+    "custom-elements",
+    "vue",
+    "tailwindcss",
+    "tailadmin"
+  ],
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "exports": {
+    ".": "./dist/index.js",
+    "./*": "./dist/components/*.js",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "vite build",
+    "type-check": "vue-tsc --build"
+  },
+  "dependencies": {
+    "@dynamia-tools/tailadmin-vue": "file:.."
+  },
+  "peerDependencies": {
+    "vue": "^3.5.0",
+    "@floating-ui/vue": "^1.1.0",
+    "@fullcalendar/vue3": "^7.0.0",
+    "apexcharts": "^7.0.0",
+    "vue3-apexcharts": "^1.11.0",
+    "dompurify": "^3.0.0",
+    "dropzone": "^6.0.0-beta.2",
+    "flatpickr": "^4.6.0",
+    "vue-flatpickr-component": "^11.0.0",
+    "floating-vue": "^5.2.0",
+    "fullcalendar": "^7.0.0",
+    "jsvectormap": "^1.6.0",
+    "vuevectormap": "^2.0.0",
+    "leaflet": "^1.9.0",
+    "lucide-vue-next": "^0.474.0",
+    "marked": "^18.0.0",
+    "qrcode": "^1.5.0",
+    "simplebar-vue": "^2.4.0",
+    "swiper": "^14.0.0",
+    "temporal-polyfill": "^1.0.0",
+    "vuedraggable": "^4.1.0"
+  },
+  "peerDependenciesMeta": {
+    "@floating-ui/vue": { "optional": true },
+    "@fullcalendar/vue3": { "optional": true },
+    "apexcharts": { "optional": true },
+    "vue3-apexcharts": { "optional": true },
+    "dompurify": { "optional": true },
+    "dropzone": { "optional": true },
+    "flatpickr": { "optional": true },
+    "vue-flatpickr-component": { "optional": true },
+    "floating-vue": { "optional": true },
+    "fullcalendar": { "optional": true },
+    "jsvectormap": { "optional": true },
+    "vuevectormap": { "optional": true },
+    "leaflet": { "optional": true },
+    "lucide-vue-next": { "optional": true },
+    "marked": { "optional": true },
+    "qrcode": { "optional": true },
+    "simplebar-vue": { "optional": true },
+    "swiper": { "optional": true },
+    "temporal-polyfill": { "optional": true },
+    "vuedraggable": { "optional": true }
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.9",
+    "@vue/tsconfig": "^0.7.0",
+    "typescript": "~5.7.3",
+    "vite": "^8.3.0",
+    "vue": "^3.5.26",
+    "vue-tsc": "^2.2.12",
+    "@fullcalendar/vue3": "^7.1.0",
+    "apexcharts": "^7.1.0",
+    "vue3-apexcharts": "^1.11.1",
+    "jsvectormap": "1.6.0",
+    "vuevectormap": "2.0.1",
+    "flatpickr": "^4.6.13",
+    "vue-flatpickr-component": "^11.0.5",
+    "leaflet": "^1.9.4",
+    "dropzone": "6.0.0-beta.2",
+    "floating-vue": "^5.2.2",
+    "@floating-ui/vue": "^1.1.11",
+    "lucide-vue-next": "^0.474.0",
+    "marked": "^18.0.13",
+    "dompurify": "^3.4.15",
+    "qrcode": "^1.5.4",
+    "simplebar-vue": "^2.4.0",
+    "swiper": "^14.2.0",
+    "temporal-polyfill": "^1.0.4",
+    "vuedraggable": "^4.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
