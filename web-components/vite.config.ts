@@ -13,6 +13,8 @@ const entries = Object.fromEntries(
     .map((file) => [`components/${file.replace(/\.ts$/, '')}`, `${componentsDir}/${file}`]),
 )
 entries.index = fileURLToPath(new URL('./src/index.ts', import.meta.url))
+entries.elements = fileURLToPath(new URL('./src/elements.ts', import.meta.url))
+entries.helpers = fileURLToPath(new URL('./src/helpers.ts', import.meta.url))
 
 // Mirrors the root package's optional peerDependencies: components that use these
 // libs (charts, maps, calendar, QR, markdown, drag&drop, etc.) must not bundle them —

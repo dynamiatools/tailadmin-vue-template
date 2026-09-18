@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>UI — tailadmin-vue-wc demo</title>
+  </head>
+  <body class="bg-gray-50 dark:bg-gray-900">
+    <main class="mx-auto flex max-w-5xl flex-col gap-6 p-8">
+      <a href="../index.html" class="text-sm text-brand-600 hover:underline">&larr; All categories</a>
+      <h1 class="text-xl font-semibold text-gray-800 dark:text-white">UI</h1>
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-alert&gt;</p>
+        <ta-alert id="demo-ta-alert" variant="success" title="It works" message="Rendered as a plain custom element."></ta-alert>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-avatar&gt;</p>
+        <ta-avatar id="demo-ta-avatar" src="/images/user/user-01.jpg"></ta-avatar>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-badge&gt;</p>
+        <ta-badge id="demo-ta-badge" color="primary"></ta-badge>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-button&gt;</p>
+        <ta-button id="demo-ta-button"></ta-button>
+      </div>
+      <div class="rounded-lg border border-dashed border-gray-300 p-4 dark:border-gray-700">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-modal&gt;</p>
+        <p class="text-xs text-gray-500 dark:text-gray-400">Not mounted here: always renders its backdrop+overlay unconditionally (no open/close prop) — meant to be wrapped in v-if by a parent, like LoginDialog does internally. Mounting it standalone would cover this whole page.</p>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-youtube-embed&gt;</p>
+        <ta-youtube-embed id="demo-ta-youtube-embed" video-id="dQw4w9WgXcQ"></ta-youtube-embed>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-responsive-image&gt;</p>
+        <ta-responsive-image id="demo-ta-responsive-image"></ta-responsive-image>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-two-column-image-grid&gt;</p>
+        <ta-two-column-image-grid id="demo-ta-two-column-image-grid"></ta-two-column-image-grid>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-three-column-image-grid&gt;</p>
+        <ta-three-column-image-grid id="demo-ta-three-column-image-grid"></ta-three-column-image-grid>
+      </div>
+      </div>
+    </main>
+
+    <script type="module" src="../src/pages/ui.ts"></script>
+  </body>
+</html>

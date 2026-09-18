@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ext / layouts — tailadmin-vue-wc demo</title>
+  </head>
+  <body class="bg-gray-50 dark:bg-gray-900">
+    <main class="mx-auto flex max-w-5xl flex-col gap-6 p-8">
+      <a href="../index.html" class="text-sm text-brand-600 hover:underline">&larr; All categories</a>
+      <h1 class="text-xl font-semibold text-gray-800 dark:text-white">Ext / layouts</h1>
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-empty-state&gt;</p>
+        <ta-empty-state id="demo-ta-empty-state" title="No results" description="Nothing to show yet." action-label="Refresh"></ta-empty-state>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-markdown-viewer&gt;</p>
+        <ta-markdown-viewer id="demo-ta-markdown-viewer" source="# Hello
+
+Rendered from **markdown**."></ta-markdown-viewer>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-cta&gt;</p>
+        <ta-cta id="demo-ta-cta"></ta-cta>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-faq-accordion&gt;</p>
+        <div id="demo-ta-faq-accordion"></div>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-feature-grid&gt;</p>
+        <div id="demo-ta-feature-grid"></div>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-footer&gt;</p>
+        <ta-footer id="demo-ta-footer"></ta-footer>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-hero&gt;</p>
+        <ta-hero id="demo-ta-hero"></ta-hero>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-landing&gt;</p>
+        <ta-landing id="demo-ta-landing"></ta-landing>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-login-dialog&gt;</p>
+        <ta-login-dialog id="demo-ta-login-dialog"></ta-login-dialog>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-pricing-table&gt;</p>
+        <div id="demo-ta-pricing-table"></div>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-tabs&gt;</p>
+        <div id="demo-ta-tabs"></div>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-testimonial&gt;</p>
+        <div id="demo-ta-testimonial"></div>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-auth-split&gt;</p>
+        <ta-auth-split id="demo-ta-auth-split"></ta-auth-split>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-border-layout&gt;</p>
+        <ta-border-layout id="demo-ta-border-layout"></ta-border-layout>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-docs-layout&gt;</p>
+        <div id="demo-ta-docs-layout"></div>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-mobile-app-layout&gt;</p>
+        <div id="demo-ta-mobile-app-layout"></div>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-navbar&gt;</p>
+        <ta-navbar id="demo-ta-navbar"></ta-navbar>
+      </div>
+      </div>
+    </main>
+
+    <script type="module" src="../src/pages/layouts.ts"></script>
+  </body>
+</html>

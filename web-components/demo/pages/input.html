@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ext / input — tailadmin-vue-wc demo</title>
+  </head>
+  <body class="bg-gray-50 dark:bg-gray-900">
+    <main class="mx-auto flex max-w-5xl flex-col gap-6 p-8">
+      <a href="../index.html" class="text-sm text-brand-600 hover:underline">&larr; All categories</a>
+      <h1 class="text-xl font-semibold text-gray-800 dark:text-white">Ext / input</h1>
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-color-picker&gt;</p>
+        <ta-color-picker id="demo-ta-color-picker" model-value="#465fff"></ta-color-picker>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-money-input&gt;</p>
+        <ta-money-input id="demo-ta-money-input"></ta-money-input>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-numeric-keypad&gt;</p>
+        <ta-numeric-keypad id="demo-ta-numeric-keypad" model-value="1234"></ta-numeric-keypad>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-payment-input&gt;</p>
+        <div id="demo-ta-payment-input"></div>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-pin-input&gt;</p>
+        <ta-pin-input id="demo-ta-pin-input" model-value=""></ta-pin-input>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-quantity-input&gt;</p>
+        <ta-quantity-input id="demo-ta-quantity-input" model-value="1"></ta-quantity-input>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-rating&gt;</p>
+        <ta-rating id="demo-ta-rating" model-value="3"></ta-rating>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-scanner-input&gt;</p>
+        <ta-scanner-input id="demo-ta-scanner-input"></ta-scanner-input>
+      </div>
+      </div>
+    </main>
+
+    <script type="module" src="../src/pages/input.ts"></script>
+  </body>
+</html>

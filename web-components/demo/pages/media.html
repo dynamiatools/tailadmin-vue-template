@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ext / media — tailadmin-vue-wc demo</title>
+  </head>
+  <body class="bg-gray-50 dark:bg-gray-900">
+    <main class="mx-auto flex max-w-5xl flex-col gap-6 p-8">
+      <a href="../index.html" class="text-sm text-brand-600 hover:underline">&larr; All categories</a>
+      <h1 class="text-xl font-semibold text-gray-800 dark:text-white">Ext / media</h1>
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-drop-file-uploader&gt;</p>
+        <ta-drop-file-uploader id="demo-ta-drop-file-uploader"></ta-drop-file-uploader>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-image-cropper&gt;</p>
+        <ta-image-cropper id="demo-ta-image-cropper"></ta-image-cropper>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-signature-pad&gt;</p>
+        <ta-signature-pad id="demo-ta-signature-pad"></ta-signature-pad>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-sound-player&gt;</p>
+        <ta-sound-player id="demo-ta-sound-player"></ta-sound-player>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-webcam&gt;</p>
+        <ta-webcam id="demo-ta-webcam"></ta-webcam>
+      </div>
+      </div>
+    </main>
+
+    <script type="module" src="../src/pages/media.ts"></script>
+  </body>
+</html>

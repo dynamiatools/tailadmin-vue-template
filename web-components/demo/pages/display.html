@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ext / display — tailadmin-vue-wc demo</title>
+  </head>
+  <body class="bg-gray-50 dark:bg-gray-900">
+    <main class="mx-auto flex max-w-5xl flex-col gap-6 p-8">
+      <a href="../index.html" class="text-sm text-brand-600 hover:underline">&larr; All categories</a>
+      <h1 class="text-xl font-semibold text-gray-800 dark:text-white">Ext / display</h1>
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-map&gt;</p>
+        <div id="demo-ta-map"></div>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-pdf-viewer&gt;</p>
+        <ta-pdf-viewer id="demo-ta-pdf-viewer" src="/sample.pdf"></ta-pdf-viewer>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-qr-code&gt;</p>
+        <ta-qr-code id="demo-ta-qr-code" value="https://dynamiasoluciones.com"></ta-qr-code>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-status&gt;</p>
+        <ta-status id="demo-ta-status" label="Active"></ta-status>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-summary&gt;</p>
+        <ta-summary id="demo-ta-summary" label="Total" value="1,204"></ta-summary>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-timeline&gt;</p>
+        <div id="demo-ta-timeline"></div>
+      </div>
+      </div>
+    </main>
+
+    <script type="module" src="../src/pages/display.ts"></script>
+  </body>
+</html>
