@@ -1,0 +1,9 @@
+/* Prebuilt, self-contained stylesheet for consumers without a Tailwind/Vite build (CDN / plain
+   <script> usage). Compiled to dist/style.css by `npm run build:css` and shipped as
+   `@dynamia-tools/tailadmin-vue-wc/style.css`. Bundler users can keep importing the root
+   package's `style.css` instead. */
+@import '@dynamia-tools/tailadmin-vue/style.css';
+
+/* Tailwind v4 doesn't scan node_modules (and this symlinked package resolves outside src/), so
+   point it at the root package's component sources explicitly. */
+@source '../../src';

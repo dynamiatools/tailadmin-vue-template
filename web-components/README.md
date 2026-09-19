@@ -25,7 +25,9 @@ not scoped CSS, so they need it loaded on the host page (see "No shadow DOM" bel
 ```
 
 In practice you'll run that CSS through your own Tailwind v4 build (same `@source` pointer as
-`examples/basic-app/src/style.css` in the root repo), not serve it raw.
+`examples/basic-app/src/style.css` in the root repo), not serve it raw. If you don't have a
+Tailwind build at all, use the prebuilt `@dynamia-tools/tailadmin-vue-wc/style.css` instead (see
+"Use without Node or npm" below).
 
 Some components need one of the root package's *optional* peer dependencies (charts need
 `apexcharts` + `vue3-apexcharts`, the map needs `leaflet`, QR codes need `qrcode`, etc.) — see
@@ -34,22 +36,33 @@ what the specific components you use require.
 
 ## Usage
 
-Each component is its own subpath export, registered as a side effect on import:
+Each component is its own module, registered as a side effect on import. From plain HTML,
+straight off the CDN (the import map is what lets the elements find `vue` — see "Use without
+Node or npm" below for the full page):
 
 ```html
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@dynamia-tools/tailadmin-vue-wc@26.9.6/dist/style.css" />
+<script type="importmap">
+  { "imports": { "vue": "https://cdn.jsdelivr.net/npm/vue@3.5/dist/vue.esm-browser.prod.js" } }
+</script>
 <script type="module">
-  import '@dynamia-tools/tailadmin-vue-wc/ta-alert'
+  import 'https://cdn.jsdelivr.net/npm/@dynamia-tools/tailadmin-vue-wc@26.9.6/dist/components/ta-alert.js'
 </script>
 
 <ta-alert variant="success" title="Saved" message="Your changes were saved."></ta-alert>
 ```
 
-Or import everything at once from the package root (registers all ~100 elements — larger,
-only worth it if you're using most of them):
+With a bundler (Vite, webpack, …) after `npm install`, use the package's subpath exports instead:
 
 ```js
-import '@dynamia-tools/tailadmin-vue-wc'
+import '@dynamia-tools/tailadmin-vue-wc/ta-alert'   // one element
+import '@dynamia-tools/tailadmin-vue-wc'            // all ~100 — larger, only if you use most
 ```
+
+(CDN URLs use the real file path, `dist/components/ta-alert.js`; the short `/ta-alert` form only
+exists in the `exports` map, which browsers and CDNs don't read. The all-in-one barrel isn't
+usable without a bundler — see the limitation under "Use without Node or npm".)
 
 Props map to attributes the same way Vue's `defineCustomElement` always does: strings/booleans
 work as plain HTML attributes (kebab-case, e.g. `action-label`), objects/arrays need to be set
@@ -62,6 +75,109 @@ change through it before considering it done. It's split one HTML page per categ
 ~100 live elements, fixed-position ones (`ta-fab`, `ta-mobile-app-layout`) and full-viewport
 ones (`ta-modal`) made anything past the first screen unreachable/untestable on a single page.
 
+## Use without Node or npm (plain HTML + CDN)
+
+No bundler, no Tailwind build, no `package.json` — a static `.html` file is enough. Three
+pieces, all served from a CDN (jsDelivr here; any host that serves the npm tarball's files works):
+
+1. **The stylesheet** — `dist/style.css`, a *prebuilt* Tailwind stylesheet with every utility
+   the components use (~134 KB, ~20 KB gzipped). This is what replaces the Tailwind build step
+   described under "Install" above.
+2. **Vue** — the elements are compiled against `vue` as an external bare import, so the page
+   needs an [import map](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap)
+   that tells the browser where to find it.
+3. **The element modules** — one per component, imported for their registration side effect.
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TailAdmin web components, no build</title>
+
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@dynamia-tools/tailadmin-vue-wc@26.9.6/dist/style.css" />
+
+  <!-- Must come before any <script type="module"> that imports 'vue' (directly or not) -->
+  <script type="importmap">
+    { "imports": { "vue": "https://cdn.jsdelivr.net/npm/vue@3.5/dist/vue.esm-browser.prod.js" } }
+  </script>
+</head>
+<body class="p-6">
+  <ta-alert variant="success" title="Saved" message="Your changes were saved."></ta-alert>
+  <ta-button id="save">Save</ta-button>
+  <div id="cart"></div>
+
+  <script type="module">
+    const CDN = 'https://cdn.jsdelivr.net/npm/@dynamia-tools/tailadmin-vue-wc@26.9.6/dist'
+
+    // One import per element you use — importing a component registers its <ta-*> tag.
+    await Promise.all([
+      import(`${CDN}/components/ta-alert.js`),
+      import(`${CDN}/components/ta-button.js`),
+      import(`${CDN}/components/ta-cart.js`),
+    ])
+    const { mount, on } = await import(`${CDN}/helpers.js`)
+
+    // Object/array props must be set as DOM properties, not attributes. `mount()` assigns them
+    // *before* attaching the element (see "Helpers" below for why that order matters).
+    const cart = mount('ta-cart', document.getElementById('cart'), {
+      items: [{ id: 1, label: 'Widget', unitPrice: 10, quantity: 2 }],
+    })
+    on(cart, 'remove', (id) => { cart.items = cart.items.filter((i) => i.id !== id) })
+
+    document.getElementById('save').addEventListener('click', () => console.log('clicked'))
+  </script>
+</body>
+</html>
+```
+
+Notes:
+
+- **Pin the version** (`@26.9.6`) in every URL, including `vue@3.5`. `@latest`/unpinned URLs make
+  a page change behavior when a new release ships, and jsDelivr caches unpinned ones for a while.
+- **Don't import the barrel** (`dist/index.js`) without a bundler — see the limitation below.
+  Import `components/ta-*.js` individually; the browser only downloads the chunks each one needs.
+- **Custom tags are safe to write in HTML before the scripts run**, but any element with a
+  *required* object/array prop (like `ta-cart`'s `items`) throws on its first render if that prop
+  is still undefined. Create those from JS with `mount()` as above rather than writing the tag in
+  the markup.
+- **Optional peer libraries work the same way** — map their bare specifier in the import map.
+  Components that use one (`ta-qr-code` → `qrcode`, the charts → `apexcharts` +
+  `vue3-apexcharts`, `ta-date-range-picker` → `flatpickr` + `vue-flatpickr-component`, …) need it
+  listed there, e.g. via [esm.sh](https://esm.sh) with `?external=vue` so it shares the same Vue
+  instance as the elements:
+
+  ```html
+  <script type="importmap">
+    {
+      "imports": {
+        "vue": "https://cdn.jsdelivr.net/npm/vue@3.5/dist/vue.esm-browser.prod.js",
+        "qrcode": "https://esm.sh/qrcode@1.5.4"
+      }
+    }
+  </script>
+  ```
+
+  Libraries that render Vue components (`vue3-apexcharts`, `vue-flatpickr-component`,
+  `vuedraggable`) *must* be loaded with `?external=vue`,
+  otherwise they bring their own Vue copy and the two won't interoperate.
+- **Dark mode** works the same as anywhere else: toggle a `dark` class on `<html>`.
+- **Self-hosting instead of a CDN**: `npm pack @dynamia-tools/tailadmin-vue-wc` (or download the
+  tarball from the npm registry), unzip it, and serve `package/dist/` from your own server —
+  the URLs above become relative paths. Nothing needs Node at runtime.
+- **The stylesheet `@import`s the Outfit font from Google Fonts** (same as the root package's
+  CSS). Self-hosting the font and removing that `@import` line is fine if that matters for
+  your privacy/CSP setup.
+
+**Limitation — `ta-calendar`, `ta-map`, `ta-dropzone` need a bundler.** Their modules
+`import '<peer>/…css'` (FullCalendar, Leaflet, Dropzone stylesheets), which browsers can't
+resolve natively, so loading them without a build step fails — and so does the barrel
+`dist/index.js` that pulls all of them in. Every other element works as shown above. If you need
+those three from plain HTML, load the peer library's own stylesheet with a `<link>` and use its
+UMD/CDN build directly instead of the wrapped element.
+
 ## Events
 
 Vue's `emit()` calls become native `CustomEvent`s dispatched on the element — no wrapper needed,
@@ -72,19 +188,24 @@ Vue's `emit()` calls become native `CustomEvent`s dispatched on the element — 
 - `event.detail` is always an **array** of the emitted arguments, even for a single argument.
 
 ```html
+<div id="cart"></div>
 <script type="module">
-  import '@dynamia-tools/tailadmin-vue-wc/ta-cart'
-</script>
-<ta-cart id="cart"></ta-cart>
-<script type="module">
-  const cart = document.getElementById('cart')
-  cart.items = [{ id: 1, label: 'Widget', unitPrice: 10, quantity: 2 }]
+  const CDN = 'https://cdn.jsdelivr.net/npm/@dynamia-tools/tailadmin-vue-wc@26.9.6/dist'
+  await import(`${CDN}/components/ta-cart.js`)
+  const { mount } = await import(`${CDN}/helpers.js`)
+
+  // ta-cart's `items` is required, so create it with its props already set (see "Helpers").
+  const cart = mount('ta-cart', document.getElementById('cart'), {
+    items: [{ id: 1, label: 'Widget', unitPrice: 10, quantity: 2 }],
+  })
   cart.addEventListener('remove', (e) => {
-    const id = e.detail[0]
+    const id = e.detail[0] // detail is always an array
     cart.items = cart.items.filter((i) => i.id !== id)
   })
 </script>
 ```
+
+(Needs the same `<link>` stylesheet and `vue` import map as in "Usage" above.)
 
 `v-model`-style components (`defineModel`, or a manual `modelValue`/`update:modelValue` pair)
 don't get automatic two-way binding outside Vue — listen for the update event and reassign the
@@ -260,11 +381,37 @@ Everything under `src/components/`, `src/index.ts`, and `src/elements.ts` is gen
 ```bash
 npm install
 npm run generate     # regenerate src/components/*.ts, index.ts, elements.ts (see above)
-npm run build         # vite build, then vue-tsc emits matching .d.ts files into dist/
+npm run build         # vite build, vue-tsc emits .d.ts into dist/, then build:css compiles dist/style.css
 npm run type-check   # vue-tsc --build (no emit)
 ```
 
 ## Versioning
 
-Versioned independently from the root `@dynamia-tools/tailadmin-vue` package — this package
-only changes when components are added/removed/fixed here, not on every root package release.
+Same [CalVer](https://calver.org) version as the root `@dynamia-tools/tailadmin-vue` package
+(`YY.MM.MICRO`) — **always identical**, never independent. Every release publishes both packages
+under the same number, so `@dynamia-tools/tailadmin-vue-wc@26.9.6` is built from exactly the
+components in `@dynamia-tools/tailadmin-vue@26.9.6`. This package's version is bumped whenever the
+root's is, even if nothing here changed.
+
+## Publishing (maintainers)
+
+One GitHub Release publishes **both** packages: `.github/workflows/publish.yml` runs on the
+release tag `vX.Y.Z`. A first `verify` job checks — **before anything is published** — that the
+tag equals *both* `package.json` versions and that neither version already exists on npm. Then
+`publish` ships the root package and `publish-wc` (`needs: publish`) type-checks, builds and ships
+this one; each also checks that the tarball `npm publish` will upload is exactly
+`<name>@<tag version>`. Requires the `NPM_TOKEN` secret.
+
+To release, bump `version` in **both** `package.json` files (root and `web-components/`, plus
+their lockfiles — `npm version <X.Y.Z> --no-git-tag-version` in each directory does it, though
+it reformats the file, so check the diff) and the pinned `@X.Y.Z` in this README's CDN URLs
+(`grep -rn "tailadmin-vue-wc@" README.md`), merge, then:
+
+```bash
+gh release create vX.Y.Z --title "X.Y.Z" --notes "..."
+```
+
+`@dynamia-tools/tailadmin-vue` is an *optional peer* dependency (types only — the shipped
+`.d.ts` files reference its `.vue` components; the runtime code is bundled), and a `file:..`
+devDependency for local development. Never move it back into `dependencies`: a `file:` spec
+published to npm can't be installed by consumers.

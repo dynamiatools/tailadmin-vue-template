@@ -96,6 +96,14 @@ published** (not on a bare tag push), and verifies the release tag (`vX.Y.Z`) ma
 `package.json`'s `version` before running `npm publish`. `.github/workflows/ci.yml` runs
 `type-check` on push/PR to `main`.
 
+`web-components/` (`@dynamia-tools/tailadmin-vue-wc`) is a second npm package in the same repo,
+**always at the exact same CalVer version as the root package**. One release (`vX.Y.Z`) publishes
+both: `publish.yml`'s `publish-wc` job runs after `publish` and verifies the tag matches
+`web-components/package.json` too. Bump `version` in both `package.json` files (and lockfiles) on
+every publish. Its `@dynamia-tools/tailadmin-vue` link is a `file:..` **devDependency** + optional
+peer — never `dependencies` (a `file:` spec would break consumers' installs). See
+`web-components/README.md`.
+
 ## Where things are documented
 
 - `README.md` — user-facing: install, usage, requirements, peer deps, image-asset policy,
