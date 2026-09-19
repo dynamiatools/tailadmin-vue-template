@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>tailadmin-vue-wc demo</title>
+    <!-- No page script here (just links), but Vite still needs a module reference to run this
+         through the CSS pipeline (Tailwind's @source/@import chain) — a plain <link> to a raw
+         .css file skips that. -->
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body class="bg-gray-50 dark:bg-gray-900">
+    <main class="mx-auto flex max-w-2xl flex-col gap-6 p-8">
+      <div>
+        <h1 class="text-xl font-semibold text-gray-800 dark:text-white">Web Components demo</h1>
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+          All 95 standalone elements from @dynamia-tools/tailadmin-vue-wc, one category per page so
+          each one is actually testable (fixed-position components like ta-fab, full-page ones like
+          ta-modal, etc. don't fight for the same screen). Components with array/object/function-typed
+          required props are mounted via the package's own `mount()` helper with sample data — see the
+          "Known limitations" section of the package README for why that can't be done via plain HTML
+          attributes.
+        </p>
+      </div>
+      <ul class="flex flex-col divide-y divide-gray-200 rounded-lg border border-gray-200 dark:divide-gray-800 dark:border-gray-800">
+        <li><a class="flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/5" href="pages/ui.html"><span class="text-gray-800 dark:text-white/90">UI</span><span class="text-xs text-gray-400">9</span></a></li>
+        <li><a class="flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/5" href="pages/common.html"><span class="text-gray-800 dark:text-white/90">Common</span><span class="text-xs text-gray-400">5</span></a></li>
+        <li><a class="flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/5" href="pages/forms.html"><span class="text-gray-800 dark:text-white/90">Form elements</span><span class="text-xs text-gray-400">11</span></a></li>
+        <li><a class="flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/5" href="pages/layouts.html"><span class="text-gray-800 dark:text-white/90">Ext / layouts</span><span class="text-xs text-gray-400">17</span></a></li>
+        <li><a class="flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/5" href="pages/input.html"><span class="text-gray-800 dark:text-white/90">Ext / input</span><span class="text-xs text-gray-400">8</span></a></li>
+        <li><a class="flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/5" href="pages/display.html"><span class="text-gray-800 dark:text-white/90">Ext / display</span><span class="text-xs text-gray-400">6</span></a></li>
+        <li><a class="flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/5" href="pages/media.html"><span class="text-gray-800 dark:text-white/90">Ext / media</span><span class="text-xs text-gray-400">5</span></a></li>
+        <li><a class="flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/5" href="pages/navigation.html"><span class="text-gray-800 dark:text-white/90">Ext / navigation</span><span class="text-xs text-gray-400">4</span></a></li>
+        <li><a class="flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/5" href="pages/scheduling.html"><span class="text-gray-800 dark:text-white/90">Ext / scheduling</span><span class="text-xs text-gray-400">3</span></a></li>
+        <li><a class="flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/5" href="pages/commerce.html"><span class="text-gray-800 dark:text-white/90">Ext / commerce</span><span class="text-xs text-gray-400">5</span></a></li>
+        <li><a class="flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/5" href="pages/data.html"><span class="text-gray-800 dark:text-white/90">Ext / data</span><span class="text-xs text-gray-400">6</span></a></li>
+        <li><a class="flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/5" href="pages/utilities.html"><span class="text-gray-800 dark:text-white/90">Ext / utilities</span><span class="text-xs text-gray-400">1</span></a></li>
+        <li><a class="flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/5" href="pages/charts.html"><span class="text-gray-800 dark:text-white/90">Charts</span><span class="text-xs text-gray-400">2</span></a></li>
+        <li><a class="flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/5" href="pages/ecommerce.html"><span class="text-gray-800 dark:text-white/90">Ecommerce</span><span class="text-xs text-gray-400">6</span></a></li>
+        <li><a class="flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/5" href="pages/profile.html"><span class="text-gray-800 dark:text-white/90">Profile</span><span class="text-xs text-gray-400">6</span></a></li>
+        <li><a class="flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/5" href="pages/tables.html"><span class="text-gray-800 dark:text-white/90">Tables</span><span class="text-xs text-gray-400">1</span></a></li>
+      </ul>
+    </main>
+  </body>
+</html>

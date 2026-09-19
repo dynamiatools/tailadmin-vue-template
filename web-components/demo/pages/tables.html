@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tables — tailadmin-vue-wc demo</title>
+  </head>
+  <body class="bg-gray-50 dark:bg-gray-900">
+    <main class="mx-auto flex max-w-5xl flex-col gap-6 p-8">
+      <a href="../index.html" class="text-sm text-brand-600 hover:underline">&larr; All categories</a>
+      <h1 class="text-xl font-semibold text-gray-800 dark:text-white">Tables</h1>
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-basic-table-one&gt;</p>
+        <ta-basic-table-one id="demo-ta-basic-table-one"></ta-basic-table-one>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800 sm:col-span-2">
+        <style>
+          ta-table-header, ta-table-body, ta-table-row, ta-table-cell { display: contents; }
+        </style>
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-table&gt; + header/body/row/cell (composed)</p>
+        <ta-table>
+          <ta-table-header>
+            <ta-table-row is-header="true">
+              <ta-table-cell is-header="true">User</ta-table-cell>
+              <ta-table-cell is-header="true">Role</ta-table-cell>
+              <ta-table-cell is-header="true">Status</ta-table-cell>
+            </ta-table-row>
+          </ta-table-header>
+          <ta-table-body>
+            <ta-table-row>
+              <ta-table-cell>
+                <div class="flex items-center gap-3">
+                  <img src="/images/user/user-17.jpg" alt="" class="h-8 w-8 rounded-full object-cover" />
+                  <span class="text-gray-800 dark:text-white/90">Lindsey Curtis</span>
+                </div>
+              </ta-table-cell>
+              <ta-table-cell>Web Designer</ta-table-cell>
+              <ta-table-cell><ta-badge color="success">Active</ta-badge></ta-table-cell>
+            </ta-table-row>
+            <ta-table-row>
+              <ta-table-cell>
+                <div class="flex items-center gap-3">
+                  <img src="/images/user/user-18.jpg" alt="" class="h-8 w-8 rounded-full object-cover" />
+                  <span class="text-gray-800 dark:text-white/90">Kaiya George</span>
+                </div>
+              </ta-table-cell>
+              <ta-table-cell>Project Manager</ta-table-cell>
+              <ta-table-cell><ta-badge color="warning">Pending</ta-badge></ta-table-cell>
+            </ta-table-row>
+            <ta-table-row>
+              <ta-table-cell>
+                <div class="flex items-center gap-3">
+                  <img src="/images/user/user-19.jpg" alt="" class="h-8 w-8 rounded-full object-cover" />
+                  <span class="text-gray-800 dark:text-white/90">Zain Geidt</span>
+                </div>
+              </ta-table-cell>
+              <ta-table-cell>Content Writer</ta-table-cell>
+              <ta-table-cell><ta-badge color="error">Cancelled</ta-badge></ta-table-cell>
+            </ta-table-row>
+          </ta-table-body>
+        </ta-table>
+      </div>
+      </div>
+    </main>
+
+    <script type="module" src="../src/pages/tables.ts"></script>
+  </body>
+</html>

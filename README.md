@@ -106,6 +106,31 @@ import Rating from '@dynamia-tools/tailadmin-vue/components/ext/input/Rating.vue
 </script>
 ```
 
+## Web Components (no Vue required)
+
+Don't run Vue — or Node at all? [`@dynamia-tools/tailadmin-vue-wc`](./web-components) wraps the
+standalone components as native custom elements (`<ta-alert>`, `<ta-data-grid>`, `<ta-cart>`, …),
+usable from plain HTML, React, or any other framework. It's a separate npm package published from this repo, always at the same
+version as this one.
+
+```bash
+npm install @dynamia-tools/tailadmin-vue-wc vue
+```
+
+```html
+<link rel="stylesheet" href="node_modules/@dynamia-tools/tailadmin-vue-wc/dist/style.css" />
+<script type="module">
+  import '@dynamia-tools/tailadmin-vue-wc/ta-alert' // with a bundler/Vite; see the CDN guide below otherwise
+</script>
+
+<ta-alert variant="success" title="Saved" message="Your changes were saved."></ta-alert>
+```
+
+Or skip npm entirely — a static `.html` file plus an import map pointing at a CDN is enough. See
+the package's README for the [no-build/CDN guide](./web-components/README.md#use-without-node-or-npm-plain-html--cdn),
+typed helpers (`mount`, `on`, `bindModel`), events, dark mode, and known limitations. Layout
+shells (`AdminLayout`, sidebar, header) are not included — they need a full Vue app.
+
 ## Requirements in the consuming project
 
 - Vue `^3.5`
@@ -146,6 +171,8 @@ This package uses [CalVer](https://calver.org) (`YY.MM.MICRO`), independent of T
 version numbers — e.g. `26.9.0` is the first release published in September 2026. It makes it
 easy to tell at a glance how recently a given release was synced with upstream.
 
+`@dynamia-tools/tailadmin-vue-wc` always shares this exact version — one release publishes both.
+
 ## Syncing with upstream
 
 This package does not git-fork/merge from TailAdmin — it is synced manually when needed,
@@ -164,6 +191,11 @@ Publishing to npm runs via GitHub Actions when a **GitHub Release is published**
 `package.json` `version` — either `26.9.0` or `v26.9.0` both work, the workflow strips a leading
 `v` before comparing (a tag push alone doesn't trigger it — publishing a release does). Requires
 the `NPM_TOKEN` secret configured on the repo.
+
+The same release also publishes `@dynamia-tools/tailadmin-vue-wc` (`web-components/`) — both
+packages always share the same version, so bump `version` in both `package.json` files (see
+[its README](./web-components/README.md#publishing-maintainers)). The workflow checks the tag
+against both.
 
 ## Support this project
 

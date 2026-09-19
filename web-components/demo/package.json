@@ -1,0 +1,23 @@
+{
+  "name": "tailadmin-vue-wc-demo",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@dynamia-tools/tailadmin-vue": "file:../..",
+    "@dynamia-tools/tailadmin-vue-wc": "file:..",
+    "vue": "^3.5.26"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "@vitejs/plugin-vue": "^6.0.9",
+    "flatpickr": "^4.6.13",
+    "jsvectormap": "1.6.0",
+    "tailwindcss": "^4.1.18",
+    "vite": "^8.3.0"
+  }
+}

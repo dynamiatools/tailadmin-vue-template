@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ext / commerce — tailadmin-vue-wc demo</title>
+  </head>
+  <body class="bg-gray-50 dark:bg-gray-900">
+    <main class="mx-auto flex max-w-5xl flex-col gap-6 p-8">
+      <a href="../index.html" class="text-sm text-brand-600 hover:underline">&larr; All categories</a>
+      <h1 class="text-xl font-semibold text-gray-800 dark:text-white">Ext / commerce</h1>
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-cart&gt;</p>
+        <div id="demo-ta-cart"></div>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-item-card&gt;</p>
+        <ta-item-card id="demo-ta-item-card" title="Wireless Headphones" subtitle="Over-ear, noise cancelling" image="/images/product/product-01.jpg" price="89.99" badge="New" badge-color="success"></ta-item-card>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-item-grid&gt;</p>
+        <div id="demo-ta-item-grid"></div>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-print-preview&gt;</p>
+        <ta-print-preview id="demo-ta-print-preview" html="&lt;div style=&quot;font-family: sans-serif; padding: 24px;&quot;>&lt;h1>Invoice #1024&lt;/h1>&lt;p>Widget x2 — $20.00&lt;/p>&lt;p>Shipping — $5.00&lt;/p>&lt;h2>Total: $25.00&lt;/h2>&lt;/div>"></ta-print-preview>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-selection-grid&gt;</p>
+        <div id="demo-ta-selection-grid"></div>
+      </div>
+      </div>
+    </main>
+
+    <script type="module" src="../src/pages/commerce.ts"></script>
+  </body>
+</html>

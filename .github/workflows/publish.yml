@@ -1,11 +1,54 @@
 name: Publish to npm
 
+# One release publishes BOTH packages under the same CalVer version:
+#   - @dynamia-tools/tailadmin-vue      (repo root)
+#   - @dynamia-tools/tailadmin-vue-wc   (web-components/)
+# Release tag: `vX.Y.Z` (or `X.Y.Z`), which must equal both package.json versions.
 on:
   release:
     types: [published]
 
+env:
+  RELEASE_TAG: ${{ github.event.release.tag_name }}
+
 jobs:
+  # Fail fast, before anything is published: a mismatch caught after the root package went out
+  # would leave the two packages out of sync on npm.
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RELEASE_TAG }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      - name: Release tag, root version and web-components version must all match
+        run: |
+          EXPECTED="${RELEASE_TAG#v}"
+          ROOT="$(node -p "require('./package.json').version")"
+          WC="$(node -p "require('./web-components/package.json').version")"
+          echo "tag=$RELEASE_TAG  root=$ROOT  web-components=$WC"
+          if [ "$ROOT" != "$EXPECTED" ] || [ "$WC" != "$EXPECTED" ]; then
+            echo "::error::Release tag '$RELEASE_TAG' (=> $EXPECTED), package.json ($ROOT) and web-components/package.json ($WC) must all be the same version."
+            exit 1
+          fi
+
+      - name: Versions must not already exist on npm
+        run: |
+          EXPECTED="${RELEASE_TAG#v}"
+          for PKG in @dynamia-tools/tailadmin-vue @dynamia-tools/tailadmin-vue-wc; do
+            if npm view "$PKG@$EXPECTED" version >/dev/null 2>&1; then
+              echo "::error::$PKG@$EXPECTED is already published on npm. Bump the version in both package.json files and cut a new release."
+              exit 1
+            fi
+          done
+
   publish:
+    needs: verify
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -13,7 +56,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.release.tag_name }}
+          ref: ${{ env.RELEASE_TAG }}
 
       - uses: actions/setup-node@v4
         with:
@@ -25,16 +68,71 @@ jobs:
 
       - run: npm run type-check
 
-      - name: Verify release tag matches package.json version
+      - name: Tarball to publish has the release version
         run: |
-          PKG_VERSION="$(node -p "require('./package.json').version")"
-          TAG="${{ github.event.release.tag_name }}"
-          TAG="${TAG#v}"
-          if [ "$PKG_VERSION" != "$TAG" ]; then
-            echo "Release tag ${{ github.event.release.tag_name }} does not match package.json version $PKG_VERSION"
+          EXPECTED="${RELEASE_TAG#v}"
+          PACKED="$(npm pack --dry-run --json | node -p "const [p] = JSON.parse(require('fs').readFileSync(0, 'utf8')); p.name + '@' + p.version")"
+          echo "will publish $PACKED"
+          if [ "$PACKED" != "@dynamia-tools/tailadmin-vue@$EXPECTED" ]; then
+            echo "::error::Tarball is $PACKED, expected @dynamia-tools/tailadmin-vue@$EXPECTED"
             exit 1
           fi
 
       - run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  # Same version as the root package by design (see `verify`), published right after it.
+  publish-wc:
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RELEASE_TAG }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            web-components/package-lock.json
+
+      # The wc build compiles the root package's raw .vue sources (linked via `file:..`), and
+      # those resolve `vue`, `lucide-vue-next`, etc. from the root's node_modules.
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Install web-components dependencies
+        run: npm ci
+        working-directory: web-components
+
+      - name: Type-check
+        run: npm run type-check
+        working-directory: web-components
+
+      - name: Build
+        run: npm run build
+        working-directory: web-components
+
+      - name: Tarball to publish has the release version
+        working-directory: web-components
+        run: |
+          EXPECTED="${RELEASE_TAG#v}"
+          PACKED="$(npm pack --dry-run --json | node -p "const [p] = JSON.parse(require('fs').readFileSync(0, 'utf8')); p.name + '@' + p.version")"
+          echo "will publish $PACKED"
+          if [ "$PACKED" != "@dynamia-tools/tailadmin-vue-wc@$EXPECTED" ]; then
+            echo "::error::Tarball is $PACKED, expected @dynamia-tools/tailadmin-vue-wc@$EXPECTED"
+            exit 1
+          fi
+
+      - name: Publish
+        run: npm publish --access public
+        working-directory: web-components
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

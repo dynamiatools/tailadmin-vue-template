@@ -1,53 +1,50 @@
 {
-  "name": "@dynamia-tools/tailadmin-vue",
+  "name": "@dynamia-tools/tailadmin-vue-wc",
   "version": "26.9.6",
-  "description": "Reusable Vue 3 + Tailwind CSS 4 admin dashboard components, extracted from TailAdmin Vue for direct import across Dynamia projects.",
+  "description": "Standalone Web Components (Custom Elements) built from @dynamia-tools/tailadmin-vue components, for use outside Vue.",
   "type": "module",
   "license": "MIT",
-  "author": "TailAdmin (original components)",
   "contributors": [
     "Dynamia Tools <mario@dynamiasoluciones.com>"
   ],
   "homepage": "https://github.com/dynamiatools/tailadmin-vue-template",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dynamiatools/tailadmin-vue-template.git"
-  },
-  "bugs": {
-    "url": "https://github.com/dynamiatools/tailadmin-vue-template/issues"
+    "url": "git+https://github.com/dynamiatools/tailadmin-vue-template.git",
+    "directory": "web-components"
   },
   "keywords": [
+    "web-components",
+    "custom-elements",
     "vue",
-    "vue3",
     "tailwindcss",
-    "admin",
-    "dashboard",
-    "tailadmin",
-    "components"
+    "tailadmin"
   ],
   "files": [
-    "src",
-    "public",
-    "LICENSE",
+    "dist",
     "README.md"
   ],
   "exports": {
-    "./components/*": "./src/components/*",
-    "./composables/*": "./src/composables/*.ts",
-    "./icons": "./src/icons/index.ts",
-    "./icons/*": "./src/icons/*",
-    "./style.css": "./src/assets/main.css",
+    ".": "./dist/index.js",
+    "./elements": "./dist/elements.js",
+    "./helpers": "./dist/helpers.js",
+    "./style.css": "./dist/style.css",
+    "./*": "./dist/components/*.js",
     "./package.json": "./package.json"
   },
   "scripts": {
-    "type-check": "vue-tsc --build",
-    "lint": "eslint . --fix",
-    "format": "prettier --write src/"
+    "generate": "node scripts/generate.mjs",
+    "generate:demo": "node scripts/generate-demo.mjs",
+    "build": "vite build && vue-tsc --project tsconfig.build.json && npm run build:css",
+    "build:css": "tailwindcss -i src/style.css -o dist/style.css --minify",
+    "type-check": "vue-tsc --build"
+  },
+  "dependencies": {
+    "vue-component-type-helpers": "^3.3.11"
   },
   "peerDependencies": {
     "vue": "^3.5.0",
-    "vue-router": "^4.0.0 || ^5.0.0",
-    "tailwindcss": "^4.0.0",
+    "@dynamia-tools/tailadmin-vue": ">=26.9.5",
     "@floating-ui/vue": "^1.1.0",
     "@fullcalendar/vue3": "^7.0.0",
     "apexcharts": "^7.0.0",
@@ -70,6 +67,7 @@
     "vuedraggable": "^4.1.0"
   },
   "peerDependenciesMeta": {
+    "@dynamia-tools/tailadmin-vue": { "optional": true },
     "@floating-ui/vue": { "optional": true },
     "@fullcalendar/vue3": { "optional": true },
     "apexcharts": { "optional": true },
@@ -92,15 +90,11 @@
     "vuedraggable": { "optional": true }
   },
   "devDependencies": {
-    "@tsconfig/node22": "^22.0.6",
-    "@types/node": "^22.20.1",
-    "@vue/eslint-config-prettier": "^10.1.0",
-    "@vue/eslint-config-typescript": "^14.9.0",
+    "@dynamia-tools/tailadmin-vue": "file:..",
+    "@tailwindcss/cli": "^4.1.18",
+    "tailwindcss": "^4.1.18",
+    "@vitejs/plugin-vue": "^6.0.9",
     "@vue/tsconfig": "^0.7.0",
-    "eslint": "^9.39.5",
-    "eslint-plugin-vue": "^9.33.0",
-    "jiti": "^2.7.0",
-    "prettier": "^3.9.6",
     "typescript": "~5.7.3",
     "vite": "^8.3.0",
     "vue": "^3.5.26",
@@ -113,16 +107,13 @@
     "flatpickr": "^4.6.13",
     "vue-flatpickr-component": "^11.0.5",
     "leaflet": "^1.9.4",
-    "@types/leaflet": "^1.9.22",
     "dropzone": "6.0.0-beta.2",
-    "@types/dropzone": "^5.7.9",
     "floating-vue": "^5.2.2",
     "@floating-ui/vue": "^1.1.11",
     "lucide-vue-next": "^0.474.0",
     "marked": "^18.0.13",
     "dompurify": "^3.4.15",
     "qrcode": "^1.5.4",
-    "@types/qrcode": "^1.5.6",
     "simplebar-vue": "^2.4.0",
     "swiper": "^14.2.0",
     "temporal-polyfill": "^1.0.4",

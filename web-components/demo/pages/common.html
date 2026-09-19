@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Common — tailadmin-vue-wc demo</title>
+  </head>
+  <body class="bg-gray-50 dark:bg-gray-900">
+    <main class="mx-auto flex max-w-5xl flex-col gap-6 p-8">
+      <a href="../index.html" class="text-sm text-brand-600 hover:underline">&larr; All categories</a>
+      <h1 class="text-xl font-semibold text-gray-800 dark:text-white">Common</h1>
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-component-card&gt;</p>
+        <ta-component-card id="demo-ta-component-card" title="Card title"></ta-component-card>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-countdown&gt;</p>
+        <ta-countdown id="demo-ta-countdown"></ta-countdown>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-dropdown-menu&gt;</p>
+        <div id="demo-ta-dropdown-menu"></div>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-page-breadcrumb&gt;</p>
+        <ta-page-breadcrumb id="demo-ta-page-breadcrumb" page-title="Current page"></ta-page-breadcrumb>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-common-grid-shape&gt;</p>
+        <ta-common-grid-shape id="demo-ta-common-grid-shape"></ta-common-grid-shape>
+      </div>
+      </div>
+    </main>
+
+    <script type="module" src="../src/pages/common.ts"></script>
+  </body>
+</html>

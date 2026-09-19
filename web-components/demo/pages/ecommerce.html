@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ecommerce — tailadmin-vue-wc demo</title>
+  </head>
+  <body class="bg-gray-50 dark:bg-gray-900">
+    <main class="mx-auto flex max-w-5xl flex-col gap-6 p-8">
+      <a href="../index.html" class="text-sm text-brand-600 hover:underline">&larr; All categories</a>
+      <h1 class="text-xl font-semibold text-gray-800 dark:text-white">Ecommerce</h1>
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-ecommerce-metrics&gt;</p>
+        <ta-ecommerce-metrics id="demo-ta-ecommerce-metrics"></ta-ecommerce-metrics>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-monthly-target&gt;</p>
+        <ta-monthly-target id="demo-ta-monthly-target"></ta-monthly-target>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-monthly-sale&gt;</p>
+        <ta-monthly-sale id="demo-ta-monthly-sale"></ta-monthly-sale>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-statistics-chart&gt;</p>
+        <ta-statistics-chart id="demo-ta-statistics-chart"></ta-statistics-chart>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-customer-demographic&gt;</p>
+        <ta-customer-demographic id="demo-ta-customer-demographic"></ta-customer-demographic>
+      </div>
+      <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+        <p class="mb-2 font-mono text-xs text-gray-400">&lt;ta-recent-orders&gt;</p>
+        <ta-recent-orders id="demo-ta-recent-orders"></ta-recent-orders>
+      </div>
+      </div>
+    </main>
+
+    <script type="module" src="../src/pages/ecommerce.ts"></script>
+  </body>
+</html>
