@@ -127,6 +127,29 @@
       </Tabs>
     </ComponentCard>
 
+    <ComponentCard
+      title="ClosableTabs"
+      desc="Workspace-style tabs: × / middle-click / Delete to close, actions slot, visited panels stay mounted (max = LRU)."
+    >
+      <div class="mb-3 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+        <label for="ct-max">Keep at most</label>
+        <input id="ct-max" v-model.number="closableMax" type="number" min="1" class="w-16 rounded border border-gray-300 px-2 py-1 dark:border-gray-700 dark:bg-transparent" />
+        <span>panels mounted</span>
+      </div>
+      <ClosableTabs v-model="closableActive" :tabs="closableTabs" :max="closableMax" close-label="Close" @close="closeClosable">
+        <template #actions>
+          <Button size="sm" variant="outline" @click="addClosable">New tab</Button>
+          <Button size="sm" variant="outline" :disabled="closableTabs.length <= 1" @click="closeAllClosable">Close all</Button>
+        </template>
+        <template #default="{ tab }">
+          <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+            Panel <strong>{{ tab.label }}</strong> — type something, switch tabs and come back: it is still here.
+          </p>
+          <input class="w-full max-w-sm rounded border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-transparent dark:text-white/90" :placeholder="`Draft for ${tab.label}`" />
+        </template>
+      </ClosableTabs>
+    </ComponentCard>
+
     <ComponentCard title="LoginDialog" desc="Modal sign-in form with slots for social buttons and footer links.">
       <Button size="sm" @click="loginOpen = true">Open login dialog</Button>
       <LoginDialog v-model="loginOpen" @submit="onLoginSubmit">
@@ -178,6 +201,8 @@ import type { DocsTocItem } from '@dynamia-tools/tailadmin-vue/components/ext/la
 import type { MenuItem } from '@dynamia-tools/tailadmin-vue/components/ext/navigation/Menu.vue'
 import AuthSplit from '@dynamia-tools/tailadmin-vue/components/ext/layouts/AuthSplit.vue'
 import Tabs from '@dynamia-tools/tailadmin-vue/components/ext/layouts/Tabs.vue'
+import ClosableTabs from '@dynamia-tools/tailadmin-vue/components/ext/layouts/ClosableTabs.vue'
+import type { ClosableTabItem } from '@dynamia-tools/tailadmin-vue/components/ext/layouts/ClosableTabs.vue'
 import type { TabItem } from '@dynamia-tools/tailadmin-vue/components/ext/layouts/Tabs.vue'
 import LoginDialog from '@dynamia-tools/tailadmin-vue/components/ext/layouts/LoginDialog.vue'
 import EmptyState from '@dynamia-tools/tailadmin-vue/components/ext/layouts/EmptyState.vue'
@@ -254,6 +279,30 @@ const tabItems: TabItem[] = [
   { id: 'settings', label: 'Settings' },
 ]
 const activeTab = ref<string | number>('overview')
+
+const closableTabs = ref<ClosableTabItem[]>([
+  { id: 'home', label: 'Control Panel', closable: false },
+  { id: 'clients', label: 'Clients' },
+  { id: 'invoices', label: 'Invoices' },
+])
+const closableActive = ref<string | number>('home')
+const closableMax = ref(3)
+let closableSeq = 0
+function addClosable() {
+  const id = `new-${++closableSeq}`
+  closableTabs.value = [...closableTabs.value, { id, label: `New ${closableSeq}` }]
+  closableActive.value = id
+}
+// The parent owns the list and decides what becomes active after a close.
+function closeClosable(id: string | number) {
+  const index = closableTabs.value.findIndex((t) => t.id === id)
+  closableTabs.value = closableTabs.value.filter((t) => t.id !== id)
+  if (closableActive.value === id) closableActive.value = closableTabs.value[Math.max(0, index - 1)].id
+}
+function closeAllClosable() {
+  closableTabs.value = closableTabs.value.filter((t) => t.closable === false)
+  closableActive.value = closableTabs.value[0].id
+}
 
 const loginOpen = ref(false)
 function onLoginSubmit(credentials: { email: string; password: string }) {

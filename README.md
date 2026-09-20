@@ -26,18 +26,24 @@ every Dynamia project (or yours) pulls from one source of truth and stays in syn
 
 ## Highlights
 
-- 🧩 **60+ components** — layout (sidebar, header, responsive shell), forms, tables, charts,
-  ecommerce widgets, profile cards, and more.
-- 🧱 **38 additional `components/ext/*` building blocks** — data tables, form inputs (money,
-  OTP/PIN, rating, color…), media capture, navigation, scheduling, and commerce components for
-  building real admin/SaaS/ERP/POS features on top of the base template. See
-  [below](#extended-component-library-componentsext).
+- 🧩 **60+ base components + 47 icons** — layout (sidebar, header, responsive shell), forms, tables,
+  charts, ecommerce widgets, profile cards, and more.
+- 🧱 **50+ additional `components/ext/*` building blocks** — data tables and grids, form inputs
+  (money, OTP/PIN, rating, color…), media capture, display, scheduling, commerce, navigation
+  (command palette, kanban, **tree menu with a condensed flyout**), and page shells (landing, docs,
+  auth, mobile, **closable workspace tabs**) for building real admin/SaaS/ERP/POS features on top of
+  the base template. See [below](#extended-component-library-componentsext).
 - 📦 **Import exactly what you use** — no bundle, no barrel-file bloat. Pull in one `.vue` file
   and its transitive imports, nothing else.
 - 🎨 **Themeable at runtime** — Tailwind v4 compiles colors to CSS custom properties, so
   re-theming the brand color is a one-line `style.setProperty` away. See the picker in
-  [`examples/basic-app`](./examples/basic-app) for a working demo.
+  [`examples/basic-app`](./examples/basic-app) for a working demo. Import `theme.css` instead of
+  `style.css` to skip the Google Fonts request and bring your own font.
 - 🌓 **Dark mode & RTL** built in, via the same composables the components already use.
+- 🌐 **100 Web Components** — the standalone pieces are also published as custom elements
+  (`@dynamia-tools/tailadmin-vue-wc`), usable without Vue. See [below](#web-components-no-vue-required).
+- ✅ **Type-checked on every change**, and the components added on top of upstream (tree menu,
+  closable tabs, sidebar state) are covered by a Vitest suite that runs in CI before every publish.
 - 🆓 **MIT-licensed, no Pro tier, no upsells** — this fork intentionally dropped TailAdmin's
   "Purchase Plan" prompt. Everything in here is free to use.
 - 🔄 **Manually synced with upstream**, deliberately — every change is reviewed before it lands,
@@ -56,6 +62,20 @@ Import the theme CSS once in your entrypoint:
 ```ts
 // main.ts
 import '@dynamia-tools/tailadmin-vue/style.css'
+```
+
+`style.css` also loads the **Outfit** web font from Google Fonts. To avoid that third-party request
+(strict CSP, offline/intranet deployments) or to use your own font, import `theme.css` instead — the
+same tokens, utilities and base styles with no external requests — and override the font token:
+
+```css
+/* app.css */
+@import '@dynamia-tools/tailadmin-vue/theme.css';
+@source '../node_modules/@dynamia-tools/tailadmin-vue/src';
+
+@theme {
+  --font-outfit: Roboto, system-ui, sans-serif; /* the base layer applies `font-outfit` to <body> */
+}
 ```
 
 Import components directly from their source path:
@@ -88,7 +108,7 @@ a single page putting every layout slot/prop to use at once, with a recolored si
 
 ## Extended component library (`components/ext`)
 
-Beyond the base template, this package ships **38 additional, domain-agnostic components**
+Beyond the base template, this package ships **57 additional, domain-agnostic components**
 under `src/components/ext/<category>/`, for building real administrative/SaaS/ERP/POS/ecommerce
 features rather than just a demo dashboard: `DataTable`, `TreeTable`, `MoneyInput`, `PinInput`,
 `Rating`, `Webcam`, `SignaturePad`, `Calendar`, `Cart`, `ItemGrid`, `Kanban`, `Map`, and more —
@@ -195,7 +215,7 @@ the `NPM_TOKEN` secret configured on the repo.
 The same release also publishes `@dynamia-tools/tailadmin-vue-wc` (`web-components/`) — both
 packages always share the same version, so bump `version` in both `package.json` files (see
 [its README](./web-components/README.md#publishing-maintainers)). The workflow checks the tag
-against both.
+against both. CI (and the publish workflow) run `npm run type-check` and `npm test` first.
 
 ## Support this project
 

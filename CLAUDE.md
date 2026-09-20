@@ -18,7 +18,8 @@ intentionally **not** part of this repo — only the reusable pieces.
 
 ```bash
 npm install          # root
-npm run type-check   # vue-tsc --build — the only CI/publish gate, keep it green
+npm run type-check   # vue-tsc --build (src + tests) — CI/publish gate, keep it green
+npm test             # vitest run (jsdom) — CI/publish gate, keep it green
 npm run lint          # eslint . --fix — NOT CI-gated, has ~13 pre-existing upstream issues
                        # (missing lang="ts" on a few <script> blocks, some unused imports).
                        # Don't try to fix these as a drive-by; see docs/SYNC.md.
@@ -36,8 +37,11 @@ npm run build
 npm run type-check
 ```
 
-There is no test suite. Validate changes by running `type-check` (root and example) and
-`examples/basic-app`'s `build` + `dev`.
+`tests/` (Vitest + `@vue/test-utils` + jsdom, run with `npm test`) covers the components and
+composables added locally (`TreeMenu`, `ClosableTabs`, `SidebarProvider`/`useSidebar`, the
+`theme.css` split). Upstream-derived components have no tests. Add a test with any new `ext/`
+component that has behaviour (state, keyboard, events) beyond markup. Validate changes by running
+`type-check` (root and example), `npm test`, and `examples/basic-app`'s `build` + `dev`.
 
 ## Architecture
 
@@ -94,7 +98,7 @@ README's "Versioning" section. Bump it on every change that gets published.
 **Publishing**: `.github/workflows/publish.yml` triggers only on a **GitHub Release being
 published** (not on a bare tag push), and verifies the release tag (`vX.Y.Z`) matches
 `package.json`'s `version` before running `npm publish`. `.github/workflows/ci.yml` runs
-`type-check` on push/PR to `main`.
+`type-check` and `npm test` on push/PR to `main`.
 
 `web-components/` (`@dynamia-tools/tailadmin-vue-wc`) is a second npm package in the same repo,
 **always at the exact same CalVer version as the root package**. One release (`vX.Y.Z`) publishes

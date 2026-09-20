@@ -68,6 +68,8 @@ jobs:
 
       - run: npm run type-check
 
+      - run: npm test
+
       - name: Tarball to publish has the release version
         run: |
           EXPECTED="${RELEASE_TAG#v}"

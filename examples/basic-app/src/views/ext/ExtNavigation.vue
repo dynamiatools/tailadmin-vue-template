@@ -42,6 +42,32 @@
         </div>
       </div>
     </ComponentCard>
+    <ComponentCard
+      title="TreeMenu"
+      desc="Recursive sidebar-style menu: accordion, any depth, condensed mode with a flyout, icons by key."
+    >
+      <div class="mb-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-gray-600 dark:text-gray-400">
+        <label class="flex items-center gap-2"><input v-model="treeCondensed" type="checkbox" /> Condensed</label>
+        <label class="flex items-center gap-2"><input v-model="treeAccordion" type="checkbox" /> Accordion</label>
+        <span>Active: <strong>{{ treeActive }}</strong></span>
+      </div>
+      <!-- Scrolling container on purpose: the condensed flyout is teleported, so it is not clipped by it. -->
+      <div
+        class="max-h-96 overflow-y-auto rounded-lg border border-gray-200 p-2 transition-[width] dark:border-gray-800"
+        :class="treeCondensed ? 'w-16' : 'w-72'"
+      >
+        <TreeMenu
+          :items="treeItems"
+          :active-id="treeActive"
+          :condensed="treeCondensed"
+          :accordion="treeAccordion"
+          :icon-map="treeIcons"
+          :default-icon="GridIcon"
+          aria-label="Example navigation"
+          @select="onTreeSelect"
+        />
+      </div>
+    </ComponentCard>
   </ExtLayout>
 </template>
 
@@ -56,7 +82,9 @@ import Kanban from '@dynamia-tools/tailadmin-vue/components/ext/navigation/Kanba
 import type { KanbanColumn, KanbanItem } from '@dynamia-tools/tailadmin-vue/components/ext/navigation/Kanban.vue'
 import Menu from '@dynamia-tools/tailadmin-vue/components/ext/navigation/Menu.vue'
 import type { MenuItem } from '@dynamia-tools/tailadmin-vue/components/ext/navigation/Menu.vue'
-import { PlusIcon, TaskIcon, DocsIcon, SettingsIcon, GridIcon, UserCircleIcon } from '@dynamia-tools/tailadmin-vue/icons'
+import TreeMenu from '@dynamia-tools/tailadmin-vue/components/ext/navigation/TreeMenu.vue'
+import type { TreeMenuItem } from '@dynamia-tools/tailadmin-vue/components/ext/navigation/TreeMenu.vue'
+import { PlusIcon, TaskIcon, DocsIcon, SettingsIcon, GridIcon, UserCircleIcon, PieChartIcon, UserGroupIcon } from '@dynamia-tools/tailadmin-vue/icons'
 import ExtLayout from './ExtLayout.vue'
 
 const paletteOpen = ref(false)
@@ -99,5 +127,42 @@ const menuItems: MenuItem[] = [
 ]
 function onMenuSelect(item: MenuItem) {
   activeMenuId.value = item.id
+}
+const treeCondensed = ref(false)
+const treeAccordion = ref(true)
+const treeActive = ref<string | number>('invoices')
+// String keys resolved through `icon-map`: the tree data stays serializable (e.g. from an API).
+const treeIcons = { sales: PieChartIcon, people: UserGroupIcon, cog: SettingsIcon, docs: DocsIcon }
+const treeItems: TreeMenuItem[] = [
+  { id: 'home', label: 'Home', icon: 'home', href: '#home' },
+  {
+    id: 'sales',
+    label: 'Sales',
+    icon: 'sales',
+    children: [
+      { id: 'invoices', label: 'Invoices', badge: 3 },
+      { id: 'quotes', label: 'Quotes' },
+      {
+        id: 'reports',
+        label: 'Reports',
+        children: [
+          { id: 'daily', label: 'Daily', children: [{ id: 'daily-detail', label: 'Detail' }, { id: 'daily-summary', label: 'Summary' }] },
+          { id: 'monthly', label: 'Monthly' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'people',
+    label: 'People',
+    icon: 'people',
+    children: [{ id: 'customers', label: 'Customers' }, { id: 'suppliers', label: 'Suppliers' }],
+  },
+  { id: 'settings', label: 'Settings', icon: 'cog', children: [{ id: 'company', label: 'Company' }, { id: 'taxes', label: 'Taxes', disabled: true }] },
+  { id: 'misc', label: 'No icon (default icon)', children: [{ id: 'misc-1', label: 'Item' }] },
+]
+function onTreeSelect(item: TreeMenuItem, event: MouseEvent) {
+  event.preventDefault() // consumer owns navigation (e.g. router.push)
+  treeActive.value = item.id
 }
 </script>
