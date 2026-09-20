@@ -225,12 +225,18 @@ function onOutsidePointerDown(event: Event) {
   closeFlyout()
 }
 const onViewportChange = () => closeFlyout()
+// `scroll` is listened to in the capture phase (it does not bubble), so it also fires when the
+// flyout's own overflow scrolls — that must not close it.
+function onScroll(event: Event) {
+  if (panelEl.value?.contains(event.target as Node)) return
+  closeFlyout()
+}
 
 watch(flyoutId, (id) => {
   const method = id ? 'addEventListener' : 'removeEventListener'
   document[method]('pointerdown', onOutsidePointerDown)
   window[method]('resize', onViewportChange)
-  window[method]('scroll', onViewportChange, true)
+  window[method]('scroll', onScroll, true)
 })
 
 watch(
@@ -242,7 +248,7 @@ onBeforeUnmount(() => {
   cancelCloseFlyout()
   document.removeEventListener('pointerdown', onOutsidePointerDown)
   window.removeEventListener('resize', onViewportChange)
-  window.removeEventListener('scroll', onViewportChange, true)
+  window.removeEventListener('scroll', onScroll, true)
 })
 
 // --- keyboard ---------------------------------------------------------------------------

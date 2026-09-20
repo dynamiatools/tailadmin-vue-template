@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest'
 import { mount, enableAutoUnmount } from '@vue/test-utils'
 import type { VueWrapper } from '@vue/test-utils'
-import { defineComponent, h, nextTick, onMounted, onUnmounted, ref } from 'vue'
+import { defineComponent, h, nextTick, onMounted, onUnmounted, reactive, ref } from 'vue'
 import ClosableTabs from '../src/components/ext/layouts/ClosableTabs.vue'
 import type { ClosableTabItem } from '../src/components/ext/layouts/ClosableTabs.vue'
 
@@ -63,6 +63,31 @@ describe('ClosableTabs', () => {
     expect(w.find('[data-panel="home"]').exists()).toBe(true)
     expect(w.find('[data-panel="a"]').exists()).toBe(false)
     expect(w.find('[data-panel="b"]').exists()).toBe(true)
+  })
+
+  it('max shrinking at runtime trims the mounted panels right away', async () => {
+    const { slot } = harness({})
+    const w = mount(ClosableTabs, { props: { tabs: tabs(), modelValue: 'home' }, slots: { default: slot }, attachTo: document.body })
+    await w.setProps({ modelValue: 'a' })
+    await w.setProps({ modelValue: 'b' })
+    expect(panels(w)).toHaveLength(3)
+    await w.setProps({ max: 1 })
+    expect(panels(w)).toHaveLength(1)
+    expect(w.find('[data-panel="b"]').exists()).toBe(true) // the active one always survives
+  })
+
+  it('tabs mutated in place (splice/push) are tracked like a replaced array', async () => {
+    const { slot } = harness({})
+    const list = reactive(tabs())
+    const w = mount(ClosableTabs, { props: { tabs: list, modelValue: 'a' }, slots: { default: slot }, attachTo: document.body })
+    expect(w.find('[data-panel="a"]').exists()).toBe(true)
+
+    await w.setProps({ modelValue: 'home' })
+    list.splice(1, 1) // remove `a` in place
+    await nextTick()
+    list.splice(1, 0, { id: 'a', label: 'Clientes' }) // re-added: must not resurrect its old panel
+    await nextTick()
+    expect(w.find('[data-panel="a"]').exists()).toBe(false)
   })
 
   it('keepAlive=false mounts only the active panel', async () => {
