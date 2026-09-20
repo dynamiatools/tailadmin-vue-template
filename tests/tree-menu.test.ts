@@ -164,6 +164,21 @@ describe('TreeMenu', () => {
     expect(document.body.querySelector('[role="group"]')).toBeNull()
   })
 
+  it('condensed: scrolling the page closes the flyout, scrolling inside the flyout does not', async () => {
+    const w = mount(TreeMenu, { props: { items: items(), condensed: true }, attachTo: document.body })
+    await byId(w, 'ventas').trigger('click')
+    const panel = document.body.querySelector('[role="group"]')!
+    expect(panel).toBeTruthy()
+
+    panel.dispatchEvent(new Event('scroll')) // long submenu scrolled by the user
+    await nextTick()
+    expect(document.body.querySelector('[role="group"]')).toBeTruthy()
+
+    document.dispatchEvent(new Event('scroll')) // the page (or an ancestor container) scrolled
+    await nextTick()
+    expect(document.body.querySelector('[role="group"]')).toBeNull()
+  })
+
   it('toggling condensed off closes the flyout and restores inline rendering', async () => {
     const w = mount(TreeMenu, { props: { items: items(), condensed: true }, attachTo: document.body })
     await byId(w, 'ventas').trigger('click')

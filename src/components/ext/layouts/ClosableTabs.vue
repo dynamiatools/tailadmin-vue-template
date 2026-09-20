@@ -163,6 +163,16 @@ watch(
     order.value = order.value.filter((id) => ids.has(id))
     if (ids.has(props.modelValue) && !order.value.includes(props.modelValue)) touch(props.modelValue)
   },
+  // Level 1: also reacts to the parent mutating the array in place (push/splice).
+  { deep: 1 },
+)
+
+// A smaller `max` takes effect immediately; the active panel is the most recent, so it survives.
+watch(
+  () => props.max,
+  (max) => {
+    if (max && max > 0) order.value = order.value.slice(-max)
+  },
 )
 
 const isMounted = (id: string | number) => (props.keepAlive ? order.value.includes(id) : id === props.modelValue)
