@@ -1,7 +1,7 @@
 # User guide — layouts, slots & props, and the extended component library
 
 Practical guide for consumers of `@dynamia-tools/tailadmin-vue`: how the layout system fits
-together and how to customize it (§1–10), and how to use the 38 additional `components/ext/*`
+together and how to customize it (§1–10), and how to use the 57 additional `components/ext/*`
 components — data tables, inputs, media capture, navigation, scheduling, commerce (§11) — without
 forking any component. Written for humans, but equally usable as reference by an AI assistant
 wiring this package into a project.
@@ -381,7 +381,13 @@ composables, shared across every layout piece automatically:
 
 - **Sidebar expand/collapse/mobile state** — `useSidebar()` (from
   `@dynamia-tools/tailadmin-vue/composables/useSidebar`). `AppSidebar`, `AdminLayout`'s margin,
-  and `Backdrop` all read from it; you don't need to pass state between them.
+  and `Backdrop` all read from it; you don't need to pass state between them. It also exposes
+  `isMobile` (viewport narrower than the provider's breakpoint), and the breakpoint is configurable:
+  `<SidebarProvider :mobile-breakpoint="992">` (default `768`, the historical value; also accepts a
+  ref/getter through `useSidebarProvider({ mobileBreakpoint })`). **This only moves the state
+  flags** (`isMobile`, when `isMobileOpen` is reset): `AdminLayout`, `AppSidebar` and `AppHeader`
+  still switch their *layout* at the `xl` CSS breakpoint (1280px), and `Backdrop` hides at `lg`.
+  Use it when you build your own sidebar/header on top of `useSidebar()`.
 - **Dark mode** — handled by `ThemeProvider` + `ThemeToggler`; see those if you need to read or
   force the current theme from your own code.
 - **RTL** — `useRTL()` (from `@dynamia-tools/tailadmin-vue/composables/useRTL`), currently
@@ -412,7 +418,7 @@ is never asset-url-transformed, only literal `src="..."` attributes in a templat
 ## 11. Extended component library (`components/ext`)
 
 Everything above (§1–10) is about the base TailAdmin layout. This section covers a separate,
-larger set of components — **38 of them**, under `src/components/ext/<category>/` — added on top
+larger set of components — **57 of them**, under `src/components/ext/<category>/` — added on top
 of the base template for building real features (data grids, checkout flows, OTP forms, camera
 capture, maps…) rather than just a demo dashboard.
 
@@ -502,6 +508,7 @@ Import path: `@dynamia-tools/tailadmin-vue/components/ext/<category>/<Component>
 | `Fab` | Floating action button, single action or an expandable action menu. |
 | `Kanban` | Drag-and-drop board across configurable columns (needs `vuedraggable`, see §11.4). |
 | `Menu` | Generic, router-agnostic menu list — vertical or horizontal, nested/collapsible items. |
+| `TreeMenu` | Sidebar-style navigation tree: unlimited depth, accordion, active-branch auto-expand, **condensed mode** (icons only) with a hover/focus/click **flyout**, icons by string key (`icon-map`), keyboard navigation. Router-agnostic (`@select` gives you the event to `preventDefault()`). |
 
 **Scheduling** — `src/components/ext/scheduling/`
 
@@ -549,6 +556,7 @@ slots for structural override); shells compose them or provide their own structu
 | `DocsLayout` | Sidebar nav (composes `Menu`) + prose column + table of contents, for documentation pages. |
 | `AuthSplit` | Split-screen auth shell — brand panel (`brand` slot or `image`) + centered form column (default slot). |
 | `Tabs` | Tab list with keyboard navigation (arrow keys); `top`/`bottom`/`left`/`right` position. |
+| `ClosableTabs` | Workspace-style tabs: close with ×, middle click or Delete; `#actions` slot; visited panels stay mounted (state survives switching) with an optional `max` (least recently active are unmounted first). The parent owns the tab list. |
 | `LoginDialog` | Modal sign-in form (`v-model`, `@submit`) with `social`/`footer` slots. |
 | `EmptyState` | Placeholder for empty/no-data states — icon slot, title/description, optional action. |
 | `MarkdownViewer` | Renders Markdown to sanitized HTML (needs `marked` + `dompurify`, see §11.4). |
@@ -616,6 +624,58 @@ composes `Status` for its badge, `PaymentInput` composes `MoneyInput` per entry.
 invent new styling either — it reuses the same `menu-item`/`menu-item-active`/`menu-item-icon-*`
 CSS utilities `AppSidebar` already defines in `main.css`, so a standalone `Menu` (e.g. inside a
 settings panel) looks consistent with the sidebar without any extra theming.
+
+**`TreeMenu` as a data-driven sidebar (with a router):**
+
+```vue
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import TreeMenu from '@dynamia-tools/tailadmin-vue/components/ext/navigation/TreeMenu.vue'
+import type { TreeMenuItem } from '@dynamia-tools/tailadmin-vue/components/ext/navigation/TreeMenu.vue'
+import { GridIcon, UserGroupIcon } from '@dynamia-tools/tailadmin-vue/icons'
+
+const props = defineProps<{ items: TreeMenuItem[]; condensed: boolean }>()
+const route = useRoute()
+const router = useRouter()
+
+// Strings in `icon` (e.g. from an API) are resolved here; unknown keys fall back to `default-icon`.
+const icons = { home: GridIcon, people: UserGroupIcon }
+const activeId = computed(() => route.path) // ids can be anything unique, e.g. the route path
+
+function onSelect(item: TreeMenuItem, event: MouseEvent) {
+  event.preventDefault() // you own navigation
+  router.push(item.id as string)
+}
+</script>
+
+<template>
+  <TreeMenu :items="props.items" :active-id="activeId" :condensed="props.condensed" :icon-map="icons" :default-icon="GridIcon" @select="onSelect" />
+</template>
+```
+
+Ids must be unique across the whole tree (they drive expansion and the active branch). The
+active leaf's ancestors are highlighted and expanded automatically. In condensed mode the flyout
+is teleported to `<body>` with `position: fixed`, so a scrolling sidebar does not clip it; it
+closes on outside click, `Esc`, scroll and resize. `#icon` / `#label` slots (`{ item, active, level }`)
+replace a row's icon or text, e.g. to render a Font Awesome `<i>`. Rows use the same
+`menu-item*` utilities as `AppSidebar`, so `TreeMenu` looks consistent with it.
+
+**`ClosableTabs` with `max` panels kept alive:**
+
+```vue
+<ClosableTabs v-model="active" :tabs="tabs" :max="5" @close="close">
+  <template #actions><button @click="closeAll">Close all</button></template>
+  <template #default="{ tab }"><MyScreen :id="tab.id" /></template>
+</ClosableTabs>
+```
+
+`ClosableTabs` never edits `tabs`: on `@close` remove the tab and pick what becomes active
+(typically the neighbour). Panels are kept mounted with `v-show` (not Vue's `<KeepAlive>`), so
+components inside are *not* deactivated/reactivated — they keep running while hidden; use the
+`active` slot prop to pause work if needed. Once more than `max` panels have been visited, the least
+recently active one is unmounted and remounts fresh when revisited. Keyboard: arrows/Home/End move
+between tabs, Delete closes the focused one (× buttons are deliberately not tab stops).
 
 ### 11.4 Optional peer dependencies
 

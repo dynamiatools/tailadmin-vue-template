@@ -3,7 +3,7 @@
 This repo starts from a clean copy of
 [TailAdmin/vue-tailwind-admin-dashboard](https://github.com/TailAdmin/vue-tailwind-admin-dashboard)
 (commit `6d5a3657c3d1562b2b8488c6f54886920b798326`, 2026-09-12), keeping only the reusable parts:
-`src/components/`, `src/composables/`, `src/icons/`, `src/assets/main.css`,
+`src/components/`, `src/composables/`, `src/icons/`, `src/assets/main.css` (now split, see below),
 `src/vue.shims.d.ts`, `src/index.d.ts`. No upstream git history is kept and there is no
 automatic `git merge` — syncing is manual, whenever a fix or new component needs to be pulled
 in.
@@ -35,6 +35,17 @@ When pulling in new changes, be careful not to overwrite these:
   gate; only `type-check` is. Feel free to clean these up incrementally, but don't let them block
   a sync.
 
+- **`src/assets/main.css` is split in two.** `theme.css` holds everything from `@import 'tailwindcss'`
+  onwards (tokens, utilities, base styles); `main.css` is only the Google Fonts `@import` plus
+  `@import './theme.css'`, and stays the `./style.css` export. `./theme.css` is exported too, for
+  consumers that don't want the third-party font request. **Upstream changes to `main.css` are applied
+  to `theme.css`**; only the font `@import` line lives in `main.css`.
+- **Tests** (`tests/`, `vitest.config.ts`, `tsconfig.test.json`, and the `vitest`, `jsdom`,
+  `@vue/test-utils`, `@vitejs/plugin-vue` devDependencies) cover the components/composables added
+  here. They are not from upstream. `npm run type-check` also type-checks `tests/`.
+- **New components under `components/ext/`** are entirely local, so they never conflict with a
+  sync: `navigation/TreeMenu` (+ `TreeMenuItemRow`, `treeMenuContext`) and `layouts/ClosableTabs`.
+
 ## Layout extension points (slots, props, emits) not present in upstream
 
 The four layout components below expose extra slots/props/emits so consumers can swap out
@@ -61,6 +72,11 @@ and backward compatible — don't let an upstream sync overwrite these without r
   `<UserMenu />`. Hiding a default component is just passing an empty slot
   (`<template #search></template>`) — there are no separate `show-*` boolean props, to keep a
   single API for both hiding and replacing.
+- **`SidebarProvider.vue` / `composables/useSidebar.ts`**: `mobileBreakpoint` prop on the provider
+  (and `useSidebarProvider({ mobileBreakpoint })`, a number or a ref/getter), default `768` — the
+  value that used to be hardcoded. `useSidebar()` also exposes `isMobile`, which existed internally
+  but wasn't returned. It only affects the composable's state; `AdminLayout`/`AppSidebar`/`AppHeader`
+  still switch layout at the `xl` CSS breakpoint.
 - **`NotificationMenu.vue`**: `notifications?: NotificationItem[]` prop (default: the original
   hardcoded "Terry Franci" demo data, now `defaultNotifications`, exported alongside the
   `NotificationItem` interface). `@item-click` (payload: the clicked `NotificationItem`) and
@@ -100,7 +116,7 @@ other data), follow this same two-block pattern rather than declaring the defaul
    diff -rq src/components /tmp/upstream-check/src/components
    diff -rq src/composables /tmp/upstream-check/src/composables
    diff -rq src/icons /tmp/upstream-check/src/icons
-   diff src/assets/main.css /tmp/upstream-check/src/assets/main.css
+   diff src/assets/theme.css /tmp/upstream-check/src/assets/main.css  # main.css here is only the font @import
    ```
 4. Apply the relevant changes by hand (new components, fixes, style tweaks). For new components
    under `layout/` or anywhere else using the `@/...` pattern, rewrite the import to a relative

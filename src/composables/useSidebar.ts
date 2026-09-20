@@ -20,12 +20,14 @@
 //   }
 // }
 
-import { ref, computed, onMounted, onUnmounted, provide, inject } from 'vue'
-import type { Ref } from 'vue' //
+import { ref, computed, onMounted, onUnmounted, provide, inject, toValue, watch } from 'vue'
+import type { MaybeRefOrGetter, Ref } from 'vue' //
 
 interface SidebarContextType {
   isExpanded: Ref<boolean>
   isMobileOpen: Ref<boolean>
+  /** True while the viewport is narrower than the provider's `mobileBreakpoint` (default 768px). */
+  isMobile: Ref<boolean>
   isHovered: Ref<boolean>
   activeItem: Ref<string | null>
   openSubmenu: Ref<string | null>
@@ -43,7 +45,15 @@ interface SidebarContextType {
 // at runtime — don't drop the extension on a future edit to that map.
 const SidebarSymbol = Symbol()
 
-export function useSidebarProvider() {
+export interface SidebarProviderOptions {
+  /**
+   * Viewport width (px) under which the sidebar behaves as a mobile drawer. Defaults to 768,
+   * the value this composable always used. Accepts a ref/getter so it can change at runtime.
+   */
+  mobileBreakpoint?: MaybeRefOrGetter<number>
+}
+
+export function useSidebarProvider(options: SidebarProviderOptions = {}) {
   const isExpanded = ref(true)
   const isMobileOpen = ref(false)
   const isMobile = ref(false)
@@ -52,12 +62,16 @@ export function useSidebarProvider() {
   const openSubmenu = ref<string | null>(null)
 
   const handleResize = () => {
-    const mobile = window.innerWidth < 768
+    const mobile = window.innerWidth < (toValue(options.mobileBreakpoint) ?? 768)
     isMobile.value = mobile
     if (!mobile) {
       isMobileOpen.value = false
     }
   }
+
+  watch(() => toValue(options.mobileBreakpoint), () => {
+    if (typeof window !== 'undefined') handleResize()
+  })
 
   onMounted(() => {
     handleResize()
@@ -95,6 +109,7 @@ export function useSidebarProvider() {
   const context: SidebarContextType = {
     isExpanded: computed(() => (isMobile.value ? false : isExpanded.value)),
     isMobileOpen,
+    isMobile,
     isHovered,
     activeItem,
     openSubmenu,

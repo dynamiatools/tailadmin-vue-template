@@ -1,6 +1,6 @@
 {
   "name": "@dynamia-tools/tailadmin-vue",
-  "version": "26.9.6",
+  "version": "26.9.7",
   "description": "Reusable Vue 3 + Tailwind CSS 4 admin dashboard components, extracted from TailAdmin Vue for direct import across Dynamia projects.",
   "type": "module",
   "license": "MIT",
@@ -37,10 +37,12 @@
     "./icons": "./src/icons/index.ts",
     "./icons/*": "./src/icons/*",
     "./style.css": "./src/assets/main.css",
+    "./theme.css": "./src/assets/theme.css",
     "./package.json": "./package.json"
   },
   "scripts": {
     "type-check": "vue-tsc --build",
+    "test": "vitest run",
     "lint": "eslint . --fix",
     "format": "prettier --write src/"
   },
@@ -94,15 +96,19 @@
   "devDependencies": {
     "@tsconfig/node22": "^22.0.6",
     "@types/node": "^22.20.1",
+    "@vitejs/plugin-vue": "^6.0.9",
     "@vue/eslint-config-prettier": "^10.1.0",
     "@vue/eslint-config-typescript": "^14.9.0",
+    "@vue/test-utils": "^2.5.1",
     "@vue/tsconfig": "^0.7.0",
     "eslint": "^9.39.5",
     "eslint-plugin-vue": "^9.33.0",
     "jiti": "^2.7.0",
+    "jsdom": "^30.1.0",
     "prettier": "^3.9.6",
     "typescript": "~5.7.3",
     "vite": "^8.3.0",
+    "vitest": "^5.0.1",
     "vue": "^3.5.26",
     "vue-tsc": "^2.2.12",
     "@fullcalendar/vue3": "^7.1.0",
